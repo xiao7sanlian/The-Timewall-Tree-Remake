@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "The Timewall Tree Remake",
-	author: "QqQeInfinity",
+	author: "QqQeInfinity & DeFe308",
 	id: "timewall remake",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
@@ -13,14 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
+	num: "0.1.1",
 	name: "Basic",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.1 Basic 2026/1/10~2026/1/11</h3><br>
 		- Added 2 layers.<br>
-		- Added 10 achievements.`
+		- Added 10 achievements.<br>
+	<h3>v0.1.1 Bug Fix 2026/1/16</h3><br>
+		- Fixed a bug about 'resetTime', which made it impossible to import save.<br>
+		- Added speed-up in the achievement tab, and now you can speed up to 16x, which will reduce the timewall.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 

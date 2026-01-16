@@ -23,6 +23,10 @@ addLayer("A", {
     },
     devSpeedCal(){
 	    let dev=n(1)
+        if(player.A.speed1==true) dev=dev.add(1)
+        if(player.A.speed2==true) dev=dev.add(2)
+        if(player.A.speed3==true) dev=dev.add(4)
+        if(player.A.speed4==true) dev=dev.add(8)
         if(player.T.pause.gte(1))dev=n(0)
 	    return dev
 	   },
@@ -35,6 +39,10 @@ addLayer("A", {
         content: [ "main-display",
         "achievements",
     ["display-text", () => tmp.A.tips],
+    ],},
+    "Speed-up":{
+        content: [ "main-display",
+        "milestones",
     ],},
     },
     effectDescription(){return ' and there are 10 in total.'},
@@ -120,6 +128,14 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
     },
+    milestones:{
+        0: {
+            requirementDescription: "Speed-up",
+            effectDescription() {return "The Game is too Slow? Use this to speed it up! Anyhow, I promise this game is balanced at normal speed. The buttons reffer to +1x,+2x,+4x,+8x speed, you can speed the game up to 16x."},
+            done() { return true },
+            toggles:[["A", "speed1"],["A", "speed2"],["A", "speed3"],["A", "speed4"],]
+        },
+    },
     tips(){a='Some coming achievements:<br>'
         if(!hasAchievement('A',11)) a=a+layers.A.achievements[11].name()+': '+layers.A.achievements[11].tooltip()+'<br>'
         if(!hasAchievement('A',12)) a=a+layers.A.achievements[12].name()+': '+layers.A.achievements[12].tooltip()+'<br>'
@@ -145,7 +161,7 @@ addLayer("T", {
         pause: n(0),
         total:n(0),
         best:n(0),
-        resetTime:n(0),
+        resetTime:0,
     }},
     color: "#4adb13",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
@@ -585,7 +601,7 @@ addLayer("Q", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 2, // Prestige currency exponent
+    exponent() {return 2}, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
