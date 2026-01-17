@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1.1",
-	name: "Basic",
+	num: "0.2",
+	name: "Super Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -23,7 +23,14 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added 10 achievements.<br>
 	<h3>v0.1.1 Bug Fix 2026/1/16</h3><br>
 		- Fixed a bug about 'resetTime', which made it impossible to import save.<br>
-		- Added speed-up in the achievement tab, and now you can speed up to 16x, which will reduce the timewall.<br>`
+		- Added speed-up in the achievement tab, and now you can speed up to 16x, which will reduce the timewall.<br>
+	<h3>v0.2 Super Update 2026/1/17</h3><br>
+		- Added Super-Timewall layer, with 20 Upgrades, 4 Challenges, and of course, Automations.<br>
+		- Added QqQeInfinity layer, with 2 Milestones and Super-QqQe308.<br>
+		- Added more contants in QqQe308 layer.<br>
+		- The speed-up is nerfed, and you can only speed up to 8x now.<br>
+		- The point is capped at 1e150.<br>
+		- Some small text changes<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -37,7 +44,8 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return true
+	return player.points.lt(1e150)
+	//return true
 }
 
 // Calculate points/sec!
@@ -55,11 +63,14 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%'
+		return a
+	}
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('T',44)
+	return hasUpgrade('ST',54)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
