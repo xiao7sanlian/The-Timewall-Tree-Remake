@@ -336,7 +336,7 @@ addLayer("T", {
         setBuyableAmount('T',11,n(0))
         setBuyableAmount('T',12,n(0))
         setBuyableAmount('T',13,n(0))
-        if (layers[resettingLayer].row = 2) {
+        if (layers[resettingLayer].row > layers[this.layer].row) {
     let kept = []
     if(hasUpgrade('ST',21)) kept.push('milestones')
     if(hasUpgrade('ST',22)) kept.push('upgrades')
@@ -816,7 +816,7 @@ addLayer("Q", {
     },
     },
     doReset(resettingLayer) {
-        if (layers[resettingLayer].row = 2) {
+        if (layers[resettingLayer].row > layers[this.layer].row) {
     let kept = []
     if(hasUpgrade('ST',23)) kept.push('milestones')
     if(hasUpgrade('ST',23)) kept.push('upgrades')
