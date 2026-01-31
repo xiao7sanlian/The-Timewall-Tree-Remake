@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Super Update",
+	num: "0.3",
+	name: "Mega Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -27,10 +27,15 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.2 Super Update 2026/1/17</h3><br>
 		- Added Super-Timewall layer, with 20 Upgrades, 4 Challenges, and of course, Automations.<br>
 		- Added QqQeInfinity layer, with 2 Milestones and Super-QqQe308.<br>
-		- Added more contants in QqQe308 layer.<br>
+		- Added more contents in QqQe308 layer.<br>
 		- The speed-up is nerfed, and you can only speed up to 8x now.<br>
 		- The point is capped at 1e150.<br>
-		- Some small text changes<br>`
+		- Some small text changes<br>
+	<h3>v0.3 Mega Update 2026/1/24~2026/1/31</h3><br>
+		- Added Mega-Timewall layer, with 20 Upgrades, 4 Challenges, and 5 Milestones.<br>
+		- Added cokecole layer, with 3 Milestones.<br>
+		- Added more contents in QqQeInfinity layer.<br>
+		- Some other changes<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -44,8 +49,8 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return player.points.lt(1e150)
-	//return true
+	//return player.points.lt(1e150)
+	return true
 }
 
 // Calculate points/sec!
@@ -53,7 +58,8 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(buyableEffect('T',11)).pow(buyableEffect('T',13))
+	let gain = tmp.T.ptGain
+	if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
 	return gain
 }
 
@@ -63,14 +69,17 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%'
+	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%<br/>'
+		if(tmp.A.ProgressToInf.gte(100)) a=a+'You have reached the current Endgame!'
+		if(tmp.T.ptGain.gte(tmp.T.softcapstart)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!'
 		return a
 	}
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('ST',54)
+	//return hasUpgrade('ST',54)
+	return false
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
