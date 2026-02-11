@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "Mega Update",
+	num: "1.0",
+	name: "Infinity Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -35,7 +35,13 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Mega-Timewall layer, with 20 Upgrades, 4 Challenges, and 5 Milestones.<br>
 		- Added cokecole layer, with 3 Milestones.<br>
 		- Added more contents in QqQeInfinity layer.<br>
-		- Some other changes<br>`
+		- Some other changes<br>
+	<h3>v1.0 Infinity Update 2026/2/1~2026/2/11</h3><br>
+		- Added Infinity layer, with 17 Upgrades, 6 Challenges, and Automations.<br>
+		- Added 10 achievements.<br>
+		- Added more contents in QqQe308 layer.<br>
+		- Some other changes.<br>
+		- Endgame: Break Infinity<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -70,8 +76,9 @@ function addedPlayerData() { return {
 // Display extra things at the top of the page
 var displayThings = [
 	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%<br/>'
-		if(tmp.A.ProgressToInf.gte(100)) a=a+'You have reached the current Endgame!'
-		if(tmp.T.ptGain.gte(tmp.T.softcapstart)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!'
+		if(hasUpgrade('I',51)) a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%<br/>'
+		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!"
+		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!'
 		return a
 	}
 ]
@@ -79,7 +86,7 @@ var displayThings = [
 // Determines when the game "ends"
 function isEndgame() {
 	//return hasUpgrade('ST',54)
-	return false
+	return hasUpgrade('I',51)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
