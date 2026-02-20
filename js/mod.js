@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0",
-	name: "Infinity Update",
+	num: "1.0.1",
+	name: "Technical Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -41,7 +41,15 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added 10 achievements.<br>
 		- Added more contents in QqQe308 layer.<br>
 		- Some other changes.<br>
-		- Endgame: Break Infinity<br>`
+		- Endgame: Break Infinity<br>
+	<h3>v1.0.1 Technical Update 2026/2/20</h3><br>
+		- The number less than 0.0001 can be expressed in scientific notation.<br>
+		- Incompleted achievements are shown now.<br>
+		- Added 'Speed-up II', which allows you to speed up to 16x.<br>
+		- Added save notice popup.<br>
+		- I4-3 now use addPoints() function. (What am I saying?)<br>
+		- Fixed a bug in TMT: when a resource generation goes beyond 1.79e308, it will bring Infinity resources.<br>
+		- The Softcap exponent for point and Timewall is shown now.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -78,7 +86,7 @@ var displayThings = [
 	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%<br/>'
 		if(hasUpgrade('I',51)) a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%<br/>'
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!"
-		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!'
+		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
 		return a
 	}
 ]

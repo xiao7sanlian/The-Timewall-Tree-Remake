@@ -26,7 +26,7 @@ addLayer("A", {
         if(player.A.speed1==true) dev=dev.add(1)
         if(player.A.speed2==true) dev=dev.add(2)
         if(player.A.speed3==true) dev=dev.add(4)
-        //if(player.A.speed4==true) dev=dev.add(8)
+        if(player.A.speed4==true) dev=dev.add(8)
         if(player.T.pause.gte(1))dev=n(0)
 	    return dev
 	   },
@@ -38,7 +38,7 @@ addLayer("A", {
         "Achievements":{
         content: [ "main-display",
         "achievements",
-    ["display-text", () => tmp.A.tips],
+    //["display-text", () => tmp.A.tips],
     ],},
     "Speed-up":{
         content: [ "main-display",
@@ -379,9 +379,15 @@ addLayer("A", {
     milestones:{
         0: {
             requirementDescription: "Speed-up",
-            effectDescription() {return "The Game is too Slow? Use this to speed it up! Anyhow, I promise this game is balanced at normal speed. The buttons reffer to +1x,+2x,+4x,+8x(removed) speed, you can speed the game up to 8x."},
+            effectDescription() {return "The Game is too Slow? Use this to speed it up! Anyhow, I promise this game is balanced at normal speed. The buttons reffer to +1x,+2x,+4x speed, you can speed the game up to 8x."},
             done() { return true },
             toggles:[["A", "speed1"],["A", "speed2"],["A", "speed3"],]//["A", "speed4"],]
+        },
+        1: {
+            requirementDescription: "Speed-up II",
+            effectDescription() {return "The Game is too Slow? Use this to speed it up! You can get this milestone by Big Crunch. This button reffer to +8x speed, you can speed the game up to 16x now."},
+            done() { return hasAchievement('A',71) },
+            toggles:[["A", "speed4"]]
         },
     },
     tips(){a='Some coming achievements:<br>'
@@ -449,9 +455,7 @@ addLayer("T", {
         if(hasUpgrade('MT',11)) d=d.times(upgradeEffect('MT',11))
         if(hasUpgrade('I',31)) d=d.times(upgradeEffect('I',31))
         if(inChallenge('MT',12)) d=d.pow(0.5)
-        exp=n(0.5)
-        if(hasUpgrade('ST',32)) exp=exp.add(0.05)
-        if(d.gt(10))d=d.div(10).pow(exp).times(10)
+        if(d.gt(10))d=d.div(10).pow(tmp.T.timewallscexp).times(10)
         if(inChallenge('ST',14)) d=n(0)
         if(inChallenge('MT',14)) d=n(0)
             return d
@@ -544,6 +548,7 @@ addLayer("T", {
         mult = new Decimal(0)
         if(hasUpgrade('ST',24)) mult=mult.add(0.5)
         if(hasUpgrade('I',14)) mult=mult.add(0.5)
+        //mult=n('1e1000')
         return mult
     },
     autoUpgrade() { return hasMilestone('I',0)&&player.I.TUauto},
@@ -949,7 +954,7 @@ addLayer("T", {
         return a
     },
     resourcetip(){a="You get Timewalls based on your buyable amount. The base Tw gain formula is: 1.1^(PP-50)x1.5^(PPM-5)x2^(PEF^1.5-1)"
-        if(tmp.T.getResetGain.gte(10)) a=a+'<br>The Timewall gain will be softcapped after 10.'
+        if(tmp.T.getResetGain.gte(10)) a=a+'<br>The Timewall gain will be softcapped after 10.(^'+format(tmp.T.timewallscexp)+')'
         if(getBuyableAmount('T',11).gte(400)) a=a+'<br>The Point Producer in the formula will be softcapped after 400.'
         if(getBuyableAmount('T',12).gte(175)) a=a+'<br>The Point Producer Multiplier in the formula will be softcapped after 175.'
         return a
@@ -994,6 +999,10 @@ addLayer("T", {
     softcapexp(){a=n(0.5)
         if(hasUpgrade('I',51)) a=n(0.75)
         if(inChallenge('MT',11)) a=n(0.25)
+        return a
+    },
+    timewallscexp(){a=n(0.5)
+        if(hasUpgrade('ST',32)) a=a.add(0.05)
         return a
     },
     ptGain(){return new Decimal(buyableEffect('T',11)).pow(buyableEffect('T',13))},
@@ -2447,9 +2456,7 @@ addLayer("I", {
     },
     canReset() {return player.points.gte(n(2).pow(1024))},//&&(player.I.points.lt(n(2).pow(1024)))
     update(diff){
-        if(hasUpgrade('I',43)) {player.I.points = player.I.points.add(n(upgradeEffect('I',43)).times(0.1).div(player.I.bestTime).times(diff))
-            player.I.total = player.I.total.add(n(upgradeEffect('I',43)).times(0.1).div(player.I.bestTime).times(diff))
-        }
+        if(hasUpgrade('I',43)) addPoints('I', n(upgradeEffect('I',43)).times(0.1).div(player.I.bestTime).times(diff))
         if(player.I.inf.gte(1)) player.I.challenges[11] = 1
         if((inChallenge('MT',11)||inChallenge('MT',12)||inChallenge('MT',13)||inChallenge('MT',14))&&player.points.gte(n(2).pow(1024))) player.I.challenges[16] = 1
     },
