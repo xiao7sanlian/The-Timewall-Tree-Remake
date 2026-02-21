@@ -7,7 +7,7 @@ function save(force) {
 	localStorage.setItem(getModID(), btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
 	localStorage.setItem(getModID()+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
 
-	doPopup("milestone", 'Game saved!', "Game saved!", 1, '#4abd13')
+	if(!options.hideSaveNotifications) doPopup("milestone", 'Game saved!', "Game saved!", 1, '#4abd13')
 }
 function startPlayerBase() {
 	return {

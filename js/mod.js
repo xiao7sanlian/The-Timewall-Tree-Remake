@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0.1",
+	num: "1.0.2",
 	name: "Technical Update",
 }
 
@@ -49,7 +49,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added save notice popup.<br>
 		- I4-3 now use addPoints() function. (What am I saying?)<br>
 		- Fixed a bug in TMT: when a resource generation goes beyond 1.79e308, it will bring Infinity resources.<br>
-		- The Softcap exponent for point and Timewall is shown now.<br>`
+		- The Softcap exponent for point and Timewall is shown now.<br>
+	<h3>v1.0.2 Another Technical Update 2026/2/21</h3><br>
+		- Added a setting which can hide save notifications.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
