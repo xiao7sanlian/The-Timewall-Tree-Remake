@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0.2",
-	name: "Technical Update",
+	num: "1.1",
+	name: "Break-Infinity Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -51,7 +51,14 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Fixed a bug in TMT: when a resource generation goes beyond 1.79e308, it will bring Infinity resources.<br>
 		- The Softcap exponent for point and Timewall is shown now.<br>
 	<h3>v1.0.2 Another Technical Update 2026/2/21</h3><br>
-		- Added a setting which can hide save notifications.<br>`
+		- Added a setting which can hide save notifications.<br>
+	<h3>v1.1 Break-Infinity Update 2026/2/21~2026/2/24</h3><br>
+		- Added 29 Upgrades, 8 Buyables, Infinity Generator, and 8 Infinity Challenges in I layer.<br>
+		- Added qaqe308 layer, with 2 Milestones, 4 Buyables, and 8 Upgrades.<br>
+		- Added more contents in QqQeInfinity layer.<br>
+		- Some other changes.<br>
+		- Endgame: Reach 1e120 Infinity Points<br>
+		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -76,6 +83,7 @@ function getPointGen() {
 
 	let gain = tmp.T.ptGain
 	if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
+	gain = gain.times(tmp.A.IC8eff)
 	return gain
 }
 
@@ -96,7 +104,7 @@ var displayThings = [
 // Determines when the game "ends"
 function isEndgame() {
 	//return hasUpgrade('ST',54)
-	return hasUpgrade('I',51)
+	return hasUpgrade('I',131)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
