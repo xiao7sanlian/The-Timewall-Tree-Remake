@@ -861,6 +861,7 @@ addLayer("T", {
                 if(buyableEffect('T',13).neq(1)&&!inChallenge('I',23)) a=a+'^'+format(buyableEffect('T',13))+'='+format(tmp.T.ptGain)
                 a=a+" points/s<br/>"
             if(tmp.T.ptGain.gte(tmp.T.softcapstart)) a=a+'After softcap: '+format(tmp.A.realPTgen)+' points/s<br/>'
+            if(tmp.T.ptmult.neq(1)) a=a+'Your other effects multiply your point gain by '+format(tmp.T.ptmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' points'
             return a },
             unlocked() {return hasUpgrade('T', 11)},
@@ -1156,6 +1157,10 @@ addLayer("T", {
     },
     ptGain(){a= new Decimal(buyableEffect('T',11)).pow(buyableEffect('T',13))
         if(inChallenge('I',23)) a=buyableEffect('T',11)
+        return a
+    },
+    ptmult(){a=n(1)
+        a=a.times(tmp.A.IC8eff)
         return a
     },
 })
@@ -1873,8 +1878,8 @@ addLayer("Qi", {
     resetsNothing() {return hasMilestone('co',0)},
     canBuyMax(){return hasMilestone('Q',5)},
     update(diff){
-        if(getClickableState(this.layer, 11)==1&&!inChallenge('MT',13)) player.Qi.QqQe308 = player.Qi.QqQe308.add(tmp.Qi.QqQe308speed.times(diff).times(tmp.A.IC8eff))
-        if(getClickableState(this.layer, 12)==1&&!inChallenge('I',26)) player.Qi.cokecole = player.Qi.cokecole.add(tmp.Qi.cokecolespeed.times(diff).times(tmp.A.IC8eff))
+        if(getClickableState(this.layer, 11)==1&&!inChallenge('MT',13)) player.Qi.QqQe308 = player.Qi.QqQe308.add(tmp.Qi.QqQe308speed.times(diff))
+        if(getClickableState(this.layer, 12)==1&&!inChallenge('I',26)) player.Qi.cokecole = player.Qi.cokecole.add(tmp.Qi.cokecolespeed.times(diff))
         if(getClickableState(this.layer, 13)==1) player.Qi.qaqe308 = player.Qi.qaqe308.add(tmp.Qi.qaqe308speed.times(diff))
     },
     passiveGeneration()
@@ -2024,6 +2029,7 @@ addLayer("Qi", {
         if(hasUpgrade('MT',41)) a=a.times(upgradeEffect('MT',41))
         if(hasUpgrade('I',32)) a=a.times(upgradeEffect('I',32))
         if(hasChallenge('I',26)) a=a.times(challengeEffect('I',26))
+        a=a.times(tmp.A.IC8eff)
         a=a.times(buyableEffect('qa',12))
         return a
     },
@@ -2045,6 +2051,7 @@ addLayer("Qi", {
         if(hasUpgrade('I',111)) a=a.times(upgradeEffect('I',111))
         if(hasUpgrade('I',112)) a=a.times(upgradeEffect('I',112))
         if(hasChallenge('I',26)) a=a.times(challengeEffect('I',26))
+        a=a.times(tmp.A.IC8eff)
         a=a.times(buyableEffect('qa',12))
         return a
     },
@@ -2706,7 +2713,7 @@ addLayer("I", {
         if(hasUpgrade('I',91)) player.I.inf = player.I.inf.add(upgradeEffect('I',91).times(diff))
         if(player.I.inf.gte(1)) player.I.challenges[11] = 1
         if((inChallenge('MT',11)||inChallenge('MT',12)||inChallenge('MT',13)||inChallenge('MT',14))&&player.points.gte(n(2).pow(1024))) player.I.challenges[16] = 1
-        player.I.ipower = player.I.ipower.add(tmp.I.actualIPowgen.times(diff).times(tmp.A.IC8eff))
+        player.I.ipower = player.I.ipower.add(tmp.I.reaalIPowgen.times(diff))
     },
     row: 4, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -2988,7 +2995,7 @@ addLayer("I", {
             title: "BI2-2",
             description: "Multiply Point Producer Multiplier exponent based on your fastest Infinity.",
             effect() {
-                return n(1.5).sub(player.I.bestTime.max(0.5)).times(2).pow(0.5).max(0)
+                return n(1.5).sub(player.I.bestTime.max(0.5)).times(2).max(1).pow(0.5)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
             cost: new Decimal(100000),
@@ -3564,6 +3571,7 @@ addLayer("I", {
             display() {a= "Produce "+format(tmp.I.IGmult)+" Infinity Powers Per Second<br/>Effect:produces "+format(this.effect())
                 if(buyableEffect('I',33).neq(1)) a=a+'^'+format(buyableEffect('I',33))+'='+format(tmp.I.actualIPowgen)
                 a=a+" Infinity Powers/s<br/>"
+            if(tmp.I.ipowmult.neq(1)) a=a+'Your other effects multiply your Infinity Power gain by '+format(tmp.I.ipowmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' Infinity Points'
             return a },
             unlocked() {return hasMilestone('qa', 0)},
@@ -3738,6 +3746,10 @@ addLayer("I", {
         if(hasUpgrade('I',82)) a=a+";<br>Super Timewall gain by "+format(player.I.ipower)+'^'+format(tmp.I.IGexptost)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtost)+'x</h3>'
         if(hasUpgrade('I',83)) a=a+";<br>Mega Timewall gain by "+format(player.I.ipower)+'^'+format(tmp.I.IGexptomt)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtomt)+'x</h3>'
         a=a+'.'
+        a=a+'<br>('+format(tmp.I.reaalIPowgen)+'/sec)'
+        return a
+    },
+    reaalIPowgen(){a=tmp.I.actualIPowgen.times(tmp.A.IC8eff)//final!
         return a
     },
     IGexptopt(){a=n(7)
@@ -3789,6 +3801,10 @@ addLayer("I", {
     },
     infgain(){a=n(1)
         a=a.times(buyableEffect('qa',13))
+        return a
+    },
+    ipowmult(){a=n(1)
+        a=a.times(tmp.A.IC8eff)
         return a
     },
 })

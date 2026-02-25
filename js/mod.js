@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.1",
+	num: "1.1.1",
 	name: "Break-Infinity Update",
 }
 
@@ -58,7 +58,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added more contents in QqQeInfinity layer.<br>
 		- Some other changes.<br>
 		- Endgame: Reach 1e120 Infinity Points<br>
-		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time.`
+		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time<br>.
+	<h3>v1.1.1 BI2-2 Fix 2026/2/25</h3><br>
+		- Fixed a bug: the effect of upgrade BI2-2 is NaNx when your Best Infinity time is very long.<br>
+		- Improved IC8 performance.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -83,7 +86,7 @@ function getPointGen() {
 
 	let gain = tmp.T.ptGain
 	if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
-	gain = gain.times(tmp.A.IC8eff)
+	gain = gain.times(tmp.T.ptmult)
 	return gain
 }
 
