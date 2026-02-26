@@ -894,7 +894,7 @@ addLayer("T", {
                 if(hasUpgrade('I',12))a= new Decimal(4.5).pow(x).times(500)
                 return a
              },
-            effect(x) {a= x.add(tmp.T.freePPM).times(tmp.T.PPMbase)
+            effect(x) {a= x.add(tmp.T.freePPM).times(tmp.T.PPMbase).max(0)
                 if(inChallenge('T',12)) a=n(0)
                 if(inChallenge('MT',14)) a=n(0)
                 return a
@@ -2714,6 +2714,7 @@ addLayer("I", {
         if(player.I.inf.gte(1)) player.I.challenges[11] = 1
         if((inChallenge('MT',11)||inChallenge('MT',12)||inChallenge('MT',13)||inChallenge('MT',14))&&player.points.gte(n(2).pow(1024))) player.I.challenges[16] = 1
         player.I.ipower = player.I.ipower.add(tmp.I.reaalIPowgen.times(diff))
+        //if(inChallenge('I',31))player.I.ipower = player.I.ipower.min(tmp.I.reaalIPowgen.max(1))
     },
     row: 4, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -2783,7 +2784,7 @@ addLayer("I", {
     "Timewall Power": {
         content: [ "main-display","prestige-button","resource-display",
             //["display-text", () => tmp.I.ICtip],
-            ["upgrades",[13]]
+            ["upgrades",[13]],["challenges",[3]]
     ],
     unlocked(){return hasChallenge('I',28)},
     },
@@ -3370,6 +3371,19 @@ addLayer("I", {
             canComplete: function() {return player.points.gte('1e15000')},
             unlocked() {return getBuyableAmount('I',41).gte(8)}
         },
+        31: {
+            name: "All in One",
+            challengeDescription: "Infinity Challenge 1~8 are actived at once.",
+            goalDescription:"None",
+            rewardDescription:"None",
+            countsAs:[21,22,23,24,25,26,27,28],
+            rewardEffect(){a=n(1)
+                return a
+            },
+            rewardDisplay(){return format(challengeEffect(this.layer, this.id))+'x'},
+            canComplete: function() {return false},
+            unlocked() {return hasUpgrade('I',131)}
+        },
     },
     milestones:{
         0: {
@@ -3706,7 +3720,7 @@ addLayer("I", {
     },
     NC2eff(){a=n(0.01).times(n(1.01).pow(player.T.resetTime)).min(1e100)
         if(hasUpgrade('I',64)) a=n(1e100)
-        if(inChallenge('I',21)) a=a.pow(-1)
+        if(inChallenge('I',21)) a=n(1e-100)
         return a
     },
     IPDbase(){a=n(2)
@@ -3749,9 +3763,6 @@ addLayer("I", {
         a=a+'<br>('+format(tmp.I.reaalIPowgen)+'/sec)'
         return a
     },
-    reaalIPowgen(){a=tmp.I.actualIPowgen.times(tmp.A.IC8eff)//final!
-        return a
-    },
     IGexptopt(){a=n(7)
         return a
     },
@@ -3777,6 +3788,9 @@ addLayer("I", {
         return a
     },
     actualIPowgen(){a=buyableEffect('I',31).pow(buyableEffect('I',33))
+        return a
+    },
+    reaalIPowgen(){a=tmp.I.actualIPowgen.times(tmp.A.IC8eff)//final!
         return a
     },
     freeIG(){a=n(0)

@@ -61,7 +61,10 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time<br>.
 	<h3>v1.1.1 BI2-2 Fix 2026/2/25</h3><br>
 		- Fixed a bug: the effect of upgrade BI2-2 is NaNx when your Best Infinity time is very long.<br>
-		- Improved IC8 performance.<br>`
+		- Improved IC8 performance.<br>
+	<h3>v1.1.2 NC5 & IC1 Fix 2026/2/26</h3><br>
+		- Fixed a bug: when in NC5 or IC1 and have BI4-3, Infinity Power will be NaN on reset.<br>
+		- Added ??? in Infinity layer.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
