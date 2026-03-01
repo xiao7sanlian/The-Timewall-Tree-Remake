@@ -45,7 +45,7 @@ addLayer("A", {
         "milestones",
     ],},
     },
-    effectDescription(){return ' and there are 55 in total.'},
+    effectDescription(){return ' and there are 65 in total.'},
     achievements: {
         11: {
      name() {return "First Point"},
@@ -487,6 +487,86 @@ addLayer("A", {
      tooltip() {return "Complete Infinity Challenge 8."}, 
      textStyle: {'color': '#ffe125'},
         },
+        121: {
+     name(){return "New Beginning II"},
+     done() {return player.I.tpower.gt(0)}, 
+     unlocked(){return player.A.points.gte(55)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Start producing Timewall Power."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        122: {
+     name(){return "Is Replicanti Exist?"},
+     done() {return player.I.points.gte(1e140)}, 
+     unlocked(){return player.A.points.gte(55)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 1e140 Infinity Points."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        123: {
+     name(){return "QqQe308000?!"},
+     done() {return player.Q.points.gte(1000)}, 
+     unlocked(){return player.A.points.gte(55)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 1000 QqQe308."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        124: {
+     name(){return "Halfway to Eternity"},
+     done() {return tmp.A.ProgressToEtr.gte(50)}, 
+     unlocked(){return player.A.points.gte(55)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 50% progress to Eternity."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        125: {
+     name(){return "Compress To 1e30"},
+     done() {return tmp.I.CTgain.gte(1e30)}, 
+     unlocked(){return player.A.points.gte(55)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 1e30 Compressed Timewalls."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        131: {
+     name(){return "New Beginning III"},
+     done() {return player.I.QUBF.gt(0)}, 
+     unlocked(){return player.A.points.gte(60)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Start producing Q-Upgrade Booster Fragment."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        132: {
+     name(){return "When can we reach it?"},
+     done() {return player.I.QUBF.gt(9)}, 
+     unlocked(){return player.A.points.gte(60)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 9 Q-Upgrade Booster Fragment."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        133: {
+     name(){return "2 Million Infinities"},
+     done() {return player.I.inf.gt(2000000)}, 
+     unlocked(){return player.A.points.gte(60)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 2,000,000 Infinities."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        134: {
+     name(){return "Fully Boosted"},
+     done() {return getBuyableAmount('I',61).gte(8)}, 
+     unlocked(){return player.A.points.gte(60)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Buy 8 Q-Upgrade Boosters."}, 
+     textStyle: {'color': '#ffe125'},
+        },
+        135: {
+     name(){return "v2.0 is 5 hours later"},
+     done() {return tmp.A.ProgressToEtr.gte(100)}, 
+     unlocked(){return player.A.points.gte(60)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Reach 1.80e308 Infinity Points."}, 
+     textStyle: {'color': '#ffe125'},
+        },
     },
     milestones:{
         0: {
@@ -518,6 +598,7 @@ addLayer("A", {
         return a
     },
     ProgressToEtr(){a=player.I.points.max(1).log(10).div(n(2).pow(1024).log(10)).times(100).min(100)
+        //if(a.gte(50)) a=a.div(50).pow(0.5).times(50)
         return a
     },
     IC8eff(){a=n(1)
@@ -573,10 +654,14 @@ addLayer("T", {
         if(c.lt(1))c=n(0)
             d=a.times(b).times(c)
         d=d.times(buyableEffect('T',14))
-        if(hasUpgrade('Q',23)&&!inChallenge('MT',13)) d=d.times(upgradeEffect('Q',23))
+        if(hasUpgrade('Q',23)&&!inChallenge('MT',13)) {d=d.times(upgradeEffect('Q',23))
+            if(getClickableState('Q',23)==1) d=d.times(clickableEffect('Q',23))
+        }
         if(hasUpgrade('MT',11)) d=d.times(upgradeEffect('MT',11))
         if(hasUpgrade('I',31)) d=d.times(upgradeEffect('I',31))
+        if(hasUpgrade('I',141)) d=d.times(upgradeEffect('I',141))
         if(hasUpgrade('I',81)) d=d.times(tmp.I.IGtotw)
+        if(hasUpgrade('Q',14)&&getClickableState('Q',14)==1) d=d.pow(1.1)
         if(inChallenge('MT',12)) d=d.pow(0.5)
         if(d.gt(10))d=d.div(10).pow(tmp.T.timewallscexp).times(10)
         if(inChallenge('ST',14)) d=n(0)
@@ -690,7 +775,9 @@ addLayer("T", {
             unlocked(){return player.T.total.gte(1)},
             effect(){a=player.T.total.add(1).pow(0.5).times(player.T.total.add(1).log(10).add(1))
                 b=n(0.5)
-                if(hasUpgrade('Q',11)&&!inChallenge('MT',13)) b=b.add(0.25)
+                if(hasUpgrade('Q',11)&&!inChallenge('MT',13)) {b=b.add(0.25)
+                    if(getClickableState('Q',11)==1) b=b.add(0.125)
+                }
                 if(a.gte(10))a=a.div(10).pow(b).times(10)
                 //if(a.gte('1e10000')) a=n('1e10000')
                     return a
@@ -939,6 +1026,7 @@ addLayer("T", {
                 if(inChallenge('ST',11)) a=a.times(0.5)
                 if(a.gte(1.5)) a=a.sub(1.5).div(10).add(1.5)
                 if(a.gte(2)) a=a.add(2).log(2)
+                if(a.gte(3)) a=a.div(3).pow(0.5).times(3)
                 a=a.times(tmp.T.PEFmult)
                     return a
             },
@@ -1030,11 +1118,17 @@ addLayer("T", {
         a=a.times(buyableEffect('T',12).pow(tmp.T.PPMexp).add(1))
         if(hasUpgrade('T',21)) a=a.times(upgradeEffect('T',21))
         if(hasUpgrade('T',22)) a=a.times(upgradeEffect('T',22))
-        if(hasUpgrade('Q',12)&&!inChallenge('MT',13)) a=a.times(upgradeEffect('Q',12))
-        if(hasUpgrade('Q',13)&&!inChallenge('MT',13)) a=a.times(upgradeEffect('Q',13))
+        if(hasUpgrade('Q',12)&&!inChallenge('MT',13)) {a=a.times(upgradeEffect('Q',12))
+            if(getClickableState('Q',12)==1) a=a.times(clickableEffect('Q',12))
+        }
+        if(hasUpgrade('Q',13)&&!inChallenge('MT',13)) {a=a.times(upgradeEffect('Q',13))
+            if(getClickableState('Q',13)==1) a=a.times(clickableEffect('Q',13))
+        }
         if(hasUpgrade('ST',12)) a=a.times(upgradeEffect('ST',12))
         if(hasUpgrade('ST',14)) a=a.times(upgradeEffect('ST',14))
-        if(hasUpgrade('Q',21)&&!inChallenge('MT',13)) a=a.times(upgradeEffect('Q',21))
+        if(hasUpgrade('Q',21)&&!inChallenge('MT',13)) {a=a.times(upgradeEffect('Q',21))
+            if(getClickableState('Q',21)==1) a=a.times(clickableEffect('Q',21))
+        }
         if(hasUpgrade('ST',31)) a=a.times(upgradeEffect('ST',31))
         if(hasUpgrade('Q',24)&&!inChallenge('MT',13)) a=a.times(upgradeEffect('Q',24))
         if(hasChallenge('ST',11)) a=a.times(challengeEffect('ST',11))
@@ -1051,6 +1145,7 @@ addLayer("T", {
         if(inChallenge('I',12)||hasUpgrade('I',64)) a=a.times(tmp.I.NC2eff)
         a=a.times(buyableEffect('qa',11))
         if(hasUpgrade('I',94)) a=a.times(upgradeEffect('I',94))
+        if(hasUpgrade('I',141)) a=a.times(upgradeEffect('I',141))
         a=a.times(tmp.I.IGtopt)
         return a
     },
@@ -1064,6 +1159,7 @@ addLayer("T", {
         if(hasChallenge('I',13)) a=a.times(10)
         if(hasUpgrade('I',71)) a=a.times(upgradeEffect('I',71))
         if(hasUpgrade('I',73)) a=a.times(upgradeEffect('I',73))
+        if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         return a
     },
     PPMexp(){a=n(1)
@@ -1108,6 +1204,7 @@ addLayer("T", {
         if(hasMilestone('MT',0)) a=a.times(tmp.MT.mil0effect)
         if(hasUpgrade('MT',42)) a=a.times(upgradeEffect('MT',42))
         if(hasUpgrade('I',102)) a=a.times(upgradeEffect('I',102))
+        if(hasUpgrade('I',162)) a=a.pow(1.1)
         if(inChallenge('MT',14)) a=n(0)
         if(inChallenge('I',15)) a=getBuyableAmount('T',11).div(-3)
         return a
@@ -1118,6 +1215,7 @@ addLayer("T", {
         if(hasChallenge('ST',13)) a=a.times(challengeEffect('ST',13))
         if(hasUpgrade('MT',42)) a=a.times(upgradeEffect('MT',42))
         if(hasUpgrade('I',102)) a=a.times(upgradeEffect('I',102))
+        if(hasUpgrade('I',162)) a=a.pow(1.1)
         if(inChallenge('MT',14)) a=n(0)
         if(inChallenge('I',15)) a=getBuyableAmount('T',12).div(-3)
         return a
@@ -1188,6 +1286,7 @@ addLayer("Q", {
         if(hasUpgrade('MT',54)) a=a.div(upgradeEffect('MT',54))
         if(hasChallenge('I',15)) a=a.div(challengeEffect('I',15))
         a=a.add(1)
+        a=a.max(n(1).add(1e-15))
     return a
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -1202,6 +1301,7 @@ addLayer("Q", {
         return exp
     },
     directMult() {mult = n(1)
+        mult=mult.times(buyableEffect('I',51))
         if(inChallenge('MT',12)) mult=mult.times(0.5)
         return mult
     },
@@ -1231,7 +1331,8 @@ addLayer("Q", {
     unlocked(){return true},
     },
     "Upgrades": {
-    content: [ "main-display","prestige-button","resource-display","upgrades",
+    content: [ "main-display","prestige-button","resource-display","upgrades",["display-text", () => tmp.Q.QUtip],
+        "clickables"
     ],
     unlocked(){return hasMilestone('Q',0)},
     },
@@ -1239,18 +1340,21 @@ addLayer("Q", {
     doReset(resettingLayer) {
         if (layers[resettingLayer].row == 2) {
     let kept = []
+    kept.push('clickables')
     if(hasUpgrade('ST',23)||hasUpgrade('I',14)) kept.push('milestones')
     if(hasUpgrade('ST',23)) kept.push('upgrades')
     layerDataReset(this.layer, kept)
        }
        if (layers[resettingLayer].row == 3) {
     let kept = []
+    kept.push('clickables')
     if(hasUpgrade('MT',13)) kept.push('milestones','upgrades')
     if(hasUpgrade('I',14)) kept.push('milestones')
     layerDataReset(this.layer, kept)
        }
        if (layers[resettingLayer].row == 4) {
     let kept = []
+    if(getClickableState('Q',31)==0) kept.push('clickables')
     if(hasUpgrade('I',14)) kept.push('milestones')
     layerDataReset(this.layer, kept)
        }
@@ -1409,6 +1513,142 @@ addLayer("Q", {
             return a},
         },
     },
+    clickables: {
+        11: {
+            title: 'Q1-1 Boost',
+            display() {a="Strongly nerf the softcap of T2-1.<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        12: {
+            title: 'Q1-2 Boost',
+            display() {a="Strongly multiply Point Producer base effect based on time played."
+                a=a+'<br>Currently: '+format(this.effect())+'x'
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            effect(){a=n(player.timePlayed).pow(50)
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        13: {
+            title: 'Q1-3 Boost',
+            display() {a="Strongly multiply Point Producer base effect based on best QqQe308."
+                a=a+'<br>Currently: '+format(this.effect())+'x'
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            effect(){a=n(1.5).pow(player.Q.best)
+                if(getClickableState('Q',23)==1) a=a.pow(1.1)
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        14: {
+            title: 'Q1-4 Boost',
+            display() {a="Unlock a new row of timewall upgrades, and raise Timewall gain to ^1.1.<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        21: {
+            title: 'Q2-1 Boost',
+            display() {a="Strongly multiply Point Producer base effect based on time played since last Super Timewall reset."
+                a=a+'<br>Currently: '+format(this.effect())+'x'
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            effect(){a=n(10).pow(n(player.ST.resetTime).pow(1.5)).min('1e343')
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        22: {
+            title: 'Q2-2 Boost',
+            display() {a="S1-2 effect is powered to ^25."
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        23: {
+            title: 'Q2-3 Boost',
+            display() {a="Strongly multiply Timewall gain based on best QqQe308, and Q1-3 Boost's effect is raised to ^1.1."
+                a=a+'<br>Currently: '+format(this.effect())+'x'
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            effect(){a=n(1.5).pow(player.Q.best.times(0.5))
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        24: {
+            title: 'Q2-4 Boost',
+            display() {a="Multiply PPM base effect and first 3 kinds of Super-man generation speed based on QqQeInfinity."
+                a=a+'<br>Currently: '+format(this.effect())+'x'
+                a=a+"<br><br>Requirement: "+format(tmp.Q.boostedQU.add(1),0)+' Q-Upgrade Booster(s)'
+                return a
+            },
+            effect(){a=player.Qi.points.add(1).pow(5)
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return getBuyableAmount('I',61).gte(tmp.Q.boostedQU.add(1))&&getClickableState(this.layer,this.id)==0},
+            style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1)},
+        },
+        31: {
+            title: 'Reset All Q-Upgrade Boost on Infinity',
+            display() {a="Currently: "
+                if(getClickableState(this.layer,this.id)==1) a=a+'Yes'
+                if(getClickableState(this.layer,this.id)==0) a=a+'No'
+                return a
+            },
+            effect(){a=player.Qi.points.pow(10)
+                return a
+            },
+            unlocked(){return hasUpgrade('I',171)},
+            canClick(){return true},
+            //style() { return { 'background-color': getClickableState(this.layer,this.id)==1?"#c3beff":layers.Q.clickables[this.id].canClick()?"#eee308":"#BF8F8F"}},
+            onClick(){setClickableState(this.layer,this.id,1-getClickableState(this.layer,this.id))},
+        },
+    },
+    boostedQU(){a=n(0)
+        for (let i = 1; i < 3; i++) {
+            for (let j = 0; j < 5; j++) {
+                if(getClickableState('Q',i*10+j)==1) a=a.add(1)
+            }
+        }
+        return a
+    },
+    QUtip(){a='You have '+format(getBuyableAmount('I',61),0)+' Q-Upgrade Booster(s).'
+        if(!hasUpgrade('I',171)) a=''
+        return a
+    },
 })
 
 addLayer("ST", {
@@ -1452,6 +1692,7 @@ addLayer("ST", {
             if(hasUpgrade('MT',12)) d=d.times(upgradeEffect('MT',12))
             if(hasUpgrade('MT',52)) d=d.times(upgradeEffect('MT',52))
             if(hasUpgrade('I',31)) d=d.times(upgradeEffect('I',31))
+            if(hasUpgrade('I',163)) d=d.times(upgradeEffect('I',141))
             if(hasUpgrade('I',82)) d=d.times(tmp.I.IGtost)
             if(inChallenge('MT',12)) d=d.pow(0.5)
             return d
@@ -1527,7 +1768,9 @@ addLayer("ST", {
             description: "Multiply Point Producer base effect based on total Super Timewall.",
             unlocked(){return true},
             effect(){a=player.ST.total.add(1).log(2).add(1).pow(2)
-                if(hasUpgrade('Q',22)&&!inChallenge('MT',13)) a=a.pow(2)
+                if(hasUpgrade('Q',22)&&!inChallenge('MT',13)) {a=a.pow(2)
+                    if(getClickableState('Q',22)==1) a=a.pow(25)
+                }
                 return a
             },
             effectDisplay(){return format(this.effect())+'x'},
@@ -1847,6 +2090,7 @@ addLayer("Qi", {
         return exp
     },
     directMult() {mult = n(1)
+        mult=mult.times(buyableEffect('I',52))
         return mult
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
@@ -2029,6 +2273,8 @@ addLayer("Qi", {
         if(hasUpgrade('MT',41)) a=a.times(upgradeEffect('MT',41))
         if(hasUpgrade('I',32)) a=a.times(upgradeEffect('I',32))
         if(hasChallenge('I',26)) a=a.times(challengeEffect('I',26))
+        if(hasUpgrade('I',142)) a=a.times(upgradeEffect('I',142))
+        if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         a=a.times(tmp.A.IC8eff)
         a=a.times(buyableEffect('qa',12))
         return a
@@ -2051,6 +2297,8 @@ addLayer("Qi", {
         if(hasUpgrade('I',111)) a=a.times(upgradeEffect('I',111))
         if(hasUpgrade('I',112)) a=a.times(upgradeEffect('I',112))
         if(hasChallenge('I',26)) a=a.times(challengeEffect('I',26))
+        if(hasUpgrade('I',142)) a=a.times(upgradeEffect('I',142))
+        if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         a=a.times(tmp.A.IC8eff)
         a=a.times(buyableEffect('qa',12))
         return a
@@ -2061,6 +2309,7 @@ addLayer("Qi", {
     },
     effqaqe308(){a=player.Qi.qaqe308.floor()
         if(a.gte(10000)) a=a.div(10000).pow(0.5).times(10000)
+        if(a.gte(1e20)) a=n(10).pow(a.log(10).div(20).pow(0.5).times(20))
         return a
     },
     qaqe308speed(){a=n(1).div(1e8)
@@ -2069,6 +2318,8 @@ addLayer("Qi", {
         if(hasUpgrade('I',113)) a=a.times(upgradeEffect('I',113))
         if(hasUpgrade('I',114)) a=a.times(upgradeEffect('I',114))
         if(hasChallenge('I',26)) a=a.times(challengeEffect('I',26))
+        if(hasUpgrade('I',143)) a=a.times(upgradeEffect('I',143))
+        if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         return a
     },
     qaqe308eff(){a=tmp.Qi.effqaqe308.add(1).pow(10)
@@ -2105,16 +2356,20 @@ addLayer("MT", {
         return exp
     },
     prestigeButtonText(){a='Reset for '+format(tmp.MT.getResetGain)+' Mega Timewalls'
-    if(tmp.MT.getResetGain.lt(1)) a=a+'<br>You need 1e10 Super Timewalls and 1e4 effective Super-QqQe308 to reset'
+    if(tmp.MT.getResetGain.lt(1)) {a=a+'<br>You need 1e10 Super Timewalls '
+        a=a+'and 1e4 effective Super-QqQe308 '
+        a=a+'to reset'}
     return a
     },
     getResetGain(){x=player.ST.points.pow(0.1).div(10)
             y=tmp.Qi.effQqQe308.pow(0.25).div(10)
             if(x.lt(1)) x=n(0)
             if(y.lt(1)) y=n(0)
+            //if(y.lt(1)&&hasUpgrade('I',154)) y=n(1)
             d=x.times(y)
             if(hasChallenge('MT',12)) d=d.times(challengeEffect('MT',12))
             if(hasUpgrade('I',41)) d=d.times(upgradeEffect('I',41))
+            if(hasUpgrade('I',163)) d=d.times(upgradeEffect('I',141))
             if(hasUpgrade('I',83)) d=d.times(tmp.I.IGtomt)
             return d
     },
@@ -2600,6 +2855,7 @@ addLayer("co", {
         return exp
     },
     directMult() {mult = n(1)
+        mult=mult.times(buyableEffect('I',53))
         return mult
     },
     row: 3, // Row the layer is in on the tree (0 is the first row)
@@ -2678,6 +2934,10 @@ addLayer("I", {
         total:n(0),
         resetTime: 0,
         bestTime:n(1e300),
+        tpower:n(0),
+        C31base:n(0),
+        CTbase:n(0),
+        QUBF:n(0),
     }},
     color: "#b67f33",
     requires(){a = n(2).pow(1024)
@@ -2698,6 +2958,7 @@ addLayer("I", {
         if(hasMilestone('qa',0)) mult=mult.times(100).div(7)
         if(hasUpgrade('qa',11)) mult=mult.times(upgradeEffect('qa',11))
         mult = mult.times(buyableEffect('qa',14))
+        if(getBuyableAmount('I',61).gte(8)) mult=mult.times(tmp.I.QUBFeff)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -2714,7 +2975,11 @@ addLayer("I", {
         if(player.I.inf.gte(1)) player.I.challenges[11] = 1
         if((inChallenge('MT',11)||inChallenge('MT',12)||inChallenge('MT',13)||inChallenge('MT',14))&&player.points.gte(n(2).pow(1024))) player.I.challenges[16] = 1
         player.I.ipower = player.I.ipower.add(tmp.I.reaalIPowgen.times(diff))
-        //if(inChallenge('I',31))player.I.ipower = player.I.ipower.min(tmp.I.reaalIPowgen.max(1))
+        player.I.tpower = player.I.tpower.add(tmp.I.CTeff.times(diff))
+        if(hasUpgrade('I',171)) player.I.QUBF = player.I.QUBF.add(tmp.I.QUBFgain.times(diff))
+        if(inChallenge('I',31))player.I.C31base = player.T.points.add(1).times(player.ST.points.add(1)).times(player.MT.points.add(1)).pow(0.02).sub(1).max(player.I.C31base)
+        if(!inChallenge('I',31))player.I.CTbase = player.I.C31base.max(player.I.CTbase)
+        
     },
     row: 4, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -2782,11 +3047,17 @@ addLayer("I", {
     unlocked(){return hasUpgrade('I',84)},
     },
     "Timewall Power": {
-        content: [ "main-display","prestige-button","resource-display",
-            //["display-text", () => tmp.I.ICtip],
-            ["upgrades",[13]],["challenges",[3]]
+        content: [ "main-display","prestige-button","resource-display",["upgrades",[13]],
+            ["display-text", () => tmp.I.TPtip],
+            ["challenges",[3]],["buyables",[5]],["upgrades",[14,15,16]]
     ],
     unlocked(){return hasChallenge('I',28)},
+    },
+    "Upgrade Booster": {
+        content: [ "main-display","prestige-button","resource-display",["upgrades",[17]],
+            ["display-text", () => tmp.I.UBtip],["buyables",[6]]
+    ],
+    unlocked(){return hasUpgrade('I',164)},
     },
     },
     doReset(resettingLayer) {
@@ -3208,9 +3479,178 @@ addLayer("I", {
         },
         131: {
             title: "Unlock Timewall Power",
-            description: "You have reached the current Endgame!",
+            description: "A new feature, a boost to IG.",
             cost: new Decimal(1e120),
             unlocked() {return hasChallenge('I',28)},
+        },
+        141: {
+            title: "TP1-1",
+            description: "Multiply Point Producer base effect based on Timewall Power.",
+            effect() {a=player.I.tpower.add(1).pow(2)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1000),
+            unlocked() {return getBuyableAmount('I',54).gte(1)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        142: {
+            title: "TP1-2",
+            description: "Multiply Super-QqQe308 and Super-cokecole generation speed based on Timewall Power.",
+            effect() {a=player.I.tpower.add(1).pow(0.5)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(10000),
+            unlocked() {return getBuyableAmount('I',54).gte(1)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        143: {
+            title: "TP1-3",
+            description: "Multiply Super-qaqe308 generation speed based on Timewall Power.",
+            effect() {a=player.I.tpower.add(1).pow(0.3)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(50000),
+            unlocked() {return getBuyableAmount('I',54).gte(1)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        144: {
+            title: "TP1-4",
+            description: "Multiply Monika Points gain based on Timewall Power, and improve Timewall Power gain formula.",
+            effect() {a=player.I.tpower.add(1).pow(0.1)
+                if(a.gte(100)) a=a.sub(99).log(2).add(100)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(250000),
+            unlocked() {return getBuyableAmount('I',54).gte(1)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        151: {
+            title: "TP2-1",
+            description: "Multiply Timewall Power gain based on total Infinity Points.",
+            effect() {a=player.I.total.log(1e20)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e9),
+            unlocked() {return getBuyableAmount('I',54).gte(2)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        152: {
+            title: "TP2-2",
+            description: "Multiply Timewall Power gain based on effective Super-qaqe308.",
+            effect() {a=tmp.Qi.effqaqe308.log(10)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e11),
+            unlocked() {return getBuyableAmount('I',54).gte(2)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        153: {
+            title: "TP2-3",
+            description: "Multiply Timewall Power gain based on Monika Buyables 1 bought.",
+            effect() {a=getBuyableAmount('qa',11).add(1)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e13),
+            unlocked() {return getBuyableAmount('I',54).gte(2)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        154: {
+            title: "TP2-4",
+            description: "IC5's effect is nerfed to ^0.6 in 'All in One' challenge.",
+            cost: new Decimal(1e14),
+            unlocked() {return getBuyableAmount('I',54).gte(2)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        161: {
+            title: "TP3-1",
+            description: "Multiply Infinity Generator Multiplier based on Timewall Power.",
+            effect() {a=player.I.tpower.add(1).log(1e10).add(1).pow(0.5)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e21),
+            unlocked() {return getBuyableAmount('I',54).gte(3)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        162: {
+            title: "TP3-2",
+            description: "Free PP and PPM is raised to ^1.1.",
+            cost: new Decimal(1e24),
+            unlocked() {return getBuyableAmount('I',54).gte(3)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        163: {
+            title: "TP3-3",
+            description: "TP1-1's effect also applies to all kinds of Timewall(exclude Compressed Timewall).",
+            cost: new Decimal(1e30),
+            unlocked() {return getBuyableAmount('I',54).gte(3)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        164: {
+            title: "TP3-4",
+            description: "Unlock Upgrade Booster.",
+            cost: new Decimal(1e40),
+            unlocked() {return getBuyableAmount('I',54).gte(3)},
+            currencyLocation() {return player.I},
+            currencyDisplayName: 'Timewall Power',
+            currencyInternalName: 'tpower',
+        },
+        171: {
+            title: "Unlock Q-Upgrade Booster",
+            description: "A new feature, a boost to Q-Upgrades.",
+            cost: new Decimal(1e220),
+            unlocked() {return hasUpgrade('I',164)},
+        },
+        172: {
+            title: "Timewall is weaker now",
+            description: "x10 QUBF gain.",
+            cost: new Decimal(1e256),
+            unlocked() {return hasUpgrade('I',171)},
+        },
+        173: {
+            title: "Timewall is more weaker",
+            description: "x5 QUBF and Monika Point gain.",
+            cost: new Decimal(1e268),
+            unlocked() {return hasUpgrade('I',172)},
+        },
+        174: {
+            title: "Self-Boost",
+            description: "QUBF boosts QUBF gain.",
+            effect() {a=player.I.QUBF.add(10).log(10).max(player.I.QUBF.add(1).pow(0.1))
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e280),
+            unlocked() {return hasUpgrade('I',173)},
         },
     },
     challenges: {
@@ -3373,14 +3813,14 @@ addLayer("I", {
         },
         31: {
             name: "All in One",
-            challengeDescription: "Infinity Challenge 1~8 are actived at once.",
-            goalDescription:"None",
-            rewardDescription:"None",
+            challengeDescription: "Infinity Challenge 1~8 are actived at once, but IC5's effect is nerfed to ^0.5.",
+            goalDescription:"Gain as many Timewalls as possible.",
+            rewardDescription:"Gain Compressed Timewalls based on your all kinds of Timewall in this challenge.",
             countsAs:[21,22,23,24,25,26,27,28],
-            rewardEffect(){a=n(1)
+            rewardEffect(){a=player.I.C31base
                 return a
             },
-            rewardDisplay(){return format(challengeEffect(this.layer, this.id))+'x'},
+            rewardDisplay(){return '+'+format(challengeEffect(this.layer, this.id))},
             canComplete: function() {return false},
             unlocked() {return hasUpgrade('I',131)}
         },
@@ -3421,11 +3861,11 @@ addLayer("I", {
             },
             cost(x) { return new Decimal(10).pow(x.add(1)) },
             effect(x) {a=tmp.I.IPDbase.pow(x)
-                //if(a.gte(1024)) a=n(2).pow(a.log(2).div(10).pow(0.5).times(10))
+                if(a.gte(tmp.I.IPDbase.pow(200))) a=tmp.I.IPDbase.pow(n(200).add(x.sub(200).pow(0.5)))
                     return a
             },
             display() { a="Multiply IP gain by "+format(tmp.I.IPDbase)+" <br/>Effect:"+format(this.effect())+'x'
-                //if(buyableEffect(this.layer,this.id).gt(1024)) a=a+'(softcapped)'
+                if(getBuyableAmount(this.layer,this.id).gt(200)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
             return a},
             unlocked() {return player.I.upgrades.length >= 16},
@@ -3585,6 +4025,7 @@ addLayer("I", {
             display() {a= "Produce "+format(tmp.I.IGmult)+" Infinity Powers Per Second<br/>Effect:produces "+format(this.effect())
                 if(buyableEffect('I',33).neq(1)) a=a+'^'+format(buyableEffect('I',33))+'='+format(tmp.I.actualIPowgen)
                 a=a+" Infinity Powers/s<br/>"
+                if(tmp.I.actualIPowgen.gte(1e250)) a=a+'After softcap:'+format(tmp.I.reaalIPowgen)+'/s<br>'
             if(tmp.I.ipowmult.neq(1)) a=a+'Your other effects multiply your Infinity Power gain by '+format(tmp.I.ipowmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' Infinity Points'
             return a },
@@ -3621,7 +4062,7 @@ addLayer("I", {
                 return a
             },
             display() {a= "Multiply Infinity Generator base effect by "+format(tmp.I.IGMbase)+"<br/>Effect:"+format(this.effect())+'x'
-            if(getBuyableAmount('I',32).gte(50)) a=a+'(Softcapped)'
+            if(getBuyableAmount('I',32).add(tmp.I.freeIGM).gte(50)) a=a+'(Softcapped)'
             a=a+"<br>Cost: "+format(this.cost())+' Infinity Points'
             return a },
             unlocked() {return hasMilestone('qa', 0)},
@@ -3651,6 +4092,9 @@ addLayer("I", {
             cost(x) { return new Decimal(1e10).pow(x.pow(2)).times(1e10) },
             effect(x) {a=x.times(tmp.I.IEFbase).add(1)
                 if(inChallenge('I',25)) a=a.times(0.1)
+                if(inChallenge('I',31)) {a=a.times(5)
+                    if(hasUpgrade('I',154)) a=a.times(1.5)
+                }
                 if(a.gte(1.5)) a=a.sub(1.5).div(10).add(1.5)
                 if(a.gte(2)) a=a.add(2).log(2)
                     return a
@@ -3697,6 +4141,151 @@ addLayer("I", {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
         },
+        51: {
+            title(){text = 'QqQe308 Boost'
+                text=text+'('+format(getBuyableAmount('I', this.id))
+                text=text+'/5.00)'
+                return text
+            },
+            cost(x) { return new Decimal(1e5).pow(x.add(1)) },
+            effect(x) {a=x.times(0.2).add(1)
+                    return a
+            },
+            display() { a="Multiply QqQe308 gain by +0.2 per purchase<br/>Effect:x"+format(this.effect())
+                a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
+            return a},
+            unlocked() {return hasUpgrade('I',131)},
+            canAfford() { return player.I.tpower.gte(this.cost()) },
+            purchaseLimit() {a = n(5)
+                    return a
+            },
+            buy() {
+                player.I.tpower = player.I.tpower.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.I.tpower.max(1).log(1e5).sub(1)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        52: {
+            title(){text = 'QqQeInfinity Boost'
+                text=text+'('+format(getBuyableAmount('I', this.id))
+                text=text+'/5.00)'
+                return text
+            },
+            cost(x) { return new Decimal(1e8).pow(x.add(1)) },
+            effect(x) {a=x.times(0.1).add(1)
+                    return a
+            },
+            display() { a="Multiply QqQeInfinity gain by +0.1 per purchase<br/>Effect:x"+format(this.effect())
+                a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
+            return a},
+            unlocked() {return hasUpgrade('I',131)},
+            canAfford() { return player.I.tpower.gte(this.cost()) },
+            purchaseLimit() {a = n(5)
+                    return a
+            },
+            buy() {
+                player.I.tpower = player.I.tpower.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.I.tpower.max(1).log(1e8).sub(1)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        53: {
+            title(){text = 'cokecole Boost'
+                text=text+'('+format(getBuyableAmount('I', this.id))
+                text=text+'/5.00)'
+                return text
+            },
+            cost(x) { return new Decimal(1e25).pow(x.add(1)) },
+            effect(x) {a=x.times(0.1).add(1)
+                    return a
+            },
+            display() { a="Multiply cokecole gain by +0.1 per purchase<br/>Effect:x"+format(this.effect())
+                a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
+            return a},
+            unlocked() {return hasUpgrade('I',131)},
+            canAfford() { return player.I.tpower.gte(this.cost()) },
+            purchaseLimit() {a = n(5)
+                    return a
+            },
+            buy() {
+                player.I.tpower = player.I.tpower.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.I.tpower.max(1).log(1e25).sub(1)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        54: {
+            title(){text = 'Upgrade Boost'
+                text=text+'('+format(getBuyableAmount('I', this.id))
+                text=text+'/3.00)'
+                return text
+            },
+            cost(x) { return new Decimal(1e5).pow(n(2).pow(x)) },
+            effect(x) {a=x
+                    return a
+            },
+            display() { a="Unlock a new row of TP-Upgrade per purchase<br/>Effect:+"+format(this.effect())
+                a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
+            return a},
+            unlocked() {return hasUpgrade('I',131)},
+            canAfford() { return player.I.tpower.gte(this.cost()) },
+            purchaseLimit() {a = n(3)
+                    return a
+            },
+            buy() {
+                player.I.tpower = player.I.tpower.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.I.tpower.max(1).log(1e5).max(1).log(2).sub(1)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        61: {
+            title(){text = 'Buy a Q-Upgrade Booster'
+                text=text+'('+format(getBuyableAmount('I', this.id))
+                text=text+'/8.00)'
+                return text
+            },
+            cost(x) { return new Decimal(10).pow(x) },
+            effect(x) {a=x.times(0.2).add(1)
+                    return a
+            },
+            display() { a="Get a Q-Upgrade Booster per purchase"
+                a=a+"<br/>Cost: "+format(this.cost())+' Q-Upgrade Booster Fragment'
+            return a},
+            unlocked() {return hasUpgrade('I',171)},
+            canAfford() { return player.I.QUBF.gte(this.cost()) },
+            purchaseLimit() {a = n(8)
+                    return a
+            },
+            buy() {
+                player.I.QUBF = player.I.QUBF.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.I.QUBF.max(0.1).log(10)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
     },
     IUtip(){a='You have gone Infinity '+format(player.I.inf)+' times.<br/>'
         a=a+'You have spent '+formatTime(player.I.resetTime)+' in this Infinity.<br/>'
@@ -3740,6 +4329,7 @@ addLayer("I", {
         if(hasUpgrade('qa',12)) a=a.times(upgradeEffect('qa',12))
         if(hasUpgrade('I',93)) a=a.times(upgradeEffect('I',93))
         if(hasChallenge('I',25)) a=a.times(challengeEffect('I',25))
+        a=a.times(tmp.I.TPeff)
         a=a.times(buyableEffect('I',32))
         return a
     },
@@ -3747,6 +4337,7 @@ addLayer("I", {
         if(hasUpgrade('I',92)) a=a.add(0.5)
         if(hasChallenge('I',22)) a=a.add(challengeEffect('I',22))
         if(hasUpgrade('qa',22)) a=a.add(upgradeEffect('qa',22))
+        if(hasUpgrade('I',161)) a=a.times(upgradeEffect('I',161))
         return a
     },
     IEFbase(){a=n(0.01)
@@ -3761,6 +4352,7 @@ addLayer("I", {
         if(hasUpgrade('I',83)) a=a+";<br>Mega Timewall gain by "+format(player.I.ipower)+'^'+format(tmp.I.IGexptomt)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtomt)+'x</h3>'
         a=a+'.'
         a=a+'<br>('+format(tmp.I.reaalIPowgen)+'/sec)'
+        if(tmp.I.reaalIPowgen.gte(1e250)) a=a+'<br>After '+format(1e250)+' Infinity Power/s, your Infinity Power gain will be softcapped!(^'+format(tmp.I.IPowscexp)+')'
         return a
     },
     IGexptopt(){a=n(7)
@@ -3788,17 +4380,24 @@ addLayer("I", {
         return a
     },
     actualIPowgen(){a=buyableEffect('I',31).pow(buyableEffect('I',33))
+        
         return a
     },
     reaalIPowgen(){a=tmp.I.actualIPowgen.times(tmp.A.IC8eff)//final!
+        if(a.gte(1e250)) a=a.div(1e250).pow(tmp.I.IPowscexp).times(1e250)
+        return a
+    },
+    IPowscexp(){a=n(0.5)
         return a
     },
     freeIG(){a=n(0)
         if(hasUpgrade('I',101)) a=a.add(upgradeEffect('I',101))
+        if(hasUpgrade('qa',34)) a=a.times(upgradeEffect('qa',34))
         return a
     },
     freeIGM(){a=n(0)
         if(hasUpgrade('I',103)) a=a.add(upgradeEffect('I',103))
+        if(hasUpgrade('qa',34)) a=a.times(upgradeEffect('qa',34))
         return a
     },
     ICcomp(){a=n(0)
@@ -3819,6 +4418,46 @@ addLayer("I", {
     },
     ipowmult(){a=n(1)
         a=a.times(tmp.A.IC8eff)
+        return a
+    },
+    CTgain(){a=n(0)
+        a=player.I.CTbase
+        return a
+    },
+    CTeff(){a=tmp.I.CTgain.pow(0.5)
+        if(hasUpgrade('I',144)) a=a.pow(2)
+        if(hasUpgrade('qa',31)) a=a.times(upgradeEffect('qa',31))
+        if(hasUpgrade('I',151)) a=a.times(upgradeEffect('I',151))
+        if(hasUpgrade('I',152)) a=a.times(upgradeEffect('I',152))
+        if(hasUpgrade('I',153)) a=a.times(upgradeEffect('I',153))
+        if(getBuyableAmount('I',61).gte(8)) a=a.times(tmp.I.QUBFeff)
+        return a
+    },
+    TPeff(){a=player.I.tpower.add(2).log(2).pow(2)
+        return a
+    },
+    TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls, which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
+        a=a+format(tmp.I.CTeff)+"</h3> Timewall Power per second.<br/>"
+        a=a+"You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> Timewall Power, which multiply Infinity Generator base effect by "+format(tmp.I.TPeff)+'.'
+        if(!hasUpgrade('I',131)) a=''
+        return a
+    },
+    UBtip(){a="You have <h3 style='color: #eee308; text-shadow: 0 0 3px #c2b280'>"+format(player.I.QUBF,4)+"</h3> Q-Upgrade Booster Fragments."
+        a=a+"<br>You produce <h3 style='color: #eee308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.QUBFgain,4)+"</h3> Q-Upgrade Booster Fragments per second based on your Infinity Points.(Start at 1e220 IP)"
+        if(getBuyableAmount('I',61).gte(8)) a=a+'<br>When all Q-Upgrade Boosters are bought, your extra QUBF multiply your IP and Timewall Power gain by '+format(tmp.I.QUBFeff)+'.'
+        if(!hasUpgrade('I',171)) a=''
+        return a
+    },
+    QUBFgain(){a=n(0)
+        if(player.I.points.gte(1e220)) a=player.I.points.div(1e220).pow(0.02).sub(1).div(200)
+        if(hasUpgrade('qa',32)) a=a.times(upgradeEffect('qa',32))
+        if(hasUpgrade('I',172)) a=a.times(10)
+        if(hasUpgrade('I',173)) a=a.times(5)
+        if(hasUpgrade('I',174)) a=a.times(upgradeEffect('I',174))
+        return a
+    },
+    QUBFeff(){a=player.I.QUBF
+        if(getBuyableAmount('I',61).lt(8)) a=n(1)
         return a
     },
 })
@@ -3911,6 +4550,12 @@ addLayer("qa", {
             effectDescription: "Unlock qaqe308 Upgrades and the 4th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',0)},
             done() { return player.qa.points.gte(4) }
+        },
+        2: {
+            requirementDescription: "16 qaqe308",
+            effectDescription: "Unlock more qaqe308 Upgrades.",
+            unlocked(){return hasMilestone('qa',1)},
+            done() { return player.qa.points.gte(16) }
         },
     },
     buyables: {
@@ -4132,6 +4777,60 @@ addLayer("qa", {
                 a=n(13)
             return a},
         },
+        31: {
+            title: "Qa3-1",
+            description: "Each qaqe308 multiplies Timewall Power gain by 1.25.",
+            unlocked(){return hasMilestone('qa',2)},
+            effect(){a=n(1.25).pow(player.qa.points)
+                    return a
+            },
+            effectDisplay(){return format(this.effect(),2)+'x'},
+            cost(){
+                a=n(17)
+            return a},
+        },
+        32: {
+            title: "Qa3-2",
+            description() {a="Each qaqe308 multiplies "
+                if(!hasUpgrade('I',171)) a=a+'???'
+                if(hasUpgrade('I',171)) a=a+'Q-Upgrade Booster Fragment'
+                a=a+" gain by 1.15."
+            return a},
+            unlocked(){return hasMilestone('qa',2)},
+            effect(){a=n(1.15).pow(player.qa.points)
+                    return a
+            },
+            effectDisplay(){return format(this.effect(),2)+'x'},
+            cost(){
+                a=n(22)
+            return a},
+        },
+        33: {
+            title: "Qa3-3",
+            description() {a="Each qaqe308 makes your Monika Buyables +0.5% more effective(softcapped at 100 qaqe308)"
+            return a},
+            unlocked(){return hasMilestone('qa',2)},
+            effect(){a=n(0.005).times(player.qa.points)
+                if(player.qa.points.gte(100)) a=player.qa.points.sub(100).pow(0.5).times(100).times(0.005)
+                    return a
+            },
+            effectDisplay(){return '+'+format(this.effect().times(100))+'%'},
+            cost(){
+                a=n(24)
+            return a},
+        },
+        34: {
+            title: "Qa3-4",
+            description: "Each qaqe308 multiplies free IG and IGM by 1.05.",
+            unlocked(){return hasMilestone('qa',2)},
+            effect(){a=n(1.05).pow(player.qa.points)
+                    return a
+            },
+            effectDisplay(){return format(this.effect(),2)+'x'},
+            cost(){
+                a=n(25)
+            return a},
+        },
     },
     Showdetail() {
         a = "You have <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(player.qa.monika) + "</h3> Monika Points，which multiply your Infinity Generator base effect by "+format(player.qa.monika)+"^"+format(tmp.qa.monikatoigexp)+"=" +format(tmp.qa.monikatoigmult)+ "x."
@@ -4151,6 +4850,8 @@ addLayer("qa", {
         if(hasUpgrade('I',123)) a=a.times(upgradeEffect('I',123))
         if(hasUpgrade('I',124)) a=a.times(upgradeEffect('I',124))
         if(hasChallenge('I',27)) a=a.times(challengeEffect('I',27))
+        if(hasUpgrade('I',144)) a=a.times(upgradeEffect('I',144))
+        if(hasUpgrade('I',173)) a=a.times(5)
             return a
     },
     effbase(){a=n(2)
@@ -4162,7 +4863,8 @@ addLayer("qa", {
         return a
     },
     MBeff(){a=n(1)
-        if(hasChallenge('I',27)) a=a.times(1.5)
+        if(hasChallenge('I',27)) a=a.add(0.5)
+        if(hasUpgrade('qa',33)) a=a.add(upgradeEffect('qa',33))
         if(inChallenge('I',27)) a=a.times(0.5)
         return a
     }

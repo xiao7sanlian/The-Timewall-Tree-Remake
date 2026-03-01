@@ -8,13 +8,13 @@ let modInfo = {
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	offlineLimit: 2,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.1.1",
-	name: "Break-Infinity Update",
+	num: "1.2",
+	name: "Timewall Power Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -58,13 +58,20 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added more contents in QqQeInfinity layer.<br>
 		- Some other changes.<br>
 		- Endgame: Reach 1e120 Infinity Points<br>
-		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time<br>.
+		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time.<br>
 	<h3>v1.1.1 BI2-2 Fix 2026/2/25</h3><br>
 		- Fixed a bug: the effect of upgrade BI2-2 is NaNx when your Best Infinity time is very long.<br>
 		- Improved IC8 performance.<br>
 	<h3>v1.1.2 NC5 & IC1 Fix 2026/2/26</h3><br>
 		- Fixed a bug: when in NC5 or IC1 and have BI4-3, Infinity Power will be NaN on reset.<br>
-		- Added ??? in Infinity layer.<br>`
+		- Added ??? in Infinity layer.<br>
+	<h3>v1.2 Timewall Power Update 2026/2/27~2026/3/1</h3><br>
+		- Added Timewall Power in Infinity layer, with 12 Upgrades, 4 Buyables and 1 Challenges.<br>
+		- Added Upgrade Booster in Infinity layer, with 4 Upgrades and 1 Buyables.<br>
+		- Added more contents in QqQe308 and qaqe308 layer.<br>
+		- Some other changes.<br>
+		- Endgame: Reach 1.80e308 Infinity Points<br>
+		- Note: Some of the contents might contain a large timewall. Please use Speed-up at any time.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -95,12 +102,16 @@ function getPointGen() {
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
+	//NiShuoDeDuiDanShiWoShiDeFe308NiMenWanLe:'DeFe308'
 }}
 
 // Display extra things at the top of the page
 var displayThings = [
 	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%<br/>'
-		if(hasUpgrade('I',51)) a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%<br/>'
+		if(hasUpgrade('I',51)) {a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%'
+			//if(tmp.A.ProgressToEtr.gte(50)) a=a+'(softcapped)'
+			a=a+'<br/>'}
+			if(tmp.A.ProgressToEtr.gte(100)) a=a+"You have reached the Endgame!"
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!"
 		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
 		return a
@@ -110,7 +121,7 @@ var displayThings = [
 // Determines when the game "ends"
 function isEndgame() {
 	//return hasUpgrade('ST',54)
-	return hasUpgrade('I',131)
+	return player.I.points.gte(n(2).pow(1024))
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
