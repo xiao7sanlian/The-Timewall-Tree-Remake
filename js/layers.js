@@ -2806,7 +2806,7 @@ addLayer("MT", {
         //if(getBuyableAmount('T',11).gte(400)) a=a+'<br>The Point Producer in the formula will be softcapped after 400.'
         return a
     },
-    challengetip(){a="Unlike other challenges, ST-Challenge can be completed infinitely. You can gain completions automatically without exiting it."
+    challengetip(){a="Unlike other challenges, MT-Challenge can be completed infinitely. You can gain completions automatically without exiting it."
         return a
     },
     totalcomp(){a=n(0)
@@ -4305,6 +4305,7 @@ addLayer("I", {
     },
     NCtip(){a='You have completed '+format(tmp.I.NCcomp)+' Normal Challenges, giving a multiplier of x'+format(tmp.I.NCtoIP)+' to Infinity Points.'
         a=a+'<br/>Completing all Normal Challenges and buying 16 I-Upgrades will enable you to break Infinity.'
+        a=a+'<br>Note: When you complete a challenge, click reset button instead of "Finish" button. It will help you get IP.'
         return a
     },
     NC2eff(){a=n(0.01).times(n(1.01).pow(player.T.resetTime)).min(1e100)
