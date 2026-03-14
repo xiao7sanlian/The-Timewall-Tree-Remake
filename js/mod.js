@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.2.1",
-	name: "Translation Update (Part. I)",
+	num: "1.2.2",
+	name: "Translation Update (Part. II)",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -78,8 +78,14 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Note: Some things won't be translated, such as currency name.<br>
 		Chinese version:<br>
 		- 增加语言设置，现在这个游戏适配中文了！<br>
-		- 目前已完成翻译的层级：T，Q<br>
-		- 注意:资源名称等一些物品不会被翻译。<br>`
+		- 完成了T，Q两个层级的翻译<br>
+		- 注意:资源名称等一些物品不会被翻译<br>
+	<h3>v1.2.2 Translation Update (Part. II) 2026/3/14</h3><br>
+		- Completed the translation of ST, Qi, MT and Co layer.<br>
+		- Added a softcap to Q1-3 Boost and Q2-3 Boost.(After 5000 QqQe308)<br>
+		Chinese version:<br>
+		- 完成了ST，Qi，MT, Co四个层级的翻译<br>
+		- 为Q1-3 Boost和Q2-3 Boost效果增加了软上限（始于5000 QqQe308）`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
