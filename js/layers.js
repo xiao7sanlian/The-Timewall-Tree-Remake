@@ -3770,7 +3770,7 @@ addLayer("I", {
     upgrades: {
         11: {
             title: "I1-1",
-            description: "Multiply Point Producer base effect based on times played.",
+            description: "Multiply Point Producer base effect based on time played.",
             effect() {
                 return n(player.timePlayed).times(tmp.E.TSeffect).add(1).pow(0.25)
             },
