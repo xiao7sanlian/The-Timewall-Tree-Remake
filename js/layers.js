@@ -1388,7 +1388,7 @@ addLayer("T", {
         if(hasChallenge('I',23)) a=a.times(challengeEffect('I',23))
         if(hasUpgrade('qa',23)) a=a.times(upgradeEffect('qa',23))
         if(inChallenge('I',23)) a=a.times(buyableEffect('T',13))
-        if(a.gte(100)) a=a.sub(99).log(10).add(100)
+        //if(a.gte(100)) a=a.sub(99).log(10).add(100)
         if(inChallenge('I',13)) a=a.div(2)
         return a
     },
@@ -2689,8 +2689,9 @@ addLayer("Qi", {
         if(hasMilestone('Qi',0)&&hasMilestone('MT',3)&&hasUpgrade('I',84)) {a =a+"<br/>You have made <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(player.Qi.qaqe308) + "</h3> Super-qaqe308.<br/>"
         a=a+"Your effective Super-qaqe308 is <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(tmp.Qi.effqaqe308) + "</h3>"
         if(tmp.Qi.effqaqe308.gte(10000)) a=a+'(softcapped)'
-        a=a+", multiplying Infinity Generator base effect by <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.qaqe308eff)+"</h3>.<br>" 
-        a=a+"Based your QqQeInfinity amount，your QqQeInfinity makes <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.qaqe308speed) +"</h3> Super-qaqe308 per second,"
+        a=a+", multiplying Infinity Generator base effect by <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.qaqe308eff)+"</h3>" 
+        if(tmp.Qi.qaqe308eff.gte('1e500')) a=a+"(softcapped)" 
+        a=a+".<br>Based your QqQeInfinity amount，your QqQeInfinity makes <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.qaqe308speed) +"</h3> Super-qaqe308 per second,"
         a=a+" which means making one Super-qaqe308 per <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(n(1).div(tmp.Qi.qaqe308speed))+"</h3> seconds.<br/>Super-qaqe308 is kept on row 3 and 4 reset.<br>"}
 
         if(hasMilestone('Qi',0)) a=a+'<br/>You can only make '+format(tmp.Qi.maxActive,0)+' kind(s) of super-man at a time.'
@@ -2707,16 +2708,17 @@ addLayer("Qi", {
         if(hasMilestone('Qi',0)&&hasMilestone('MT',3)) {a =a+"<br/>你超了 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>" + format(player.Qi.cokecole) + "</h3> 次cokecole<br/>"
         a=a+"你实际上超了 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>" + format(tmp.Qi.effcokecole) + "</h3> 次cokecole"
         if(tmp.Qi.effcokecole.gte(1e9)) a=a+'(softcapped)'
-        a=a+", 使cokecole效果变为原来的 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.cokecoleeff)+"</h3> 次方<br>" 
+        a=a+", 使cokecole效果变为原来的 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.cokecoleeff)+"</h3> 次方" 
         if(tmp.Qi.cokecoleeff.gte('100')) a=a+"(受软上限限制)" 
-        a=a+"基于你的QqQeInfinity数量，你的QqQeInfinity每秒超 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.cokecolespeed) +"</h3> 次cokecole,"
+        a=a+"<br>基于你的QqQeInfinity数量，你的QqQeInfinity每秒超 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.cokecolespeed) +"</h3> 次cokecole,"
         a=a+" 相当于每 <h3 style='color: #cce308; text-shadow: 0 0 3px #c2b280'>"+format(n(1).div(tmp.Qi.cokecolespeed))+"</h3> 秒超一次cokecole<br/>超cokecole次数在第三行层级重置中保留<br>"}
 
         if(hasMilestone('Qi',0)&&hasMilestone('MT',3)&&hasUpgrade('I',84)) {a =a+"<br/>你超了 <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(player.Qi.qaqe308) + "</h3> 次qaqe308<br/>"
         a=a+"你实际上超了 <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(tmp.Qi.effqaqe308) + "</h3> 次qaqe308"
         if(tmp.Qi.effqaqe308.gte(10000)) a=a+'(受软上限限制)'
-        a=a+", 使无限生成器效果x <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.qaqe308eff)+"</h3><br>" 
-        a=a+"基于你的QqQeInfinity数量，你的QqQeInfinity每秒超 <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.qaqe308speed) +"</h3> 次qaqe308,"
+        a=a+", 使无限生成器效果x <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.Qi.qaqe308eff)+"</h3>" 
+        if(tmp.Qi.qaqe308eff.gte('1e500')) a=a+"(受软上限限制)" 
+        a=a+"<br>基于你的QqQeInfinity数量，你的QqQeInfinity每秒超 <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+ format(tmp.Qi.qaqe308speed) +"</h3> 次qaqe308,"
         a=a+" 相当于每 <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>"+format(n(1).div(tmp.Qi.qaqe308speed))+"</h3> 秒超一次qaqe308<br/>超qaqe308次数在第三、四行层级重置中保留<br>"}
 
         if(hasMilestone('Qi',0)) a=a+'<br/>你最多能同时超'+format(tmp.Qi.maxActive,0)+'个人'}
@@ -2783,7 +2785,7 @@ addLayer("Qi", {
     },
     cokecoleeff(){a=tmp.Qi.effcokecole.add(1).log(10).add(1).pow(0.5)
         if(hasUpgrade('qa',24)) a=a.times(upgradeEffect('qa',24))
-        if(a.gte(100)) a=a.div(100).pow(0.25).times(100)
+        if(a.gte(100)) a=n(10).pow(a.log(10).div(2).pow(0.4).times(2))
         return a
     },
     effqaqe308(){a=player.Qi.qaqe308.floor()
@@ -2804,6 +2806,7 @@ addLayer("Qi", {
         return a
     },
     qaqe308eff(){a=tmp.Qi.effqaqe308.add(1).pow(10)
+        if(a.gte('1e500')) a=n(10).pow(a.log(10).div(500).pow(0.3).times(500))
         return a
     },
 })
@@ -4468,6 +4471,7 @@ addLayer("I", {
             goalDescription:"1e1600 Points.",
             rewardDescription:"Multiply Point Producer Multiplier Exponent based on bought PEF.",
             rewardEffect(){a=getBuyableAmount('T',13).times(0.02).add(1)
+                if(a.gte(10)) a=a.div(10).pow(0.35).times(10)
                 return a
             },
             rewardDisplay(){return format(challengeEffect(this.layer, this.id))+'x'},
@@ -5299,7 +5303,7 @@ addLayer("qa", {
             cost(x) { return new Decimal(100).pow(x.add(1)) },
             effect(x) {b=x
                 if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
-                if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
+                //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                 a=n(1e100).pow(b.times(tmp.qa.MBeff))
                     return a
             },
@@ -5332,7 +5336,7 @@ addLayer("qa", {
             cost(x) { return new Decimal(1000).pow(x.add(2)) },
             effect(x) {b=x
                 if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
-                if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
+                //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                 a=n(100).pow(b.times(tmp.qa.MBeff))
                     return a
             },
@@ -5365,7 +5369,7 @@ addLayer("qa", {
             cost(x) { return new Decimal(1e5).pow(x.add(2)) },
             effect(x) {b=x
                 if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
-                if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
+                //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                     a=n(2).pow(b.times(tmp.qa.MBeff))
                     return a
             },
@@ -5398,7 +5402,7 @@ addLayer("qa", {
             cost(x) { return new Decimal(1e6).pow(x.add(2)) },
             effect(x) {b=x
                 if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
-                if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
+                //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                     a=n(10).pow(b.times(tmp.qa.MBeff))
                     return a
             },
@@ -5428,7 +5432,9 @@ addLayer("qa", {
             title: "Qa1-1",
             description: "Each qaqe308 multiplies your IP gain by 2.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(2).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(2).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect())+'x'},
@@ -5440,7 +5446,9 @@ addLayer("qa", {
             title: "Qa1-2",
             description: "Each qaqe308 multiplies your IG base effect by 10.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(10).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(10).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect())+'x'},
@@ -5452,7 +5460,9 @@ addLayer("qa", {
             title: "Qa1-3",
             description: "Each qaqe308 multiplies your Super-qaqe308 generation speed by 1.125.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(1.125).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(1.125).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect())+'x'},
@@ -5464,7 +5474,9 @@ addLayer("qa", {
             title: "Qa1-4",
             description: "Each qaqe308 divides QqQeInfinity cost scaling by 1.005. Also unlock the 5th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(1.005).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(1.005).pow(b)
                     return a
             },
             effectDisplay(){return '/'+format(this.effect(),3)},
@@ -5476,7 +5488,9 @@ addLayer("qa", {
             title: "Qa2-1",
             description: "Each qaqe308 divides cokecole cost by +0.01. Also unlock the 6th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(0.01).times(player.qa.points).add(1)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(0.01).times(b).add(1)
                     return a
             },
             effectDisplay(){return '/'+format(this.effect())},
@@ -5488,7 +5502,9 @@ addLayer("qa", {
             title: "Qa2-2",
             description: "Each qaqe308 adds 0.05 to your IGM base.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(0.05).times(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(0.05).times(b)
                     return a
             },
             effectDisplay(){return '+'+format(this.effect())},
@@ -5498,9 +5514,10 @@ addLayer("qa", {
         },
         23: {
             title: "Qa2-3",
-            description: "Each qaqe308 multiplies your PPM exopnent by 1.01.",
+            description: "Each qaqe308 multiplies your PPM exopnent by 1.01.  (capped at 100 qaqe308)",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(1.01).pow(player.qa.points)
+            effect(){b=player.qa.points
+                a=n(1.01).pow(b.min(100))
                     return a
             },
             effectDisplay(){return format(this.effect(),3)+'x'},
@@ -5512,7 +5529,9 @@ addLayer("qa", {
             title: "Qa2-4",
             description: "Each qaqe308 multiplies Super-cokecole effect by 1.015.",
             unlocked(){return hasMilestone('qa',1)},
-            effect(){a=n(1.015).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(1.015).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect(),3)+'x'},
@@ -5524,7 +5543,9 @@ addLayer("qa", {
             title: "Qa3-1",
             description: "Each qaqe308 multiplies Timewall Power gain by 1.25.",
             unlocked(){return hasMilestone('qa',2)},
-            effect(){a=n(1.25).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(1.25).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect(),2)+'x'},
@@ -5540,7 +5561,9 @@ addLayer("qa", {
                 a=a+" gain by 1.15."
             return a},
             unlocked(){return hasMilestone('qa',2)},
-            effect(){a=n(1.15).pow(player.qa.points)
+            effect(){b=player.qa.points
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
+                a=n(1.15).pow(b)
                     return a
             },
             effectDisplay(){return format(this.effect(),2)+'x'},
@@ -5550,7 +5573,7 @@ addLayer("qa", {
         },
         33: {
             title: "Qa3-3",
-            description() {a="Each qaqe308 makes your Monika Buyables +0.5% more effective(capped at 100 qaqe308)"
+            description() {a="Each qaqe308 makes your Monika Buyables +0.5% more effective. (capped at 100 qaqe308)"
             return a},
             unlocked(){return hasMilestone('qa',2)},
             effect(){a=n(0.005).times(player.qa.points).min(0.5)
@@ -5563,9 +5586,10 @@ addLayer("qa", {
         },
         34: {
             title: "Qa3-4",
-            description: "Each qaqe308 multiplies free IG and IGM by 1.05.",
+            description: "Each qaqe308 multiplies free IG and IGM by 1.05. (capped at 100 qaqe308)",
             unlocked(){return hasMilestone('qa',2)},
-            effect(){a=n(1.05).pow(player.qa.points)
+            effect(){b=player.qa.points
+                a=n(1.05).pow(b.min(100))
                     return a
             },
             effectDisplay(){return format(this.effect(),2)+'x'},
