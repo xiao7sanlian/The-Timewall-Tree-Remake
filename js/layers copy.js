@@ -3246,7 +3246,7 @@ addLayer("MT", {
             rewardEffect(){a=n(10).pow(challengeCompletions(this.layer,this.id))
                 if(a.gte(1e20)) a=a.div(1e20).pow(0.5).times(1e20)
                 if(a.gte(1e40)) a=a.div(1e40).pow(0.2).times(1e40)
-                if(a.gte(1e100)) a=n(10).pow(a.log(10).div(100).pow(0.8).times(100))//.min('1e20000')
+                if(a.gte(1e100)) a=n(10).pow(a.log(10).div(100).pow(0.8).times(100)).min('1e20000')
                 if(hasChallenge('I',22)) a=a.pow(1.5)
                 if(inChallenge('I',22)) a=n(1)
                 return a
@@ -3278,7 +3278,7 @@ addLayer("MT", {
                 return a
             },
             rewardEffect(){a=n(2).pow(challengeCompletions(this.layer,this.id))
-                if(a.gte(1e100)) a=a.div(1e100).pow(0.25).times(1e100)//.min('1e50000')
+                if(a.gte(1e100)) a=a.div(1e100).pow(0.25).times(1e100).min('1e50000')
                 if(hasChallenge('I',22)) a=a.pow(1.5)
                 if(inChallenge('I',22)) a=n(1)
                 return a
@@ -3340,7 +3340,7 @@ addLayer("MT", {
                 if(options.Chinese) a='获得免费的PEF'
                 return a
             },
-            rewardEffect(){a=n(challengeCompletions(this.layer,this.id)).div(10).pow(0.5)//.min(1000)
+            rewardEffect(){a=n(challengeCompletions(this.layer,this.id)).div(10).pow(0.5).min(1000)
                 if(hasChallenge('I',22)) a=a.pow(1.5)
                 if(inChallenge('I',22)) a=n(0)
                 return a
@@ -3773,10 +3773,7 @@ addLayer("I", {
     upgrades: {
         11: {
             title: "I1-1",
-            description() {a="Multiply Point Producer base effect based on times played."
-                if(options.Chinese) a='基于游玩时间提升点数生成器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer base effect based on times played.",
             effect() {
                 return n(player.timePlayed).times(tmp.E.TSeffect).add(1).pow(0.25)
             },
@@ -3786,10 +3783,7 @@ addLayer("I", {
         },
         21: {
             title: "I2-1",
-            description() {a="Multiply Point Producer Multiplier base effect based on Infinities."
-                if(options.Chinese) a='基于无限次数提升点数生成器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer Multiplier base effect based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3802,10 +3796,7 @@ addLayer("I", {
         },
         31: {
             title: "I3-1",
-            description() {a="Multiply Timewall and Super Timewall gain based on Infinities."
-                if(options.Chinese) a='基于无限次数提升时间墙与超级时间墙获取'
-                return a
-            },
+            description: "Multiply Timewall and Super Timewall gain based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3818,10 +3809,7 @@ addLayer("I", {
         },
         41: {
             title: "I4-1",
-            description() {a="Multiply Mega Timewall gain based on Infinities."
-                if(options.Chinese) a='基于无限次数提升巨大时间墙获取'
-                return a
-            },
+            description: "Multiply Mega Timewall gain based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3835,19 +3823,13 @@ addLayer("I", {
         
         12: {
             title: "I1-2",
-            description() {a="Point Producer Multiplier cost scaling 5x -> 4.5x"
-                if(options.Chinese) a='点数生产加成器花费折算 5x -> 4.5x'
-                return a
-            },
+            description: "Point Producer Multiplier cost scaling 5x -> 4.5x",
             cost: new Decimal(0.5),
             unlocked() {return true},
         },
         22: {
             title: "I2-2",
-            description() {a="Divide QqQe308 requirement based on Infinities."
-                if(options.Chinese) a='基于无限次数降低QqQe308需求'
-                return a
-            },
+            description: "Divide QqQe308 requirement based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3860,10 +3842,7 @@ addLayer("I", {
         },
         32: {
             title: "I3-2",
-            description() {a="Multiply Super-QqQe308 generation speed based on Infinities."
-                if(options.Chinese) a='基于无限次数提升超QqQe308速度'
-                return a
-            },
+            description: "Multiply Super-QqQe308 generation speed based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3876,10 +3855,7 @@ addLayer("I", {
         },
         42: {
             title: "I4-2",
-            description() {a="Multiply Super-cokecole generation speed based on Infinities."
-                if(options.Chinese) a='基于无限次数提升超cokecole速度'
-                return a
-            },
+            description: "Multiply Super-cokecole generation speed based on Infinities.",
             effect() {
                 a=n(player.I.inf).add(1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
@@ -3892,10 +3868,7 @@ addLayer("I", {
         },
         13: {
             title: "I1-3",
-            description() {a="Multiply Point Producer base effect based on times in this Infinity."
-                if(options.Chinese) a='基于本次无限时间提升点数生成器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer base effect based on times in this Infinity.",
             effect() {
                 return n(player.I.resetTime).times(tmp.E.TSeffect).add(1).pow(0.4)
             },
@@ -3905,10 +3878,7 @@ addLayer("I", {
         },
         23: {
             title: "I2-3",
-            description() {a="Multiply Point Producer base effect based on total Infinity Points."
-                if(options.Chinese) a='基于总无限点数提升点数生成器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer base effect based on total Infinity Points.",
             effect() {
                 return n(player.I.total).pow(1.5).div(4).add(1)
             },
@@ -3919,21 +3889,14 @@ addLayer("I", {
         },
         33: {
             title: "I3-3",
-            description() {a="Add 0.5 to the Point Producer Multiplier exponent."
-                if(options.Chinese) a='点数生产加成器指数+0.5'
-                return a
-            },
+            description: "Add 0.5 to the Point Producer Multiplier exponent.",
             cost: new Decimal(10),
             unlocked() {return true},
             canAfford(){return hasUpgrade('I',23)},
         },
         43: {
             title: "I4-3",
-            description: "",
-            description() {a="Generate Infinity Points based on your IP multiplier and your fastest Infinity."
-                if(options.Chinese) a='基于无限点数倍率与你最快的无限时间，被动获取无限点数'
-                return a
-            },
+            description: "Generate Infinity Points based on your IP multiplier and your fastest Infinity.",
             effect() {
                 return tmp.I.gainMult
             },
@@ -3947,52 +3910,34 @@ addLayer("I", {
         },
         14: {
             title: "I1-4",
-            description() {a="Unlock autobuyers for row 1 layers, keep milestones in row 1 layers, and gain 50% more Timewall on reset every second."
-                if(options.Chinese) a='解锁第1行层级的自动化，保留第1行层级的里程碑，每秒获取50%重置时获取的时间墙'
-                return a
-            },
+            description: "Unlock autobuyers for row 1 layers, keep milestones in row 1 layers, and gain 50% more Timewall on reset every second.",
             cost: new Decimal(5),
             unlocked() {return true},
         },
         24: {
             title: "I2-4",
-            description() {a="Unlock autobuyers for row 2 layers, keep milestones in row 2 layers, and gain 50% more Super-Timewall on reset every second."
-                if(options.Chinese) a='解锁第2行层级的自动化，保留第2行层级的里程碑，每秒获取50%重置时获取的超级时间墙'
-                return a
-            },
+            description: "Unlock autobuyers for row 2 layers, keep milestones in row 2 layers, and gain 50% more Super-Timewall on reset every second.",
             cost: new Decimal(15),
             unlocked() {return true},
             canAfford(){return hasUpgrade('I',14)},
         },
         34: {
             title: "I3-4",
-            description() {a="Unlock autobuyers for row 3 layers, keep milestones in row 3 layers, and gain 1% more Mega-Timewall on reset every second."
-                if(options.Chinese) a='解锁第3行层级的自动化，保留第3行层级的里程碑，每秒获取1%重置时获取的巨大时间墙'
-                return a
-            },
+            description: "Unlock autobuyers for row 3 layers, keep milestones in row 3 layers, and gain 1% more Mega-Timewall on reset every second.",
             cost: new Decimal(30),
             unlocked() {return true},
             canAfford(){return hasUpgrade('I',24)},
         },
         44: {
             title: "I4-4",
-            description() {a="Unlock autobuyers for MT-Challenge."
-                if(options.Chinese) a='解锁自动完成巨大时间墙挑战'
-                return a
-            },
+            description: "Unlock autobuyers for MT-Challenge.",
             cost: new Decimal(50),
             unlocked() {return true},
             canAfford(){return hasUpgrade('I',34)},
         },
         51: {
-            title() {a="Break Infinity"
-                if(options.Chinese) a='打破无限'
-                return a
-            },
-            description() {a="Your points can go above 1.80e308, but it will be harder to get more points. Also delay the point softcap start by 1.34e154 and nerf it."
-                if(options.Chinese) a='你的点数可以超过1.80e308，但获取更多点数会更困难。点数软上限延迟1.34e154开始且被削弱'
-                return a
-            },
+            title: "Break Infinity",
+            description: "Your points can go above 1.80e308, but it will be harder to get more points. Also delay the point softcap start by 1.34e154 and nerf it.",
             cost() {a=new Decimal(308)
                 if(hasMilestone('E',2)) a=n(0)
                     return a
@@ -4002,46 +3947,31 @@ addLayer("I", {
         },
         61: {
             title: "BI1-1",
-            description() {a="Unlock a buyable in Qi layer which enables you to make more kinds of super-man at a time."
-                if(options.Chinese) a='在Qi层解锁一个可购买，使你能够同时超更多的人'
-                return a
-            },
+            description: "Unlock a buyable in Qi layer which enables you to make more kinds of super-man at a time.",
             cost: new Decimal(500),
             unlocked() {return hasUpgrade('I',51)},
         },
         62: {
             title: "BI1-2",
-            description() {a="gain 50% more Mega-Timewall on reset every second, which is not affacted by any multipliers."
-                if(options.Chinese) a='每秒获取50%更多的巨大时间墙，不受任何其他加成影响'
-                return a
-            },
+            description: "gain 50% more Mega-Timewall on reset every second, which is not affacted by any multipliers.",
             cost: new Decimal(500),
             unlocked() {return hasUpgrade('I',51)},
         },
         63: {
             title: "BI1-3",
-            description() {a="Nerf the Timewall softcap again, and unlock 2 more buyables."
-                if(options.Chinese) a='削弱时间墙软上限，解锁2个可购买'
-                return a
-            },
+            description: "Nerf the Timewall softcap again, and unlock 2 more buyables.",
             cost: new Decimal(500),
             unlocked() {return hasUpgrade('I',51)},
         },
         64: {
             title: "BI1-4",
-            description() {a="NC2's effect is always max and applies outside of NC2."
-                if(options.Chinese) a='普通挑战2的效果总是最大，在挑战外也生效'
-                return a
-            },
+            description: "NC2's effect is always max and applies outside of NC2.",
             cost: new Decimal(2500),
             unlocked() {return hasUpgrade('I',51)},
         },
         71: {
             title: "BI2-1",
-            description() {a="Multiply Point Producer Multiplier base effect based on your fastest Infinity."
-                if(options.Chinese) a='基于你最快的无限增益点数生产器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer Multiplier base effect based on your fastest Infinity.",
             effect() {
                 return n(player.I.bestTime).max(0.05).pow(-1).times(1e5)
             },
@@ -4051,10 +3981,7 @@ addLayer("I", {
         },
         72: {
             title: "BI2-2",
-            description() {a="Multiply Point Producer Multiplier exponent based on your fastest Infinity."
-                if(options.Chinese) a='基于你最快的无限增益点数生产加成器指数'
-                return a
-            },
+            description: "Multiply Point Producer Multiplier exponent based on your fastest Infinity.",
             effect() {
                 return n(1.5).sub(player.I.bestTime.max(0.5)).times(2).max(1).pow(0.5)
             },
@@ -4064,10 +3991,7 @@ addLayer("I", {
         },
         73: {
             title: "BI2-3",
-            description() {a="Multiply Point Producer Multiplier base effect based on your Achievements."
-                if(options.Chinese) a='基于你的成就数量增益点数生产器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer Multiplier base effect based on your Achievements.",
             effect() {
                 return n(1.15).pow(player.A.points)
             },
@@ -4077,10 +4001,7 @@ addLayer("I", {
         },
         74: {
             title: "BI2-4",
-            description() {a="Give free Point Exponent Factory based on your qaqe308."
-                if(options.Chinese) a='基于你的qaqe308数量获得免费的点数指数因子'
-                return a
-            },
+            description: "Give free Point Exponent Factory based on your qaqe308.",
             effect() {
                 return player.qa.points.pow(0.5).min(1000)
             },
@@ -4090,10 +4011,7 @@ addLayer("I", {
         },
         81: {
             title: "BI3-1",
-            description() {a="Infinity Power also boost Timewall gain at a reduced rate, and each bought upgrade in this row multiply Infinity Generator base effect by 2."
-                if(options.Chinese) a='无限力量也以削弱的效果增益时间墙获取，且此行中购买的每个升级都会使无限之力生成器基础效果x2'
-                return a
-            },
+            description: "Infinity Power also boost Timewall gain at a reduced rate, and each bought upgrade in this row multiply Infinity Generator base effect by 2.",
             effect() {a=n(1)
                 if(hasUpgrade('I',81)) a=a.times(2)
                 if(hasUpgrade('I',82)) a=a.times(2)
@@ -4107,37 +4025,25 @@ addLayer("I", {
         },
         82: {
             title: "BI3-2",
-            description() {a="Infinity Power also boost Super Timewall gain at a reduced rate."
-                if(options.Chinese) a='无限力量也以削弱的效果增益超级时间墙获取'
-                return a
-            },
+            description: "Infinity Power also boost Super Timewall gain at a reduced rate.",
             cost: new Decimal(2.5e10),
             unlocked() {return hasMilestone('qa',0)},
         },
         83: {
             title: "BI3-3",
-            description() {a="Infinity Power also boost Mega Timewall gain at a reduced rate, and unlock 2 more buyables."
-                if(options.Chinese) a='无限力量也以削弱的效果增益巨型时间墙获取，且解锁2个可购买'
-                return a
-            },
+            description: "Infinity Power also boost Mega Timewall gain at a reduced rate, and unlock 2 more buyables.",
             cost: new Decimal(5e10),
             unlocked() {return hasMilestone('qa',0)},
         },
         84: {
             title: "BI3-4",
-            description() {a="Unlock Super-qaqe308 and Infinity Challenge."
-                if(options.Chinese) a='解锁超qaqe308和无限挑战'
-                return a
-            },
+            description: "Unlock Super-qaqe308 and Infinity Challenge.",
             cost: new Decimal(1e11),
             unlocked() {return hasMilestone('qa',0)},
         },
         91: {
             title: "BI4-1",
-            description() {a="Passively generate Infinity base on your fastest infinity."
-                if(options.Chinese) a='基于你的最快无限被动生成无限次数'
-                return a
-            },
+            description: "Passively generate Infinity base on your fastest infinity.",
             effect() {a=n(0.2).div(player.I.bestTime)
                 return a
             },
@@ -4147,19 +4053,13 @@ addLayer("I", {
         },
         92: {
             title: "BI4-2",
-            description() {a="Add 0.5 to Infinity Generator Multiplier base."
-                if(options.Chinese) a='无限之力加成器底数+0.5'
-                return a
-            },
+            description: "Add 0.5 to Infinity Generator Multiplier base.",
             cost: new Decimal(1e13),
             unlocked() {return hasMilestone('qa',1)},
         },
         93: {
             title: "BI4-3",
-            description() {a="Multiply Infinity Generator base effect based on Point Producer Multiplier effect."
-                if(options.Chinese) a='根据点数生产加成器效果倍增无限之力生成器基础效果'
-                return a
-            },
+            description: "Multiply Infinity Generator base effect based on Point Producer Multiplier effect.",
             effect() {a=buyableEffect('T',12).pow(0.1).add(1)
                 return a
             },
@@ -4169,10 +4069,7 @@ addLayer("I", {
         },
         94: {
             title: "BI4-4",
-            description() {a="Multiply Point Producer base effect based on Infinity Generator Multiplier effect."
-                if(options.Chinese) a='根据无限生成器乘数效果倍增点数生产器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer base effect based on Infinity Generator Multiplier effect.",
             effect() {a=buyableEffect('I',32).pow(25)
                 if(a.gte('1e1e6')) a=a.div('1e1e6').pow(0.25).times('1e1e6')
                 return a
@@ -4183,10 +4080,7 @@ addLayer("I", {
         },
         101: {
             title: "BI5-1",
-            description() {a="Give free Infinity Generator based on bought IGM and PPM."
-                if(options.Chinese) a='根据购买的无限之力加成器乘数和点数生产加成器给予免费的无限之力生成器'
-                return a
-            },
+            description: "Give free Infinity Generator based on bought IGM and PPM.",
             effect() {a=getBuyableAmount('I',32).times(getBuyableAmount('T',12))
                 return a
             },
@@ -4196,10 +4090,7 @@ addLayer("I", {
         },
         102: {
             title: "BI5-2",
-            description() {a="Multiply free PP and PPM based on bought IG."
-                if(options.Chinese) a='根据购买的无限之力生成器倍增免费的点数生产器和点数生产加成器'
-                return a
-            },
+            description: "Multiply free PP and PPM based on bought IG.",
             effect() {a=getBuyableAmount('I',31).pow(2)
                 return a
             },
@@ -4209,10 +4100,7 @@ addLayer("I", {
         },
         103: {
             title: "BI5-3",
-            description() {a="Give free Infinity Generator Multiplier based on bought IEF."
-                if(options.Chinese) a='根据购买的无限之力指数因子给予免费的无限之力加成器'
-                return a
-            },
+            description: "Give free Infinity Generator Multiplier based on bought IEF.",
             effect() {a=getBuyableAmount('I',33)
                 return a
             },
@@ -4222,19 +4110,13 @@ addLayer("I", {
         },
         104: {
             title: "BI5-4",
-            description() {a="Infinity Exponent Factory and Point Exponent Factory is 1.5x effective."
-                if(options.Chinese) a='无限之力指数因子和点数指数因子的效果变为原来的1.5倍'
-                return a
-            },
+            description: "Infinity Exponent Factory and Point Exponent Factory is 1.5x effective.",
             cost: new Decimal(1e32),
             unlocked() {return hasUpgrade('qa',14)},
         },
         111: {
             title: "BI6-1",
-            description() {a="Multiply Super-cokecole generation speed based on effective Super-qaqe308."
-                if(options.Chinese) a='基于超QqQe308次数增益超cokecole的速度'
-                return a
-            },
+            description: "Multiply Super-cokecole generation speed based on effective Super-qaqe308.",
             effect() {a=tmp.Qi.effqaqe308.times(100).max(1)
                 return a
             },
@@ -4244,10 +4126,7 @@ addLayer("I", {
         },
         112: {
             title: "BI6-2",
-            description() {a="Multiply Super-cokecole generation speed based on total Infinity Points."
-                if(options.Chinese) a='基于总无限点数增益超cokecole的速度'
-                return a
-            },
+            description: "Multiply Super-cokecole generation speed based on total Infinity Points.",
             effect() {a=player.I.total.add(1).pow(0.1)
                 return a
             },
@@ -4257,10 +4136,7 @@ addLayer("I", {
         },
         113: {
             title: "BI6-3",
-            description() {a="Multiply Super-qaqe308 generation speed based on effective Super-cokecole."
-                if(options.Chinese) a='基于超cokecole的次数倍增超qaqe308的速度'
-                return a
-            },
+            description: "Multiply Super-qaqe308 generation speed based on effective Super-cokecole.",
             effect() {a=tmp.Qi.effcokecole.add(1).log(10).add(1)
                 return a
             },
@@ -4270,10 +4146,7 @@ addLayer("I", {
         },
         114: {
             title: "BI6-4",
-            description() {a="Multiply Super-qaqe308 generation speed based on Monika Points."
-                if(options.Chinese) a='基于Monika点数倍增超qaqe308的速度'
-                return a
-            },
+            description: "Multiply Super-qaqe308 generation speed based on Monika Points.",
             effect() {a=player.qa.monika.pow(0.15)
                 return a
             },
@@ -4283,10 +4156,7 @@ addLayer("I", {
         },
         121: {
             title: "BI7-1",
-            description() {a="Multiply Monika Point gain based on effective Super-qaqe308."
-                if(options.Chinese) a='基于超qaqe308的次数倍增Monika点数获取'
-                return a
-            },
+            description: "Multiply Monika Point gain based on effective Super-qaqe308.",
             effect() {a=tmp.Qi.effqaqe308.pow(0.1)
                 return a
             },
@@ -4296,10 +4166,7 @@ addLayer("I", {
         },
         122: {
             title: "BI7-2",
-            description() {a="Multiply Monika Point gain based on total Infinity Points."
-                if(options.Chinese) a='基于总无限点数倍增Monika点数获取'
-                return a
-            },
+            description: "Multiply Monika Point gain based on total Infinity Points.",
             effect() {a=player.I.total.pow(0.01)
                 return a
             },
@@ -4309,10 +4176,7 @@ addLayer("I", {
         },
         123: {
             title: "BI7-3",
-            description() {a="Multiply Monika Point gain based on Infinities."
-                if(options.Chinese) a='基于无限次数倍增Monika点数获取'
-                return a
-            },
+            description: "Multiply Monika Point gain based on Infinities.",
             effect() {a=player.I.inf.pow(0.1)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
                 return a
@@ -4323,10 +4187,7 @@ addLayer("I", {
         },
         124: {
             title: "BI7-4",
-            description() {a="Multiply Monika Point gain based on Bought Infinity Generator."
-                if(options.Chinese) a='基于购买的无限之力生成器倍增Monika点数获取'
-                return a
-            },
+            description: "Multiply Monika Point gain based on Bought Infinity Generator.",
             effect() {a=getBuyableAmount('I',31).times(0.1).add(1)
                 return a
             },
@@ -4335,23 +4196,14 @@ addLayer("I", {
             unlocked() {return hasChallenge('I',26)},
         },
         131: {
-            title() {a="Unlock Timewall Power"
-                if(options.Chinese) a='解锁时间墙能量'
-                return a
-            },
-            description() {a="A new feature, a boost to IG."
-                if(options.Chinese) a='时间墙能量可以增益无限之力生成器'
-                return a
-            },
+            title: "Unlock Timewall Power",
+            description: "A new feature, a boost to IG.",
             cost: new Decimal(1e120),
             unlocked() {return hasChallenge('I',28)},
         },
         141: {
             title: "TP1-1",
-            description() {a="Multiply Point Producer base effect based on Timewall Power."
-                if(options.Chinese) a='基于时间墙能量增益点数生成器基础效果'
-                return a
-            },
+            description: "Multiply Point Producer base effect based on Timewall Power.",
             effect() {a=player.I.tpower.add(1).pow(2)
                 return a
             },
@@ -4364,10 +4216,7 @@ addLayer("I", {
         },
         142: {
             title: "TP1-2",
-            description() {a="Multiply Super-QqQe308 and Super-cokecole generation speed based on Timewall Power."
-                if(options.Chinese) a='基于时间墙能量倍增超QqQe308和超cokecole的速度'
-                return a
-            },
+            description: "Multiply Super-QqQe308 and Super-cokecole generation speed based on Timewall Power.",
             effect() {a=player.I.tpower.add(1).pow(0.5)
                 return a
             },
@@ -4380,10 +4229,7 @@ addLayer("I", {
         },
         143: {
             title: "TP1-3",
-            description() {a="Multiply Super-qaqe308 generation speed based on Timewall Power."
-                if(options.Chinese) a='基于时间墙能量倍增超qaqe308的速度'
-                return a
-            },
+            description: "Multiply Super-qaqe308 generation speed based on Timewall Power.",
             effect() {a=player.I.tpower.add(1).pow(0.3)
                 return a
             },
@@ -4396,10 +4242,7 @@ addLayer("I", {
         },
         144: {
             title: "TP1-4",
-            description() {a="Multiply Monika Points gain based on Timewall Power, and improve Timewall Power gain formula."
-                if(options.Chinese) a='基于时间墙能量倍增Monika点数获取，并改进时间墙能量获取公式'
-                return a
-            },
+            description: "Multiply Monika Points gain based on Timewall Power, and improve Timewall Power gain formula.",
             effect() {a=player.I.tpower.add(1).pow(0.1)
                 if(a.gte(100)) a=a.sub(99).log(2).add(100)
                 return a
@@ -4413,10 +4256,7 @@ addLayer("I", {
         },
         151: {
             title: "TP2-1",
-            description() {a="Multiply Timewall Power gain based on total Infinity Points."
-                if(options.Chinese) a='基于总无限点数倍增时间墙能量获取'
-                return a
-            },
+            description: "Multiply Timewall Power gain based on total Infinity Points.",
             effect() {a=player.I.total.log(1e20)
                 return a
             },
@@ -4429,10 +4269,7 @@ addLayer("I", {
         },
         152: {
             title: "TP2-2",
-            description() {a="Multiply Timewall Power gain based on effective Super-qaqe308."
-                if(options.Chinese) a='基于超qaqe308的次数倍增时间墙能量获取'
-                return a
-            },
+            description: "Multiply Timewall Power gain based on effective Super-qaqe308.",
             effect() {a=tmp.Qi.effqaqe308.log(10)
                 return a
             },
@@ -4445,10 +4282,7 @@ addLayer("I", {
         },
         153: {
             title: "TP2-3",
-            description() {a="Multiply Timewall Power gain based on Monika Buyables 1 bought."
-                if(options.Chinese) a='基于Monika可购买1的购买次数倍增时间墙能量获取'
-                return a
-            },
+            description: "Multiply Timewall Power gain based on Monika Buyables 1 bought.",
             effect() {a=getBuyableAmount('qa',11).add(1)
                 return a
             },
@@ -4461,10 +4295,7 @@ addLayer("I", {
         },
         154: {
             title: "TP2-4",
-            description() {a="IC5's effect is nerfed to ^0.6 in 'All in One' challenge."
-                if(options.Chinese) a='在“八合一”挑战中，无限挑战5的效果变为^0.6'
-                return a
-            },
+            description: "IC5's effect is nerfed to ^0.6 in 'All in One' challenge.",
             cost: new Decimal(1e14),
             unlocked() {return getBuyableAmount('I',54).gte(2)},
             currencyLocation() {return player.I},
@@ -4473,10 +4304,7 @@ addLayer("I", {
         },
         161: {
             title: "TP3-1",
-            description() {a="Multiply Infinity Generator Multiplier based on Timewall Power."
-                if(options.Chinese) a='基于时间墙能量增益无限之力加成器底数'
-                return a
-            },
+            description: "Multiply Infinity Generator Multiplier based on Timewall Power.",
             effect() {a=player.I.tpower.add(1).log(1e10).add(1).pow(0.5)
                 return a
             },
@@ -4489,10 +4317,7 @@ addLayer("I", {
         },
         162: {
             title: "TP3-2",
-            description() {a="Free PP and PPM is raised to ^1.1."
-                if(options.Chinese) a='免费的点数生产器和点数生产加成器提升到^1.1'
-                return a
-            },
+            description: "Free PP and PPM is raised to ^1.1.",
             cost: new Decimal(1e24),
             unlocked() {return getBuyableAmount('I',54).gte(3)},
             currencyLocation() {return player.I},
@@ -4501,10 +4326,7 @@ addLayer("I", {
         },
         163: {
             title: "TP3-3",
-            description() {a="TP1-1's effect also applies to all kinds of Timewall(exclude Compressed Timewall)."
-                if(options.Chinese) a='TP1-1的效果适用于所有类型的时间墙（压缩时间墙除外）'
-                return a
-            },
+            description: "TP1-1's effect also applies to all kinds of Timewall(exclude Compressed Timewall).",
             cost: new Decimal(1e30),
             unlocked() {return getBuyableAmount('I',54).gte(3)},
             currencyLocation() {return player.I},
@@ -4513,10 +4335,7 @@ addLayer("I", {
         },
         164: {
             title: "TP3-4",
-            description() {a="Unlock Upgrade Booster."
-                if(options.Chinese) a='解锁升级增强器'
-                return a
-            },
+            description: "Unlock Upgrade Booster.",
             cost: new Decimal(1e40),
             unlocked() {return getBuyableAmount('I',54).gte(3)},
             currencyLocation() {return player.I},
@@ -4524,50 +4343,26 @@ addLayer("I", {
             currencyInternalName: 'tpower',
         },
         171: {
-            title() {a="Unlock Q-Upgrade Booster"
-                if(options.Chinese) a='解锁Q-升级增强器'
-                return a
-            },
-            description() {a="A new feature, a boost to Q-Upgrades."
-                if(options.Chinese) a='Q-升级增强器可以增益QqQe308升级'
-                return a
-            },
+            title: "Unlock Q-Upgrade Booster",
+            description: "A new feature, a boost to Q-Upgrades.",
             cost: new Decimal(1e220),
             unlocked() {return hasUpgrade('I',164)},
         },
         172: {
-            title() {a="Timewall is weaker now"
-                if(options.Chinese) a='时间墙弱化'
-                return a
-            },
-            description() {a="x10 QUBF gain."
-                if(options.Chinese) a='Q-升级增强器碎片获取x10'
-                return a
-            },
+            title: "Timewall is weaker now",
+            description: "x10 QUBF gain.",
             cost: new Decimal(1e256),
             unlocked() {return hasUpgrade('I',171)},
         },
         173: {
-            title() {a="Timewall is more weaker"
-                if(options.Chinese) a='时间墙弱化 II'
-                return a
-            },
-            description() {a="x5 QUBF and Monika Point gain."
-                if(options.Chinese) a='Q-升级增强器碎片和Monika点数增益x5'
-                return a
-            },
+            title: "Timewall is more weaker",
+            description: "x5 QUBF and Monika Point gain.",
             cost: new Decimal(1e268),
             unlocked() {return hasUpgrade('I',172)},
         },
         174: {
-            title() {a="Self-Boost"
-                if(options.Chinese) a='自我增强'
-                return a
-            },
-            description() {a="QUBF boosts QUBF gain."
-                if(options.Chinese) a='Q-升级增强器增益Q-升级增强器获取'
-                return a
-            },
+            title: "Self-Boost",
+            description: "QUBF boosts QUBF gain.",
             effect() {a=player.I.QUBF.add(10).log(10).max(player.I.QUBF.add(1).pow(0.1))
                 return a
             },
@@ -4578,23 +4373,11 @@ addLayer("I", {
     },
     challenges: {
         11: {
-            name() {a="Normal Challenge 1"
-                if(options.Chinese) a='普通挑战1'
-                return a
-            },
-            challengeDescription() {a="Infinity for the first time."
-                if(options.Chinese) a='第一次无限'
-                return a
-            },
-            goalDescription(){a="Reach Infinity."
-                if(options.Chinese) a='达到无限'
-                return a
-            },
-            rewardDescription(){a="Point boosts Point Producer bast effect."
-                if(options.Chinese) a='点数提升点数生产器基础效果'
-                return a
-            },
-            rewardEffect(){a=player.points.max(1).pow(0.01)
+            name: "Normal Challenge 1",
+            challengeDescription: "Infinity for the first time.",
+            goalDescription:"Reach Infinity.",
+            rewardDescription:"Point boosts Point Producer bast effect.",
+            rewardEffect(){a=player.points.max(1).pow(0.01).min('1e10000000')
                 return a
             },
             rewardDisplay(){return format(challengeEffect(this.layer, this.id))+'x'},
@@ -4602,23 +4385,13 @@ addLayer("I", {
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         12: {
-            name() {a="Normal Challenge 2"
-                if(options.Chinese) a='普通挑战2'
-                return a
-            },
+            name: "Normal Challenge 2",
             challengeDescription() {a="Point Producer base effect is heavily reduced, but gets an exponentially increasing multiplier, capped at 1e100. This multiplier resets after every reset."
                 a=a+'<br/>Currently: '+format(tmp.I.NC2eff)+'x'
-                if(options.Chinese) {a='点数生产器基础效果大幅削弱，但获得一个指数增长的乘数，最高1e100，且在任意重置后重置<br/>当前：'+format(tmp.I.NC2eff)+'x'}
                 return a
             },
-            goalDescription(){a="Reach Infinity."
-                if(options.Chinese) a='达到无限'
-                return a
-            },
-            rewardDescription(){a="Point Producer base effect is multiplied by "+format(1000)+", but reduces based on time in this Infinity."
-                if(options.Chinese) a='点数生产器基础效果x'+format(1000)+',但在此次无限中随时间减少'
-                return a
-            },
+            goalDescription:"Reach Infinity.",
+            rewardDescription:"Point Producer base effect is multiplied by "+format(1000)+", but reduces based on time in this Infinity.",
             rewardEffect(){a=n(1000).sub(n(player.I.resetTime).times(0.1)).max(1)
                 if(hasUpgrade('I',64)) a=n(1000)
                 return a
@@ -4628,62 +4401,31 @@ addLayer("I", {
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         13: {
-            name() {a="Normal Challenge 3"
-                if(options.Chinese) a='普通挑战3'
-                return a
-            },
-            challengeDescription() {a="Point Producer Multiplier exponent is divided by 2."
-                if(options.Chinese) a='点数生产加成器指数除以2'
-                return a
-            },
-            goalDescription(){a="Reach Infinity."
-                if(options.Chinese) a='达到无限'
-                return a
-            },
-            rewardDescription(){a="Point Producer Multiplier base effect is multiplied by 10."
-                if(options.Chinese) a='点数生产加成器基础效果x10'
-                return a
-            },
+            name: "Normal Challenge 3",
+            challengeDescription: "Point Producer Multiplier exponent is divided by 2.",
+            goalDescription:"Reach Infinity.",
+            rewardDescription:"Point Producer Multiplier base effect is multiplied by 10.",
             canComplete: function() {return player.points.gte(n(2).pow(1024))},
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         14: {
-            name() {a="Normal Challenge 4"
-                if(options.Chinese) a='普通挑战4'
-            return a},
+            name: "Normal Challenge 4",
             challengeDescription() {a="Bought and free PEF is useless, but its effect is based on total Super-Timewall and Mega-Timewall, capped at 1.50."
-                if(options.Chinese) a='点数指数因子无效，但其效果受超级时间墙和巨大时间墙影响，最高^1.50'
                 return a
             },
-            goalDescription(){a="Reach Infinity."
-                if(options.Chinese) a='达到无限'
-                return a
-            },
-            rewardDescription(){a="Multiply Point Exponent Factory base effect by 1.2."
-                if(options.Chinese) a='点数指数因子基础效果x1.2'
-                return a
-            },
+            goalDescription:"Reach Infinity.",
+            rewardDescription:"Multiply Point Exponent Factory base effect by 1.2.",
             canComplete: function() {return player.points.gte(n(2).pow(1024))},
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         15: {
-            name() {a="Normal Challenge 5"
-                if(options.Chinese) a='普通挑战5'
-                return a
-            },
-            challengeDescription() {a="Free buyables are disabled. When you buy a T-buyable, you must pay 1/3 of it in taxes."
-                if(options.Chinese) a='免费可购买被禁用，有效的时间墙可购买数量减少1/3'
-                return a
-            },
-            goalDescription(){a="Reach Infinity."
-                if(options.Chinese) a='达到无限'
-                return a
-            },
-            rewardDescription(){a="Divide QqQe308 cost scaling based on effective Super-QqQe308."
-                if(options.Chinese) a='基于超QqQe308的次数降低QqQe308需求折算'
-                return a
-            },
-            rewardEffect(){a=tmp.Qi.effQqQe308.add(1).pow(0.02).min(10)
+            name: "Normal Challenge 5",
+            challengeDescription: "Free buyables are disabled. When you buy a T-buyable, you must pay 1/3 of it in taxes.",
+            //The former effect is "You can't gain QqQe308, QqQeInfinity and cokecole"
+            //99%->90%->75%->50%->1/3
+            goalDescription:"Reach Infinity.",
+            rewardDescription:"Divide QqQe308 cost scaling based on effective Super-QqQe308.",
+            rewardEffect(){a=tmp.Qi.effQqQe308.add(1).pow(0.02)
                 return a
             },
             rewardDisplay(){return '/'+format(challengeEffect(this.layer, this.id))},
@@ -4691,42 +4433,18 @@ addLayer("I", {
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         16: {
-            name() {a="Normal Challenge 6"
-                if(options.Chinese) a='普通挑战6'
-                return a
-            },
-            challengeDescription() {a="Push yourself in any MT-Challenge in normal Infinity to complete it. You don't need to enter this challenge."
-                if(options.Chinese) a='在任意巨大时间墙挑战中达到无限（你无需进入此挑战）'
-                return a
-            },
-            goalDescription(){a="Reach 1.80e308 points in any MT-Challenge in normal Infinity."
-                if(options.Chinese) a='在任何巨大时间墙挑战中达到1.80e308点数'
-                return a
-            },
-            rewardDescription(){a="M1-2 and M1-3's effect is powered to ^4."
-                if(options.Chinese) a='M1-2和M1-3的效果^4。'
-                return a
-            },
+            name: "Normal Challenge 6",
+            challengeDescription: "Push yourself in any MT-Challenge in normal Infinity to complete it. You don't need to enter this challenge.",
+            goalDescription:"Reach 1.80e308 points in any MT-Challenge in normal Infinity.",
+            rewardDescription:"M1-2 and M1-3's effect is powered to ^4.",
             canComplete: function() {return false},
             unlocked() {return player.I.inf.gte(1)||hasMilestone('E',2)}
         },
         21: {
-            name() {a="Infinity Challenge 1"
-                if(options.Chinese) a='无限挑战1'
-                return a
-            },
-            challengeDescription() {a="Normal Challenge 2~5 are actived at once, the effect of NC2 is powered to ^-1, and PEF effect is capped at 1.20."
-                if(options.Chinese) a='普通挑战2~5同时激活，普通挑战2的效果变为原来的-1次方，点数指数因子的效果限制在^1.20'
-                return a
-            },
-            goalDescription() {a="1e600 Points in any MT-Challenge."
-                if(options.Chinese) a='在任意巨大时间墙挑战中达到1e600点数'
-                return a
-            },
-            rewardDescription() {a="x10 to Infinity Generator base effect per Infinity Challenge completed."
-                if(options.Chinese) a='每完成一个无限挑战，无限之力生成器基础效果x10'
-                return a
-            },
+            name: "Infinity Challenge 1",
+            challengeDescription: "Normal Challenge 2~5 are actived at once, the effect of NC2 is powered to ^-1, and PEF effect is capped at 1.20.",
+            goalDescription:"1e600 Points in any MT-Challenge.",
+            rewardDescription:"x10 to Infinity Generator base effect per Infinity Challenge completed.",
             countsAs:[12,13,14,15],
             rewardEffect(){a=n(10).pow(tmp.I.ICcomp)
                 return a
@@ -4736,22 +4454,10 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(1)}
         },
         22: {
-            name() {a="Infinity Challenge 2"
-                if(options.Chinese) a='无限挑战2'
-                return a
-            },
-            challengeDescription() {a="MT-Challenge reward is disabled."
-                if(options.Chinese) a='巨大时间墙挑战奖励被禁用'
-                return a
-            },
-            goalDescription() {a="1e1750 Points."
-                if(options.Chinese) a='1e1750点数'
-                return a
-            },
-            rewardDescription() {a="Power MT-Challenge reward(^1.5 for MTC1, 2, and 4, ^3 for MTC3), and +0.5 to Infinity Generator Multiplier base per Infinity Challenge completed."
-                if(options.Chinese) a='强化巨大时间墙挑战奖励（挑战1、2、4效果^1.5，挑战3效果^3），且每完成一个无限挑战，无限之力加成器底数+0.5'
-                return a
-            },
+            name: "Infinity Challenge 2",
+            challengeDescription: "MT-Challenge reward is disabled.",
+            goalDescription:"1e1750 Points.",
+            rewardDescription:"Power MT-Challenge reward(^1.5 for MTC1, 2, and 4, ^3 for MTC3), and +0.5 to Infinity Generator Multiplier base per Infinity Challenge completed.",
             rewardEffect(){a=n(0.5).times(tmp.I.ICcomp)
                 return a
             },
@@ -4760,22 +4466,10 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(2)}
         },
         23: {//67min
-            name() {a="Infinity Challenge 3"
-                if(options.Chinese) a='无限挑战3'
-                return a
-            },
-            challengeDescription() {a="Point Exponent Factory boosts Point Producer Multiplier effect instead of Point Producer."
-                if(options.Chinese) a='点数指数因子增益点数生产加成器指数而不是点数生产器效果'
-                return a
-            },
-            goalDescription() {a="1e1600 Points."
-                if(options.Chinese) a='1e1600点数'
-                return a
-            },
-            rewardDescription() {a="Multiply Point Producer Multiplier Exponent based on bought PEF."
-                if(options.Chinese) a='根据购买的点数指数因子数量增益点数生产加成器指数'
-                return a
-            },
+            name: "Infinity Challenge 3",
+            challengeDescription: "Point Exponent Factory boosts Point Producer Multiplier effect instead of Point Producer.",
+            goalDescription:"1e1600 Points.",
+            rewardDescription:"Multiply Point Producer Multiplier Exponent based on bought PEF.",
             rewardEffect(){a=getBuyableAmount('T',13).times(0.02).add(1)
                 if(a.gte(10)) a=a.div(10).pow(0.35).times(10)
                 return a
@@ -4785,42 +4479,18 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(3)}
         },
         24: {//56min
-            name() {a="Infinity Challenge 4"
-                if(options.Chinese) a='无限挑战4'
-                return a
-            },
-            challengeDescription() {a="Point softcap and Timewall softcap is a lot stronger."
-                if(options.Chinese) a='点数软上限和时间墙软上限更强'
-                return a
-            },
-            goalDescription() {a="1e729 Points."
-                if(options.Chinese) a='1e729点数'
-                return a
-            },
-            rewardDescription() {a="Multiply Point Exponent Factory effect by 1.05, applies after all softcaps."
-                if(options.Chinese) a='点数指数因子效果x1.05，无视软上限'
-                return a
-            },
+            name: "Infinity Challenge 4",
+            challengeDescription: "Point softcap and Timewall softcap is a lot stronger.",
+            goalDescription:"1e729 Points.",
+            rewardDescription:"Multiply Point Exponent Factory effect by 1.05, applies after all softcaps.",
             canComplete: function() {return player.points.gte('1e729')},
             unlocked() {return getBuyableAmount('I',41).gte(4)}
         },
         25: {//46min
-            name() {a="Infinity Challenge 5"
-                if(options.Chinese) a='无限挑战5'
-                return a
-            },
-            challengeDescription() {a="Infinity Exponent Factory effect is multiplied by 0.1."
-                if(options.Chinese) a='无限之力指数因子效果x0.1'
-                return a
-            },
-            goalDescription() {a="1e5400 Points."
-                if(options.Chinese) a='1e5400点数'
-                return a
-            },
-            rewardDescription() {a="Multiply Infinity Generator base effect based on Infinities."
-                if(options.Chinese) a='基于无限次数增益无限之力生成器基础效果'
-                return a
-            },
+            name: "Infinity Challenge 5",
+            challengeDescription: "Infinity Exponent Factory effect is multiplied by 0.1.",
+            goalDescription:"1e5400 Points.",
+            rewardDescription:"Multiply Infinity Generator base effect based on Infinities.",
             rewardEffect(){a=player.I.inf.pow(5)
                 if(hasUpgrade('E',31)) a=a.pow(1.5)
                 return a
@@ -4830,22 +4500,10 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(5)}
         },
         26: {//no timewall here
-            name() {a="Infinity Challenge 6"
-                if(options.Chinese) a='无限挑战6'
-                return a
-            },
-            challengeDescription() {a="Your effective Super-QqQe308 is capped at 10000, and you can't gain Super-cokecole."
-                if(options.Chinese) a='你最多只能超10000次QqQe308，且无法超cokecole.'
-                return a
-            },
-            goalDescription() {a="1e7000 Points."
-                if(options.Chinese) a='1e7000点数'
-                return a
-            },
-            rewardDescription() {a="Multiply first 3 kinds of Super-man generation speed based on total Infinity Points, and unlock the 7th row of BI-Upgrade."
-                if(options.Chinese) a='基于总无限点数增益超前三个人的速度，并解锁第7行BI升级.'
-                return a
-            },
+            name: "Infinity Challenge 6",
+            challengeDescription: "Your effective Super-QqQe308 is capped at 10000, and you can't gain Super-cokecole.",
+            goalDescription:"1e7000 Points.",
+            rewardDescription:"Multiply first 3 kinds of Super-man generation speed based on total Infinity Points, and unlock the 7th row of BI-Upgrade.",
             rewardEffect(){a=player.I.total.add(1).log(2).add(1)
                 return a
             },
@@ -4854,22 +4512,10 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(6)}
         },
         27: {//48~49min
-            name() {a="Infinity Challenge 7"
-                if(options.Chinese) a='无限挑战7'
-                return a
-            },
-            challengeDescription() {a="Monika Buyable is 50% less effective."
-                if(options.Chinese) a='Monika可购买效果降低50%'
-                return a
-            },
-            goalDescription() {a="1e10950 Points."
-                if(options.Chinese) a='1e10950点数'
-                return a
-            },
-            rewardDescription() {a="Monika Buyable is 50% more effective, and multiply Monika Point gain by 2 per Infinity Challenge completed."
-                if(options.Chinese) a='Monika可购买效果增加50%，且每完成一个无限挑战，Monika点数获取量翻倍'
-                return a
-            },
+            name: "Infinity Challenge 7",
+            challengeDescription: "Monika Buyable is 50% less effective.",
+            goalDescription:"1e10950 Points.",
+            rewardDescription:"Monika Buyable is 50% more effective, and multiply Monika Point gain by 2 per Infinity Challenge completed.",
             rewardEffect(){a=n(2).pow(tmp.I.ICcomp)
                 return a
             },
@@ -4878,42 +4524,18 @@ addLayer("I", {
             unlocked() {return getBuyableAmount('I',41).gte(7)}
         },
         28: {//18min
-            name() {a="Infinity Challenge 8"
-                if(options.Chinese) a='无限挑战8'
-                return a
-            },
-            challengeDescription() {a="All pre-Infinity resource and Infinity Power generation speed is divided by 1e50, and you can't reset for all kinds of Timewall."
-                if(options.Chinese) a='所有无限前资源和无限之力生成速度/1e50，且你无法重置以获取所有类型的时间墙。'
-                return a
-            },
-            goalDescription() {a="1e15000 Points."
-                if(options.Chinese) a='1e15000点数'
-                return a
-            },
-            rewardDescription() {a="Infinity Exponent Factory is twice effective, and unlock Timewall Power."
-                if(options.Chinese) a='无限之力指数因子效果翻倍，并解锁时间墙能量。'
-                return a
-            },
+            name: "Infinity Challenge 8",
+            challengeDescription: "All pre-Infinity resource and Infinity Power generation speed is divided by 1e50, and you can't reset for all kinds of Timewall.",
+            goalDescription:"1e15000 Points.",
+            rewardDescription:"Infinity Exponent Factory is twice effective, and unlock Timewall Power.",
             canComplete: function() {return player.points.gte('1e15000')},
             unlocked() {return getBuyableAmount('I',41).gte(8)}
         },
         31: {
-            name() {a="All in One"
-                if(options.Chinese) a='八合一'
-                return a
-            },
-            challengeDescription() {a="Infinity Challenge 1~8 are actived at once, but IC5's effect is nerfed to ^0.5."
-                if(options.Chinese) a='无限挑战1~8同时激活，但无限挑战5的效果被削弱到^0.5'
-                return a
-            },
-            goalDescription() {a="Gain as many Timewalls as possible."
-                if(options.Chinese) a='获得尽可能多的时间墙'
-                return a
-            },
-            rewardDescription() {a="Gain Compressed Timewalls based on your all kinds of Timewall in this challenge."
-                if(options.Chinese) a='基于你在本挑战中获得的所有类型的时间墙获得压缩时间墙'
-                return a
-            },
+            name: "All in One",
+            challengeDescription: "Infinity Challenge 1~8 are actived at once, but IC5's effect is nerfed to ^0.5.",
+            goalDescription:"Gain as many Timewalls as possible.",
+            rewardDescription:"Gain Compressed Timewalls based on your all kinds of Timewall in this challenge.",
             countsAs:[21,22,23,24,25,26,27,28],
             rewardEffect(){a=player.I.C31base
                 return a
@@ -4925,50 +4547,26 @@ addLayer("I", {
     },
     milestones:{
         0: {
-            requirementDescription() {a="Buy Upgrade I1-4"
-                if(options.Chinese) a='购买升级 I1-4'
-                return a
-            },
-            effectDescription() {a="Unlock Autobuyers for T-Upgrades, T-Buyables(exclude Timewall Doubler), T-Challenges, QqQe308 reset and Q-Upgrades, keep 25 points on reset, and always show Q layer."
-                if(options.Chinese) a='解锁时间墙升级、时间墙可购买（不包括时间墙倍增器）、时间墙挑战、QqQe308和QqQe308升级的自动购买器，重置时保留25点数，且始终显示Q层级。'
-                return a
-            },
+            requirementDescription: "Buy Upgrade I1-4",
+            effectDescription() {return "Unlock Autobuyers for T-Upgrades, T-Buyables(exclude Timewall Doubler), T-Challenges, QqQe308 reset and Q-Upgrades, keep 25 points on reset, and always show Q layer."},
             done() { return hasUpgrade('I',14) },
             toggles:[["I", "TUauto"],["I", "TBauto"],["I", "TCauto"],["I", "QqQauto"],["I", "QUauto"]]
         },
         1: {
-            requirementDescription() {a="Buy Upgrade I2-4"
-                if(options.Chinese) a='购买升级 I2-4'
-                return a
-            },
-            effectDescription() {a="Unlock Autobuyers for ST-Upgrades, Timewall Doubler, ST-Challenges(even in MT-Challenge), QqQeInfinity reset, always show Qi layer, and unlock a new Q-Milestone."
-                if(options.Chinese) a='解锁超级时间墙升级、时间墙倍增器、超级时间墙挑战（即使在巨大时间墙挑战中）、QqQeInfinity的自动购买器，始终显示Qi层级，并解锁新的QqQe308里程碑。'
-                return a
-            },
+            requirementDescription: "Buy Upgrade I2-4",
+            effectDescription() {return "Unlock Autobuyers for ST-Upgrades, Timewall Doubler, ST-Challenges(even in MT-Challenge), QqQeInfinity reset, always show Qi layer, and unlock a new Q-Milestone."},
             done() { return hasUpgrade('I',24) },
             toggles:[["I", "STUauto"],["I", "TDauto"],["I", "STCauto"],["I", "Qiauto"]]
         },
         2: {
-            requirementDescription() {a="Buy Upgrade I3-4"
-                if(options.Chinese) a='购买升级 I3-4'
-                return a
-            },
-            effectDescription() {a="Unlock Autobuyers for MT-Upgrades, MT-Challenge buyable and cokecole reset, always show Co layer, unlock 2 new Q-Milestones, and you can always reset for Mega Timewall manually."
-                if(options.Chinese) a='解锁巨大时间墙升级、巨大时间墙挑战可购买和cokecole的自动购买器，始终显示Co层级，解锁2个新的QqQe308里程碑，且你一直可以手动重置以获得巨大时间墙。'
-                return a
-            },
+            requirementDescription: "Buy Upgrade I3-4",
+            effectDescription() {return "Unlock Autobuyers for MT-Upgrades, MT-Challenge buyable and cokecole reset, always show Co layer, unlock 2 new Q-Milestones, and you can always reset for Mega Timewall manually."},
             done() { return hasUpgrade('I',34) },
             toggles:[["I", "MTUauto"],["I", "MTCUauto"],["I", "Coauto"]]
         },
         3: {
-            requirementDescription() {a="Buy Upgrade I4-4"
-                if(options.Chinese) a='购买升级 I4-4'
-                return a
-            },
-            effectDescription() {a="Automatically gain MT-Challenge 1~4 completions based on your points(^0.5 for MT-Challenge 1 and 4)"
-                if(options.Chinese) a='基于你的点数自动完成巨大时间墙挑战1~4（对巨大时间墙挑战1和4，有效点数^0.5）'
-                return a
-            },
+            requirementDescription: "Buy Upgrade I4-4",
+            effectDescription() {return "Automatically gain MT-Challenge 1~4 completions based on your points(^0.5 for MT-Challenge 1 and 4)"},
             done() { return hasUpgrade('I',44) },
             toggles:[["I", "MTC1auto"],["I", "MTC2auto"],["I", "MTC3auto"],["I", "MTC4auto"]]
         },
@@ -4976,7 +4574,6 @@ addLayer("I", {
     buyables: {
         11: {
             title(){text = 'IP Doubler'
-                if(options.Chinese) text='IP倍增器'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freeTD.neq(0))text=text+' + '+format(tmp.T.freeTD)
                 text=text+')'
@@ -4987,12 +4584,9 @@ addLayer("I", {
                 if(a.gte(tmp.I.IPDbase.pow(200))) a=tmp.I.IPDbase.pow(n(200).add(x.sub(200).pow(0.5)))
                     return a
             },
-            display() { a="Multiply IP gain by "+format(tmp.I.IPDbase)+"<br/>Effect:"+format(this.effect())+'x'
+            display() { a="Multiply IP gain by "+format(tmp.I.IPDbase)+" <br/>Effect:"+format(this.effect())+'x'
                 if(getBuyableAmount(this.layer,this.id).gt(200)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="无限点数获取量x"+format(tmp.I.IPDbase)+"<br/>效果:"+format(this.effect())+'x'
-                if(getBuyableAmount(this.layer,this.id).gt(200)) a=a+'（受软上限限制）'
-                a=a+"<br/>花费: "+format(this.cost())+' 无限点数'}
             return a},
             unlocked() {return player.I.upgrades.length >= 16||hasMilestone('E',6)},
             canAfford() { return player.I.points.gte(this.cost())&&player.I.upgrades.length >= 16 },
@@ -5012,7 +4606,6 @@ addLayer("I", {
         },
         21: {
             title(){text = 'Nerf point softcap'
-                if(options.Chinese) text='点数软上限削弱'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freeTD.neq(0))text=text+' + '+format(tmp.T.freeTD)
                 text=text+'/10.00)'
@@ -5025,7 +4618,6 @@ addLayer("I", {
             },
             display() { a="Add 0.01 to point softcap exponent<br/>Effect:+"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="点数软上限指数+0.01<br/>效果:"+format(this.effect())+'<br>花费: '+format(this.cost())+' 无限点数'}
             return a},
             unlocked() {return hasUpgrade('I',63)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5045,7 +4637,6 @@ addLayer("I", {
         },
         22: {
             title(){text = 'Nerf Timewall softcap'
-                if(options.Chinese) text='时间墙软上限削弱'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freeTD.neq(0))text=text+' + '+format(tmp.T.freeTD)
                 text=text+'/10.00)'
@@ -5058,7 +4649,6 @@ addLayer("I", {
             },
             display() { a="Add 0.02 to Timewall softcap exponent<br/>Effect:+"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="时间墙软上限指数+0.02<br/>效果:"+format(this.effect())+'<br>花费: '+format(this.cost())+' 无限点数'}
             return a},
             unlocked() {return hasUpgrade('I',63)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5079,8 +4669,6 @@ addLayer("I", {
         },
         23: {
             title(){text = 'Add qaqe308 effect base'
-                if(options.Chinese) text='增加qaqe308效果底数'
-
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freeTD.neq(0))text=text+' + '+format(tmp.T.freeTD)
                 text=text+')'
@@ -5092,7 +4680,6 @@ addLayer("I", {
             },
             display() { a="Add 1 to qaqe308 effect base<br/>Effect:+"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="qaqe308效果底数+1<br/>效果:"+format(this.effect())+'<br>花费: '+format(this.cost())+' 无限点数'}
             return a},
             unlocked() {return hasUpgrade('I',83)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5113,7 +4700,6 @@ addLayer("I", {
         },
         24: {
             title(){text = 'Add Monika Point effect exponent'
-                if(options.Chinese) text='增加Monika点数效果指数'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freeTD.neq(0))text=text+' + '+format(tmp.T.freeTD)
                 text=text+')'
@@ -5125,7 +4711,6 @@ addLayer("I", {
             },
             display() { a="Add 0.05 to Monika Point effect exponent<br/>Effect:+"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="Monika点数效果指数+0.05<br/>效果:"+format(this.effect())+'<br>花费: '+format(this.cost())+' 无限点数'}
             return a},
             unlocked() {return hasUpgrade('I',83)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5145,7 +4730,6 @@ addLayer("I", {
         },
         31: {
             title(){text = 'Infinity Generator'
-                    if(options.Chinese) text='无限之力生产器'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 if(tmp.I.freeIG.neq(0))text=text+' + '+format(tmp.I.freeIG)
                 text=text+')'
@@ -5161,13 +4745,6 @@ addLayer("I", {
                 if(tmp.I.actualIPowgen.gte(1e250)) a=a+'After softcap:'+format(tmp.I.reaalIPowgen)+'/s<br>'
             if(tmp.I.ipowmult.neq(1)) a=a+'Your other effects multiply your Infinity Power gain by '+format(tmp.I.ipowmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' Infinity Points'
-            if(options.Chinese) {a="每秒生产"+format(tmp.I.IGmult)+"无限之力<br/>效果:每秒生产"+format(this.effect())
-            if(buyableEffect('I',33).neq(1)) a=a+'^'+format(buyableEffect('I',33))+'='+format(tmp.I.actualIPowgen)
-                a=a+"无限之力/s<br>"
-            if(tmp.I.actualIPowgen.gte(1e250)) a=a+'软上限后:'+format(tmp.I.reaalIPowgen)+'/s<br>'
-            if(tmp.I.ipowmult.neq(1)) a=a+'你的其他效果使你获得的无限之力乘以'+format(tmp.I.ipowmult)+'.<br>'
-            a=a+"花费: "+format(this.cost())+' 无限点数'
-            }
             return a },
             unlocked() {return hasMilestone('qa', 0)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5189,7 +4766,6 @@ addLayer("I", {
         },
         32: {
             title(){text = 'Infinity Generator Multiplier'
-                    if(options.Chinese) text='无限之力加成器'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 if(tmp.I.freeIGM.neq(0))text=text+' + '+format(tmp.I.freeIGM)
                 text=text+')'
@@ -5205,10 +4781,6 @@ addLayer("I", {
             display() {a= "Multiply Infinity Generator base effect by "+format(tmp.I.IGMbase)+"<br/>Effect:"+format(this.effect())+'x'
             if(getBuyableAmount('I',32).add(tmp.I.freeIGM).gte(50)) a=a+'(Softcapped)'
             a=a+"<br>Cost: "+format(this.cost())+' Infinity Points'
-            if(options.Chinese) {a="无限之力生成器基础效果x"+format(tmp.I.IGMbase)+"<br/>效果:"+format(this.effect())+'x'
-            if(getBuyableAmount('I',32).add(tmp.I.freeIGM).gte(50)) a=a+'（受软上限限制）'
-            a=a+"<br>花费: "+format(this.cost())+' 无限点数'
-            }
             return a },
             unlocked() {return hasMilestone('qa', 0)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5229,7 +4801,6 @@ addLayer("I", {
         },
         33: {
             title(){text = 'Infinity Exponent Factory'
-                    if(options.Chinese) text='无限之力指数因子'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 //if(tmp.T.freePEF.neq(0))text=text+' + '+format(tmp.T.freePEF)
                 text=text+')'
@@ -5248,10 +4819,6 @@ addLayer("I", {
             display() { a="Add "+format(tmp.I.IEFbase)+" to Infinity Generator Effect Exponent<br/>Effect:^"+format(this.effect(),4)
                 if(buyableEffect('I',33).gte(1.5)) a=a+'(Softcapped)' 
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
-                if(options.Chinese) {a="无限之力生成器效果指数+"+format(tmp.I.IEFbase)+"<br/>效果:^"+format(this.effect(),4)
-                if(buyableEffect('I',33).gte(1.5)) a=a+'（受软上限限制）'
-                a=a+"<br/>花费: "+format(this.cost())+' 无限点数'
-                }
             return a },
             unlocked() {return hasMilestone('qa', 0)},
             canAfford() { return player.I.points.gte(this.cost())&&this.unlocked() },
@@ -5271,7 +4838,6 @@ addLayer("I", {
         },
         41: {
             title(){text = 'Unlock an Infinity Challenge'
-                    if(options.Chinese) text='解锁一个无限挑战'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 text=text+')'
                 return text
@@ -5282,10 +4848,6 @@ addLayer("I", {
             effect(x) {return x},
             display() {a= "Unlock an Infinity Challenge per purchase.<br/>"
             a=a+"Requirement: "+format(this.cost())+' points'
-            if(options.Chinese) {a="每次购买解锁一个无限挑战<br/>"
-            a=a+"要求: "+format(this.cost())+'点数'
-            }
-
             return a },
             unlocked() {return hasUpgrade('I',84)},
             canAfford() { return player.points.gte(this.cost())&&hasUpgrade('I',84) },
@@ -5298,7 +4860,6 @@ addLayer("I", {
         },
         51: {
             title(){text = 'QqQe308 Boost'
-                    if(options.Chinese) text='QqQe308获取加成'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 text=text+'/5.00)'
                 return text
@@ -5309,9 +4870,6 @@ addLayer("I", {
             },
             display() { a="Multiply QqQe308 gain by +0.2 per purchase<br/>Effect:x"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
-                if(options.Chinese) {a="每次购买使QqQe308获取倍率+0.2<br/>效果:x"+format(this.effect())
-                a=a+"<br/>花费: "+format(this.cost())+' 时间墙能量'
-                }
             return a},
             unlocked() {return hasUpgrade('I',131)},
             canAfford() { return player.I.tpower.gte(this.cost())&&this.unlocked() },
@@ -5331,7 +4889,6 @@ addLayer("I", {
         },
         52: {
             title(){text = 'QqQeInfinity Boost'
-                    if(options.Chinese) text='QqQeInfinity获取加成'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 text=text+'/5.00)'
                 return text
@@ -5342,9 +4899,6 @@ addLayer("I", {
             },
             display() { a="Multiply QqQeInfinity gain by +0.1 per purchase<br/>Effect:x"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
-                if(options.Chinese) {a="每次购买使QqQeInfinity获取倍率+0.1<br/>效果:x"+format(this.effect())
-                a=a+"<br/>花费: "+format(this.cost())+' 时间墙能量'
-                }
             return a},
             unlocked() {return hasUpgrade('I',131)},
             canAfford() { return player.I.tpower.gte(this.cost())&&this.unlocked() },
@@ -5364,7 +4918,6 @@ addLayer("I", {
         },
         53: {
             title(){text = 'cokecole Boost'
-                    if(options.Chinese) text='cokecole获取加成'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 text=text+'/5.00)'
                 return text
@@ -5375,9 +4928,6 @@ addLayer("I", {
             },
             display() { a="Multiply cokecole gain by +0.1 per purchase<br/>Effect:x"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
-                if(options.Chinese) {a="每次购买使cokecole获取倍率+0.1<br/>效果:x"+format(this.effect())
-                a=a+"<br/>花费: "+format(this.cost())+' 时间墙能量'
-                }
             return a},
             unlocked() {return hasUpgrade('I',131)},
             canAfford() { return player.I.tpower.gte(this.cost())&&this.unlocked() },
@@ -5397,7 +4947,6 @@ addLayer("I", {
         },
         54: {
             title(){text = 'Upgrade Boost'
-                    if(options.Chinese) text='升级加成'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 text=text+'/3.00)'
                 return text
@@ -5408,10 +4957,6 @@ addLayer("I", {
             },
             display() { a="Unlock a new row of TP-Upgrade per purchase<br/>Effect:+"+format(this.effect())
                 a=a+"<br/>Cost: "+format(this.cost())+' Timewall Power'
-                if(options.Chinese) {a="每次购买解锁一行时间墙能量升级<br/>效果:+"+format(this.effect())
-                a=a+"<br/>花费: "+format(this.cost())+' 时间墙能量'
-                }
-
             return a},
             unlocked() {return hasUpgrade('I',131)},
             canAfford() { return player.I.tpower.gte(this.cost())&&this.unlocked() },
@@ -5431,7 +4976,6 @@ addLayer("I", {
         },
         61: {
             title(){text = 'Buy a Q-Upgrade Booster'
-                    if(options.Chinese) text='购买一个Q-升级增强器'
                 text=text+'('+format(getBuyableAmount('I', this.id))
                 text=text+'/8.00)'
                 return text
@@ -5442,7 +4986,6 @@ addLayer("I", {
             },
             display() { a="Get a Q-Upgrade Booster per purchase"
                 a=a+"<br/>Cost: "+format(this.cost())+' Q-Upgrade Booster Fragment'
-                if(options.Chinese) {a="每次购买获得一个Q-升级增强器<br/>花费: "+format(this.cost())+' Q-升级增强器碎片'}
             return a},
             unlocked() {return hasUpgrade('I',171)},
             canAfford() { return player.I.QUBF.gte(this.cost()) },
@@ -5466,11 +5009,6 @@ addLayer("I", {
         a=a+'Your best Infinity time is '+formatTime(player.I.bestTime)+'.(The first Infinity is not counted in)<br/>'
         a=a+'You will gain '+format(tmp.I.infgain)+' Infinity(ies) on reset.<br>'
         a=a+'Upgrade order: Ix-y -> I(x+1)-y<br/>buying 16 I-Upgrades will give you a "IP Doubler" buyable.'
-        if(options.Chinese) {a='你已经无限了'+format(player.I.inf)+'次<br/>'
-        a=a+'你在这次无限中度过了'+formatTime(player.I.resetTime)+'<br/>'
-        a=a+'你的最佳无限时间是'+formatTime(player.I.bestTime)+'（第一次无限不计入）。<br/>'
-        a=a+'你在重置时将获得'+format(tmp.I.infgain)+'次无限次数。<br/>'
-        a=a+'升级顺序: Ix-y -> I(x+1)-y<br/>购买16个无限升级将会解锁“IP倍增”可购买。'}
         return a
     },
     NCcomp(){a=n(0)
@@ -5485,9 +5023,6 @@ addLayer("I", {
     NCtip(){a='You have completed '+format(tmp.I.NCcomp)+' Normal Challenges, giving a multiplier of x'+format(tmp.I.NCtoIP)+' to Infinity Points.'
         a=a+'<br/>Completing all Normal Challenges and buying 16 I-Upgrades will enable you to break Infinity.'
         a=a+'<br>Note: When you complete a challenge, click reset button instead of "Finish" button. It will help you get IP.'
-        if(options.Chinese) {a='你已经完成了'+format(tmp.I.NCcomp)+'个普通挑战，使无限点数获取x'+format(tmp.I.NCtoIP)
-            a=a+'<br/>完成所有普通挑战并购买16个无限升级后可解锁打破无限'
-        a=a+'<br>注意：当你完成一个挑战时点击重置按钮可以获得无限点数'}
         return a
     },
     NC2eff(){a=n(0.01).times(n(1.01).pow(player.T.resetTime)).min(1e100)
@@ -5502,10 +5037,6 @@ addLayer("I", {
         a=a+'You have spent '+formatTime(player.I.resetTime)+' in this Infinity.<br/>'
         a=a+'Your best Infinity time is '+formatTime(player.I.bestTime)+'.<br/>'
         a=a+'When you break Infinity, there will be more upgrades and a new side layer will be unlocked.'
-            if(options.Chinese) {a='你已经无限了'+format(player.I.inf)+'次<br/>'
-        a=a+'你在这次无限中度过了'+formatTime(player.I.resetTime)+'<br/>'
-        a=a+'你的最佳无限时间是'+formatTime(player.I.bestTime)+'<br/>'
-        a=a+'当打破无限后，更多升级将会出现，且你将解锁一个新的支线层级。'}
         return a
     },
     IGmult(){a=n(1)
@@ -5541,14 +5072,6 @@ addLayer("I", {
         a=a+'.'
         a=a+'<br>('+format(tmp.I.reaalIPowgen)+'/sec)'
         if(tmp.I.reaalIPowgen.gte(1e250)) a=a+'<br>After '+format(1e250)+' Infinity Power/s, your Infinity Power gain will be softcapped!(^'+format(tmp.I.IPowscexp)+')'
-        if(options.Chinese) {a="你有 <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>" + format(player.I.ipower) + "</h3> 无限之力，使："
-        a=a+"<br>点数生产器基础效果x "+format(player.I.ipower)+'^'+format(tmp.I.IGexptopt)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtopt)+'</h3>'
-        if(hasUpgrade('I',81)) a=a+"<br>时间墙获取x "+format(player.I.ipower)+'^'+format(tmp.I.IGexptotw)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtotw)+'</h3>'
-        if(hasUpgrade('I',82)) a=a+"<br>超级时间墙获取x "+format(player.I.ipower)+'^'+format(tmp.I.IGexptost)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtost)+'</h3>'
-        if(hasUpgrade('I',83)) a=a+"<br>巨大时间墙获取x "+format(player.I.ipower)+'^'+format(tmp.I.IGexptomt)+"= <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.IGtomt)+'</h3>'
-        a=a+'<br>('+format(tmp.I.reaalIPowgen)+'/s)'
-        if(tmp.I.reaalIPowgen.gte(1e250)) a=a+'<br>当无限之力获取速度超过'+format(1e250)+'每秒后，无限之力获取速度将受软上限限制！（^'+format(tmp.I.IPowscexp)+'）'
-        }
         return a
     },
     IGexptopt(){a=n(7)
@@ -5606,7 +5129,6 @@ addLayer("I", {
         return a
     },
     ICtip(){a='You have completed '+format(tmp.I.ICcomp)+' Infinity Challenges, giving a multiplier of x'+format(tmp.I.ICtoIP)+' to Infinity Points.'
-        if(options.Chinese) {a='你已经完成了'+format(tmp.I.ICcomp)+'个无限挑战，使无限点数获取x'+format(tmp.I.ICtoIP)}
         return a
     },
     infgain(){a=n(1)
@@ -5642,8 +5164,6 @@ addLayer("I", {
     TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls, which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
         a=a+format(tmp.I.CTeff)+"</h3> Timewall Power per second.<br/>"
         a=a+"You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> Timewall Power, which multiply Infinity Generator base effect by "+format(tmp.I.TPeff)+'.'
-        if(options.Chinese) {a="你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> 压缩时间墙，每秒生产 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTeff)+"</h3> 时间墙能量<br/>"
-        a=a+"你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> 时间墙能量，使无限之力生成器基础效果x"+format(tmp.I.TPeff)+'.'}
         if(!hasUpgrade('I',131)) a=''
         return a
     },
@@ -5651,10 +5171,6 @@ addLayer("I", {
         a=a+"<br>You produce <h3 style='color: #eee308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.QUBFgain,4)+"</h3> Q-Upgrade Booster Fragments per second based on your Infinity Points.(Start at 1e220 IP)"
         if(getBuyableAmount('I',61).gte(8)) {a=a+'<br>When all Q-Upgrade Boosters are bought, your extra QUBF multiply your IP and Timewall Power gain by '+format(tmp.I.QUBFeff)+'.'
         if(player.I.QUBF.gte(1e10)) a=a+'(capped)'}
-        if(options.Chinese) {a="你有 <h3 style='color: #eee308; text-shadow: 0 0 3px #c2b280'>"+format(player.I.QUBF,4)+"</h3> Q-升级增强器碎片<br/>"
-        a=a+"基于你的超过1e220的无限点数，你每秒生产 <h3 style='color: #eee308; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.QUBFgain,4)+"</h3> Q-升级增强器碎片<br/>"
-        if(getBuyableAmount('I',61).gte(8)) {a=a+'当所有Q-升级增强器都购买后，额外的Q-升级增强器碎片将使你的无限点数和时间墙能量获取x'+format(tmp.I.QUBFeff)+'.'
-        if(player.I.QUBF.gte(1e10)) a=a+'（已达到上限）'}}
         if(!hasUpgrade('I',171)) a=''
         return a
     },
@@ -5761,24 +5277,18 @@ addLayer("qa", {
     milestones: {
         0: {
             requirementDescription: "1 qaqe308",
-            effectDescription() {a="Unlock Monika buyables and Infinity Generator, multiply IP gain by 100/7, and unlock the 3rd row of BI-Upgrades."
-                if(options.Chinese) a="解锁Monika可购买和无限之力生成器，无限点数获取x100/7，并解锁第3行BI升级"
-                return a},
+            effectDescription: "Unlock Monika buyables and Infinity Generator, multiply IP gain by 100/7, and unlock the 3rd row of BI-Upgrades.",
             done() { return player.qa.points.gte(1) }
         },
         1: {
             requirementDescription: "4 qaqe308",
-            effectDescription() {a="Unlock qaqe308 Upgrades and the 4th row of BI-Upgrades."
-                if(options.Chinese) a="解锁qaqe308升级和第4行BI升级"
-                return a},
+            effectDescription: "Unlock qaqe308 Upgrades and the 4th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',0)},
             done() { return player.qa.points.gte(4) }
         },
         2: {
             requirementDescription: "16 qaqe308",
-            effectDescription() {a="Unlock more qaqe308 Upgrades."
-                if(options.Chinese) a="解锁更多qaqe308升级"
-                return a},
+            effectDescription: "Unlock more qaqe308 Upgrades.",
             unlocked(){return hasMilestone('qa',1)},
             done() { return player.qa.points.gte(16) }
         },
@@ -5786,14 +5296,13 @@ addLayer("qa", {
     buyables: {
         11: {
             title(){text = 'Point Boost'
-                if(options.Chinese) text='点数增益'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 text=text+')'
                 return text
             },
             cost(x) { return new Decimal(100).pow(x.add(1)) },
             effect(x) {b=x
-                if(b.gte(50)) b=b.sub(50).pow(0.5).add(50)
+                if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
                 //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                 a=n(1e100).pow(b.times(tmp.qa.MBeff))
                     return a
@@ -5801,9 +5310,6 @@ addLayer("qa", {
             display() { a="Multiply Point Producer base effect by "+format(n(1e100).pow(tmp.qa.MBeff))+"<br/>Effect:"+format(this.effect())+'x'
                 if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Monika Points'
-                if(options.Chinese) {a="点数生产器基础效果x"+format(n(1e100).pow(tmp.qa.MBeff))+"<br/>效果:"+format(this.effect())+'x'
-                if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'（已达到软上限）'
-                a=a+"<br/>花费: "+format(this.cost())+' Monika点数'}
             return a},
             unlocked() {return hasMilestone('qa',0)},
             canAfford() { return player.qa.monika.gte(this.cost()) },
@@ -5823,14 +5329,13 @@ addLayer("qa", {
         },
         12: {
             title(){text = 'Super-man Boost'
-                if(options.Chinese) text='超人增益'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 text=text+')'
                 return text
             },
             cost(x) { return new Decimal(1000).pow(x.add(2)) },
             effect(x) {b=x
-                if(b.gte(50)) b=b.sub(50).pow(0.5).add(50)
+                if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
                 //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                 a=n(100).pow(b.times(tmp.qa.MBeff))
                     return a
@@ -5838,9 +5343,6 @@ addLayer("qa", {
             display() { a="Multiply Super-QqQe308 and Super-cokecole generation speed by "+format(n(100).pow(tmp.qa.MBeff))+"<br/>Effect:"+format(this.effect())+'x'
                 if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Monika Points'
-                if(options.Chinese) {a="超QqQe308和超cokecole的速度x"+format(n(100).pow(tmp.qa.MBeff))+"<br/>效果:"+format(this.effect())+'x'
-                if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'（已达到软上限）'
-                a=a+"<br/>花费: "+format(this.cost())+' Monika点数'}
             return a},
             unlocked() {return hasMilestone('qa',0)},
             canAfford() { return player.qa.monika.gte(this.cost()) },
@@ -5860,14 +5362,13 @@ addLayer("qa", {
         },
         13: {
             title(){text = 'Infinity Boost'
-                if(options.Chinese) text='无限次数增益'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 text=text+')'
                 return text
             },
             cost(x) { return new Decimal(1e5).pow(x.add(2)) },
             effect(x) {b=x
-                if(b.gte(50)) b=b.sub(50).pow(0.5).add(50)
+                if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
                 //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                     a=n(2).pow(b.times(tmp.qa.MBeff))
                     return a
@@ -5875,9 +5376,6 @@ addLayer("qa", {
             display() { a="Multiply Infinity gain by "+format(n(2).pow(tmp.qa.MBeff))+"<br/>Effect:"+format(this.effect())+'x'
                 if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Monika Points'
-                if(options.Chinese) {a="无限次数获取x"+format(n(2).pow(tmp.qa.MBeff))+"<br/>效果:"+format(this.effect())+'x'
-                if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'（已达到软上限）'
-                a=a+"<br/>花费: "+format(this.cost())+' Monika点数'}
             return a},
             unlocked() {return hasMilestone('qa',0)},
             canAfford() { return player.qa.monika.gte(this.cost()) },
@@ -5897,14 +5395,13 @@ addLayer("qa", {
         },
         14: {
             title(){text = 'IP Boost'
-                if(options.Chinese) text='无限点数增益'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
                 text=text+')'
                 return text
             },
             cost(x) { return new Decimal(1e6).pow(x.add(2)) },
             effect(x) {b=x
-                if(b.gte(50)) b=b.sub(50).pow(0.5).add(50)
+                if(b.gte(50)) b=b.sub(50).pow(0.25).add(50)
                 //if(b.gte(1e10)) b=b.slog().sub(2).add(1e10)
                     a=n(10).pow(b.times(tmp.qa.MBeff))
                     return a
@@ -5912,9 +5409,6 @@ addLayer("qa", {
             display() { a="Multiply Infinity Point gain by "+format(n(10).pow(tmp.qa.MBeff))+"<br/>Effect:"+format(this.effect())+'x'
                 if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'(softcapped)'
                 a=a+"<br/>Cost: "+format(this.cost())+' Monika Points'
-                if(options.Chinese) {a="无限点数获取x"+format(n(10).pow(tmp.qa.MBeff))+"<br/>效果:"+format(this.effect())+'x'
-                if(getBuyableAmount(this.layer,this.id).gte(50)) a=a+'（已达到软上限）'
-                a=a+"<br/>花费: "+format(this.cost())+' Monika点数'}
             return a},
             unlocked() {return hasMilestone('qa',0)},
             canAfford() { return player.qa.monika.gte(this.cost()) },
@@ -5936,10 +5430,7 @@ addLayer("qa", {
     upgrades: {
         11: {
             title: "Qa1-1",
-            description() {a="Each qaqe308 multiplies your IP gain by 2."
-                if(options.Chinese) a="每个qaqe308使无限点数获取x2"
-                return a
-            },
+            description: "Each qaqe308 multiplies your IP gain by 2.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -5950,17 +5441,10 @@ addLayer("qa", {
             cost(){
                 a=n(4)
             return a},
-            tooltip() {a='All effects of qaqe308 Upgrades are softcapped after 100 qaqe308!'
-                if(options.Chinese) a='当qaqe308数量达到100后，所有qaqe308升级的效果都将被软上限限制！'
-                return a
-            }
         },
         12: {
             title: "Qa1-2",
-            description() {a='Each qaqe308 multiplies your IG base effect by 10.'
-                if(options.Chinese) a='每个qaqe308使你的无限之力生产器基础效果x10'
-                return a
-            },
+            description: "Each qaqe308 multiplies your IG base effect by 10.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -5974,11 +5458,7 @@ addLayer("qa", {
         },
         13: {
             title: "Qa1-3",
-            description() {a="Each qaqe308 multiplies your Super-qaqe308 generation speed by 1.125."
-                if(options.Chinese) a="每个qaqe308使你超qaqe308的速度x1.125"
-                return a
-            },
-
+            description: "Each qaqe308 multiplies your Super-qaqe308 generation speed by 1.125.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -5992,14 +5472,10 @@ addLayer("qa", {
         },
         14: {
             title: "Qa1-4",
-            description() {a="Each qaqe308 divides QqQeInfinity cost scaling by 1.005. (capped at 100 qaqe308) Also unlock the 5th row of BI-Upgrades."
-                if(options.Chinese) a="每个qaqe308使QqQeInfinity需求折算/1.005（在100 qaqe308时达到上限），并解锁第5行BI升级"
-                return a
-            },
-
+            description: "Each qaqe308 divides QqQeInfinity cost scaling by 1.005. Also unlock the 5th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
-                if(b.gte(100)) b=n(100)
+                if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
                 a=n(1.005).pow(b)
                     return a
             },
@@ -6010,11 +5486,7 @@ addLayer("qa", {
         },
         21: {
             title: "Qa2-1",
-            description() {a="Each qaqe308 divides cokecole cost by +0.01. Also unlock the 6th row of BI-Upgrades."
-                if(options.Chinese) a="每个qaqe308使cokecole需求除数+0.01，并解锁第6行BI升级"
-                return a
-            },
-
+            description: "Each qaqe308 divides cokecole cost by +0.01. Also unlock the 6th row of BI-Upgrades.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -6028,10 +5500,7 @@ addLayer("qa", {
         },
         22: {
             title: "Qa2-2",
-            description() {a="Each qaqe308 adds 0.05 to your IGM base."
-                if(options.Chinese) a="每个qaqe308使你的无限之力加成器底数+0.05"
-                return a
-            },
+            description: "Each qaqe308 adds 0.05 to your IGM base.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -6045,10 +5514,7 @@ addLayer("qa", {
         },
         23: {
             title: "Qa2-3",
-            description() {a="Each qaqe308 multiplies your PPM exponent by 1.01. (capped at 100 qaqe308)"
-                if(options.Chinese) a="每个qaqe308使你的点数生产加成器指数x1.01(在100 qaqe308时达到上限)"
-                return a
-            },
+            description: "Each qaqe308 multiplies your PPM exopnent by 1.01.  (capped at 100 qaqe308)",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 a=n(1.01).pow(b.min(100))
@@ -6061,10 +5527,7 @@ addLayer("qa", {
         },
         24: {
             title: "Qa2-4",
-            description() {a="Each qaqe308 multiplies Super-cokecole effect by 1.015."
-                if(options.Chinese) a="每个qaqe308使超cokecole的效果x1.015"
-                return a
-            },
+            description: "Each qaqe308 multiplies Super-cokecole effect by 1.015.",
             unlocked(){return hasMilestone('qa',1)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -6078,10 +5541,7 @@ addLayer("qa", {
         },
         31: {
             title: "Qa3-1",
-            description() {a="Each qaqe308 multiplies Timewall Power gain by 1.25."
-                if(options.Chinese) a="每个qaqe308使时间墙能量获取x1.25"
-                return a
-            },
+            description: "Each qaqe308 multiplies Timewall Power gain by 1.25.",
             unlocked(){return hasMilestone('qa',2)},
             effect(){b=player.qa.points
                 if(b.gte(100)) b=n(10).pow(b.log(10).div(2).pow(0.5).times(2))
@@ -6099,10 +5559,6 @@ addLayer("qa", {
                 if(!hasUpgrade('I',171)) a=a+'???'
                 if(hasUpgrade('I',171)) a=a+'Q-Upgrade Booster Fragment'
                 a=a+" gain by 1.15."
-                if(options.Chinese) {a="每个qaqe308使你的"
-                if(!hasUpgrade('I',171)) a=a+'???'
-                if(hasUpgrade('I',171)) a=a+'Q-升级增强器碎片'
-                a=a+"获取x1.15"}
             return a},
             unlocked(){return hasMilestone('qa',2)},
             effect(){b=player.qa.points
@@ -6118,9 +5574,7 @@ addLayer("qa", {
         33: {
             title: "Qa3-3",
             description() {a="Each qaqe308 makes your Monika Buyables +0.5% more effective. (capped at 100 qaqe308)"
-                if(options.Chinese) a="每个qaqe308使你的Monika可购买效果+0.5%(在100 qaqe308时达到上限)"
-                return a
-            },
+            return a},
             unlocked(){return hasMilestone('qa',2)},
             effect(){a=n(0.005).times(player.qa.points).min(0.5)
                     return a
@@ -6132,10 +5586,7 @@ addLayer("qa", {
         },
         34: {
             title: "Qa3-4",
-            description() {a="Each qaqe308 multiplies free IG and IGM by 1.05. (capped at 100 qaqe308)"
-                if(options.Chinese) a="每个qaqe308使免费的无限之力生产器和无限之力加成器x1.05(在100 qaqe308时达到上限)"
-                return a
-            },
+            description: "Each qaqe308 multiplies free IG and IGM by 1.05. (capped at 100 qaqe308)",
             unlocked(){return hasMilestone('qa',2)},
             effect(){b=player.qa.points
                 a=n(1.05).pow(b.min(100))
@@ -6149,7 +5600,6 @@ addLayer("qa", {
     },
     Showdetail() {
         a = "You have <h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(player.qa.monika) + "</h3> Monika Points，which multiply your Infinity Generator base effect by "+format(player.qa.monika)+"^"+format(tmp.qa.monikatoigexp)+"=" +format(tmp.qa.monikatoigmult)+ "x."
-        if(options.Chinese) a="你有<h3 style='color: #ab4308; text-shadow: 0 0 3px #c2b280'>" + format(player.qa.monika) + "</h3> Monika点数，使你的无限之力生成器基础效果x "+format(player.qa.monika)+"^"+format(tmp.qa.monikatoigexp)+"=" +format(tmp.qa.monikatoigmult)
         return a
     },
     monikatoigexp(){a=n(0.5)
@@ -6179,7 +5629,6 @@ addLayer("qa", {
     },
       effectDescription() { 
         a = "which produce <h2 style='color: #ab4308; text-shadow: 0 0 10px #c2b280'>"+format(tmp.qa.effect)+'</h2> Monika Points per second.'
-        if(options.Chinese) a="每秒生产 <h2 style='color: #ab4308; text-shadow: 0 0 10px #c2b280'>"+format(tmp.qa.effect)+'</h2> Monika点数'
         return a
     },
     MBeff(){a=n(1)

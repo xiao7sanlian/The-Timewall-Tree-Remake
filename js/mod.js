@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.0",
+	num: "2.0.1",
 	name: "Eternity Update",
 }
 
@@ -100,7 +100,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加DeFe308层级，包括1个里程碑<br>
 		- 在时间墙层级增加了更多的内容<br>
 		- 一些其他更改<br>
-		- 终局: 1 DeFe308<br>`
+		- 终局: 1 DeFe308<br>
+	<h3>v2.0.1 Translation Update (Part. III) 2026/4/11~2026/4/12</h3><br>
+		- Completed the translation of I and Qa layer.<br>
+		Chinese version:<br>
+		- 完成了I和Qa两个层级的翻译<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
