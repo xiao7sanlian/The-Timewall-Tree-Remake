@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.0.1",
+	num: "2.0.2",
 	name: "Eternity Update",
 }
 
@@ -104,7 +104,10 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v2.0.1 Translation Update (Part. III) 2026/4/11~2026/4/12</h3><br>
 		- Completed the translation of I and Qa layer.<br>
 		Chinese version:<br>
-		- 完成了I和Qa两个层级的翻译<br>`
+		- 完成了I和Qa两个层级的翻译<br>
+	<h3>v2.0.2 News Ticker Update 2026/4/25</h3><br>
+		- Added News Ticker. (only have English version)<br>
+		- Added 4 secret Achievements.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -145,7 +148,8 @@ var displayThings = [
 			a=a+'<br/>'}
 			//if(tmp.A.ProgressToEtr.gte(100)) a=a+"You have reached the Endgame!"
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!"
-		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'<br/><br/><br/>After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
+		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
+		if(options.NewsTicker) a=a+'<br>'+tmp.SA.news[player.SA.newsIndex]
 		return a
 	}
 ]

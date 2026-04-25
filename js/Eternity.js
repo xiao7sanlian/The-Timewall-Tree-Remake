@@ -12,6 +12,7 @@ addLayer("E", {
         bestTime:n(1e300),
         timeshard:n(1),
         upoint:n(0),
+        s14:n(0),
     }},
     color: "#b743de",
     requires(){a = n(2).pow(1024)
@@ -526,6 +527,7 @@ addLayer("E", {
             unlocked(){return hasMilestone('E',1)},
             canClick() {return true},
             onClick() {
+            if(player.E.upgrades.length == 0) player.E.s14 =n(1)
             if(hasUpgrade('E',34)) player.E.points = player.E.points.add(5)
             player.E.upgrades = []
             doReset('E',true)
@@ -684,7 +686,7 @@ addLayer("E", {
         },
         42: {
             title: "E4-2",
-            description() {a="Each bought Point Exponent Factory multiplies your first 3 kinds of Super-man generation speed by 100."
+            description() {a="Each bought Infinity Exponent Factory multiplies your first 3 kinds of Super-man generation speed by 100."
                 if(options.Chinese) a='每个购买的无限之力指数因子使你超前3个人的速度x100'
                 return a
             },

@@ -17,6 +17,7 @@ function getStartOptions() {
 		hideMilestonePopups: false,
 		hideSaveNotifications: true,
 		Chinese: false,
+		NewsTicker: false,
 	}
 }
 
