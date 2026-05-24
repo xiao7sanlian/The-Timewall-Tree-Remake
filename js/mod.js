@@ -8,13 +8,13 @@ let modInfo = {
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 2,  // In hours
+	offlineLimit: 4,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.0.2",
-	name: "Eternity Update",
+	num: "2.1",
+	name: "Pre-Eternity Challenge Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -107,7 +107,20 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 完成了I和Qa两个层级的翻译<br>
 	<h3>v2.0.2 News Ticker Update 2026/4/25</h3><br>
 		- Added News Ticker. (only have English version)<br>
-		- Added 4 secret Achievements.<br>`
+		- Added 4 secret Achievements.<br>
+	<h3>v2.1 Pre-Eternity Challenge Update 2026/5/1~2026/5/24</h3><br>
+		- Added more upgrades in the Upgrade tree.<br>
+		- Added 2 DeFe308 Milestones.<br>
+		- Added 1 secret Achievement.<br>
+		- Some other changes, and more news messages.<br>
+		- Endgame: 5 DeFe308.<br>
+		Chinese version:<br>
+		- 在升级树中增加了更多的升级<br>
+		- 增加了2个DeFe308里程碑<br>
+		- 增加了1个隐藏成就<br>
+		- 一些其他更改，以及更多的新闻消息<br>
+		- 终局: 5 DeFe308.<br>
+	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -157,7 +170,7 @@ var displayThings = [
 // Determines when the game "ends"
 function isEndgame() {
 	//return hasUpgrade('ST',54)
-	return player.df.points.gte(1)
+	return hasMilestone('df',2)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 

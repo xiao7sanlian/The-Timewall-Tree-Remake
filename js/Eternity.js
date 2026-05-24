@@ -28,6 +28,7 @@ addLayer("E", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasMilestone('df',0)) mult=mult.times(tmp.df.effect[4])
+        if(hasUpgrade('E',61)) mult=mult.times(15)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -77,7 +78,7 @@ addLayer("E", {
         content: [ "main-display","prestige-button","resource-display",
             ["display-text", () => tmp.E.EUtip],['buyables',[2]],
             ["clickables",[1]],
-            ["upgrade-tree",[[11],[21, 22],[31,32,33,34],[41,42]]],
+            ["upgrade-tree",[[11],[21, 22],[31,32,33,34],[41,42],[51],[61,62],[71,72,73],[81,82,83],[91,92,93],[101,102,103],[111,112]]],
     ],
     unlocked(){return hasMilestone('E',1)},
     },
@@ -86,6 +87,8 @@ addLayer("E", {
         if (layers[resettingLayer].row > 4) {
             player.E.timeshard=n(1)
             if(getClickableState('E',12)==1) {if(hasUpgrade('E',34)) player.E.points = player.E.points.add(5)
+                if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
+                if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
                 player.E.upgrades=[]
             setClickableState('E',12,0)
             }
@@ -290,15 +293,16 @@ addLayer("E", {
             title(){text = 'Timeshard Generator'
                 if(options.Chinese) text='时间碎片生产器(TG)'
                 text=text+'('+format(getBuyableAmount(this.layer, this.id))
+                if(tmp.E.FreeTG.neq(0))text=text+' + '+format(tmp.E.FreeTG)
                 text=text+')'
                 return text
             },
             cost(x) { a= new Decimal(3).pow(x).times(1)
                     return a
              },
-            effect(x) {return x.times(tmp.E.TGmult)},
+            effect(x) {return x.add(tmp.E.FreeTG).times(tmp.E.TGmult)},
             display() {a= "Produce "+format(tmp.E.TGmult)+" Timeshards Per Second<br/>Effect:produces "+format(this.effect())
-                if(buyableEffect('E',13).neq(1)) a=a+'^'+format(buyableEffect('E',13))+'='+format(tmp.E.TSgen)
+                //if(buyableEffect('E',13).neq(1)) a=a+'^'+format(buyableEffect('E',13))+'='+format(tmp.E.TSgen)
                 a=a+" timeshards/s<br/>"
             a=a+"Cost: "+format(this.cost())+' Eternity Points'
             if(options.Chinese) {a= "每秒生产"+format(tmp.E.TGmult)+"时间碎片<br/>总效果:每秒生产"+format(this.effect())
@@ -340,7 +344,7 @@ addLayer("E", {
             },
             display() { a= "Multiply Timeshard Generator base effect by "+format(tmp.E.TMbase)+"<br/>Effect:"+format(this.effect())
                 a=a+"x<br/>Cost: "+format(this.cost())+' Eternity Points'
-                if(options.Chinese){a= "时间碎片生成器效果x"+format(tmp.T.PPMbase)+"<br/>效果:"+format(this.effect())
+                if(options.Chinese){a= "时间碎片生成器效果x"+format(tmp.E.TMbase)+"<br/>效果:"+format(this.effect())
                 a=a+"x<br/>花费:"+format(this.cost())+'永恒点数'}
             return a },
             unlocked() {return hasMilestone('E', 0)},
@@ -529,6 +533,8 @@ addLayer("E", {
             onClick() {
             if(player.E.upgrades.length == 0) player.E.s14 =n(1)
             if(hasUpgrade('E',34)) player.E.points = player.E.points.add(5)
+            if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
+            if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
             player.E.upgrades = []
             doReset('E',true)
            },
@@ -702,6 +708,332 @@ addLayer("E", {
             currencyDisplayName: 'Upgrade Points',
             currencyInternalName: 'currentUP',
         },
+        51: {
+            title: "E5-1",
+            description() {a="Gain 1e15 times more Infinity Points."
+                if(options.Chinese) a='无限点数获取x1e15'
+                return a
+            },
+            effect() {a=n(1e15)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(6),
+            branches:[41,42],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',41)||hasUpgrade('E',42)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        61: {
+            title: "E6-1",
+            description() {a="Gain 15 times more Eternity Points."
+                if(options.Chinese) a='永恒点数获取x15'
+                return a
+            },
+            effect() {a=n(15)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(4),
+            branches:[51],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',51)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        62: {
+            title: "E6-2",
+            description() {a="Timeshard Generator multiplier based on DeFe308."
+                if(options.Chinese) a='基于DeFe308数量增益时间碎片生成器'
+                return a
+            },
+            effect() {a=n(2).pow(player.df.points)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(100),
+            branches:[51],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',51)},
+        },
+        71: {
+            title() {a= "E7-1 Pre-Infinity"
+                if(options.Chinese) a='E7-1 时间墙'
+                return a
+            },
+            description() {a="Multiply free PP and PPM based on Timewalls."
+                if(options.Chinese) a='基于时间墙数量增益免费点数生产器和点数生产加成器'
+                return a
+            },
+            effect() {a=player.T.points.add(1).pow(0.005)
+                if(a.gte('1e50')) a=a.pow(0.25).times(n(10).pow(37.5))
+                a=a.min('1e1000')
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(3),
+            branches:[61],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',72)&&!hasUpgrade('E',73)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        81: {
+            title() {a= "E8-1 Pre-Infinity"
+                if(options.Chinese) a='E8-1 时间墙'
+                return a
+            },
+            description() {a="Multiply Point Producer Multiplier exponent by 1.01."
+                if(options.Chinese) a='点数生产加成器指数x1.01'
+                return a
+            },
+            effect() {a=n(1.01)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(5),
+            branches:[71],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',71)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        91: {
+            title() {a= "E9-1 Pre-Infinity"
+                if(options.Chinese) a='E9-1 时间墙'
+                return a
+            },
+            description() {a="The effect of QqQeInfinity is stronger.(2^(x-1) -> 5^(x-1))"
+                if(options.Chinese) a='增强QqQeInfinity的效果（2^(x-1) -> 5^(x-1)）'
+                return a
+            },
+            cost: new Decimal(4),
+            branches:[81],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',81)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        101: {
+            title() {a= "E10-1 Pre-Infinity"
+                if(options.Chinese) a='E10-1 时间墙'
+                return a
+            },
+            description() {a="Each bought Upgrade Points multiply your Point Producer base effect by 1e100."
+                if(options.Chinese) a='每个购买的升级点数使点数生产器基础效果x1e100'
+                return a
+            },
+            effect() {a=n(1e100).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(5),
+            branches:[91],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',91)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        72: {
+            title() {a= "E7-2 Infinity"
+                if(options.Chinese) a='E7-2 无限'
+                return a
+            },
+            description() {a="Nerf Infinity Power gain softcap.(^0.5 to ^0.75)"
+                if(options.Chinese) a='削弱无限之力获取软上限(^0.5 -> ^0.75)'
+                return a
+            },
+            cost: new Decimal(5),
+            branches:[61],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',71)&&!hasUpgrade('E',73)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        82: {
+            title() {a= "E8-2 Infinity"
+                if(options.Chinese) a='E8-2 无限'
+                return a
+            },
+            description() {a="Multiply Infinity Generator Multiplier base effect based on Infinity Power."
+                if(options.Chinese) a='基于无限之力增益无限之力加成器基础效果'
+                return a
+            },
+            effect() {a=player.I.ipower.add(1).log(1e100).pow(0.5).add(1).min('1e100')
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(4),
+            branches:[72],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',72)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        92: {
+            title() {a= "E9-2 Infinity"
+                if(options.Chinese) a='E9-2 无限'
+                return a
+            },
+            description() {a="The effect of Super-qaqe308 is powered to ^1.5.(Before softcap)"
+                if(options.Chinese) a='超qaqe308的效果变为原来的1.5次方(软上限前)'
+                return a
+            },
+            cost: new Decimal(5),
+            branches:[82],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',82)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        102: {
+            title() {a= "E10-2 Infinity"
+                if(options.Chinese) a='E10-2 无限'
+                return a
+            },
+            description() {a="Each bought Upgrade Points multiply your Infinity Generator base effect by 1e6."
+                if(options.Chinese) a='每个购买的升级点数使无限生成器基础效果x1e6'
+                return a
+            },
+            effect() {a=n(1e6).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(7),
+            branches:[92],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',92)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        73: {
+            title() {a= "E7-3 Eternity"
+                if(options.Chinese) a='E7-3 永恒'
+                return a
+            },
+            description() {a="Gain free TG based on total Eternity Points."
+                if(options.Chinese) a='基于总永恒点数获得免费时间碎片生成器'
+                return a
+            },
+            effect() {a=player.E.total.add(1).pow(0.075)
+                return a
+            },
+            effectDisplay() { return '+'+format(upgradeEffect(this.layer, this.id))},
+            cost: new Decimal(5),
+            branches:[61],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',71)&&!hasUpgrade('E',72)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        83: {
+            title() {a= "E8-3 Eternity"
+                if(options.Chinese) a='E8-3 永恒'
+                return a
+            },
+            description() {a="Multiply Timeshard Generator Multiplier base effect based on Timeshard effect."
+                if(options.Chinese) a='基于时间碎片效果增加时间碎片加成器基础效果'
+                return a
+            },
+            effect() {a=tmp.E.TSeffect.pow(0.05).min('1e50')
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(5),
+            branches:[73],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',73)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        93: {
+            title() {a= "E9-3 Eternity"
+                if(options.Chinese) a='E9-3 永恒'
+                return a
+            },
+            description() {a="The effect of Super-qaqe308 also applies to Timeshard Generator base effect in a reduced rate."
+                if(options.Chinese) a='超qaqe308的效果以削弱的效果加成时间碎片加成器基础效果'
+                return a
+            },
+            effect() {a=tmp.Qi.qaqe308eff.pow(0.01).min('1e50')
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(4),
+            branches:[83],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',83)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        103: {
+            title() {a= "E10-3 Eternity"
+                if(options.Chinese) a='E10-3 永恒'
+                return a
+            },
+            description() {a="Each bought Upgrade Points multiply your Timeshard Generator base effect by 2."
+                if(options.Chinese) a='每个购买的升级点数使时间碎片生成器基础效果x2'
+                return a
+            },
+            effect() {a=n(2).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(7),
+            branches:[93],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',93)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        111: {
+            title() {a= "E11-1"
+                return a
+            },
+            description() {a="Improve Infinity Points gain formula:(pt/(2^1024))^ ((log<sub>2</sub>10)/b), where b reduces from 1000 to 970."
+                if(options.Chinese) a='改善无限点数获取公式:(pt/(2^1024))^ ((log<sub>2</sub>10)/b), 其中b从1000减少到970'
+                return a
+            },
+            cost: new Decimal(12),
+            branches:[101,102,103],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',101)||hasUpgrade('E',102)||hasUpgrade('E',103)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        112: {
+            title() {a= "E11-2"
+                return a
+            },
+            description() {a="Timeshard Generator multiplier based on Eternity amounts."
+                if(options.Chinese) a='基于永恒次数增益时间碎片生成器'
+                return a
+            },
+            effect() {a=n(player.E.etr).add(1)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(10000),
+            branches:[111],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',111)},
+        },
     },
     etrgain(){a=n(1)
         return a
@@ -729,14 +1061,24 @@ addLayer("E", {
         return a
     },
     TSgen(){a=buyableEffect('E',11)
+        a=a.times(buyableEffect('E',12))
         return a
     },
     TGmult(){a=player.E.etr.times(0.01).min(1)
         if(hasUpgrade('E',11)) a=a.times(upgradeEffect('E',11))
         if(hasUpgrade('E',34)) a=a.times(upgradeEffect('E',34))
+        if(hasUpgrade('E',62)) a=a.times(upgradeEffect('E',62))
+        if(hasUpgrade('E',93)) a=a.times(upgradeEffect('E',93))
+        if(hasUpgrade('E',103)) a=a.times(upgradeEffect('E',103))
+        if(hasUpgrade('E',112)) a=a.times(upgradeEffect('E',112))
         return a
     },
     TMbase(){a=n(2)
+        if(hasUpgrade('E',83)) a=a.times(upgradeEffect('E',83))
+        return a
+    },
+    FreeTG(){a=n(0)
+        if(hasUpgrade('E',73)) a=a.add(upgradeEffect('E',73))
         return a
     },
     EUtip(){a='You can buy Eternity Upgrades through Upgrade Points.<br>You have '+format(tmp.E.currentUP)+'/'+format(tmp.E.totalUPcal)+' Upgrade Points.'
@@ -748,8 +1090,8 @@ addLayer("E", {
         return a
     },
     currentUP(){a=tmp.E.totalUPcal
-        a1=[11,21,22,31,32,33,41,42]
-        b1=[1,2,2,3,4,2,5,5]
+        a1=[11,21,22,31,32,33,41,42,51,61,71,72,73,81,82,83,91,92,93,101,102,103,111,]
+        b1=[1 ,2 ,2 ,3 ,4 ,2 ,5 ,5 ,6 ,4 ,3 ,5 ,5 ,5 ,4 ,5 ,4 ,5 ,4 ,5  ,7  ,7  ,12 ,]
         for (let i = 0; i < a1.length; i++) {
             if(hasUpgrade('E',a1[i])) a=a.sub(b1[i])
         }
@@ -829,6 +1171,27 @@ addLayer("df", {
                 return a
             },
             done() { return player.df.points.gte(1) }
+        },
+        1: {
+            requirementDescription: "4 DeFe308",
+            effectDescription(){a='Improve Infinity Points gain formula:(pt/(2^1024))^((log<sub>2</sub>10)/b), where b reduces from 1024 to 1000<br>'
+                a=a+'Specifically, for each x10 IP, you need 2^1000 times more points rather than 2^1024.<br>Moreover, keep qaqe308 milestones after row 5 reset.'
+                if(options.Chinese){a='改进无限点数获取公式：(pt/(2^1024))^((log<sub>2</sub>10)/b)中的b由1024降低至1000<br>'
+                    a=a+'具体来说，点数每翻2^1000倍（先前为2^1024倍），无限点数便翻10倍<br>除此之外，在第五行重置时保留qaqe308里程碑'
+                }
+                return a
+            },
+            done() { return player.df.points.gte(4) },
+            unlocked() {return hasMilestone('df', 0)},
+        },
+        2: {
+            requirementDescription: "5 DeFe308",
+            effectDescription(){a='Unlock Eternity Challenges[v2.2].'
+                if(options.Chinese)a='解锁永恒挑战[v2.2]'
+                return a
+            },
+            done() { return player.df.points.gte(5) },
+            unlocked() {return hasMilestone('df', 1)}
         },
     },
     effect(){a=player.df.points.times(0.001).add(1)
