@@ -340,7 +340,8 @@ function isPlainObject(obj) {
 	return (!!obj) && (obj.constructor === Object)
 }
 
-document.title = modInfo.name
+//document.title = modInfo.name
+//document.title = tmp.A.title//changed in v2.2
 
 // Converts a string value to whatever it's supposed to be
 function toValue(value, oldValue) {

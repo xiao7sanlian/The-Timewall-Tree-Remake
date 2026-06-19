@@ -11,10 +11,12 @@ let modInfo = {
 	offlineLimit: 4,  // In hours
 }
 
+document.title='The Timewall Tree Remake'
+
 // Set your version in num and name
 let VERSION = {
-	num: "2.1",
-	name: "Pre-Eternity Challenge Update",
+	num: "2.2",
+	name: "Eternity Challenge Update (Part. I)",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -119,7 +121,19 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了2个DeFe308里程碑<br>
 		- 增加了1个隐藏成就<br>
 		- 一些其他更改，以及更多的新闻消息<br>
-		- 终局: 5 DeFe308.<br>
+		- 终局: 5 DeFe308<br>
+	<h3>v2.2 Eternity Challenge Update (Part. I) 2026/5/31~2026/6/19</h3><br>
+		- Added 7 Eternity Challenges and more upgrades in the Upgrade Tree.<br>
+		- Added 1 milestone in DeFe308 layer.<br>
+		- Added a new layer, with 14 Milestones and 12 Upgrades.<br>
+		- Some other changes, and more news messages.<br>
+		- Endgame: Get all achievements.<br>
+		Chinese version:<br>
+		- 增加7个永恒挑战，在升级树中增加了更多的升级<br>
+		- 增加了1个DeFe308里程碑<br>
+		- 增加了一个新层级，包含14个里程碑与12个升级<br>
+		- 一些其他更改，以及更多的新闻消息<br>
+		- 终局: 完成所有成就<br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -152,6 +166,8 @@ function getPointGen() {
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
 	//NiShuoDeDuiDanShiWoShiDeFe308NiMenWanLe:'DeFe308'
+	//offTime = { remain: 0 }
+	title:'The Timewall Tree Remake',
 }}
 
 // Display extra things at the top of the page
@@ -170,7 +186,8 @@ var displayThings = [
 // Determines when the game "ends"
 function isEndgame() {
 	//return hasUpgrade('ST',54)
-	return hasMilestone('df',2)
+	//return hasMilestone('df',2)
+	return hasUpgrade('cf',34)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 

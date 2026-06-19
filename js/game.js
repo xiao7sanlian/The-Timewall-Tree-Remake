@@ -414,8 +414,10 @@ var interval = setInterval(function() {
 			player.offTime.remain -= offlineDiff
 			diff += offlineDiff
 		}
-		if (!options.offlineProd || player.offTime.remain <= 0) player.offTime = undefined
+		//if (!options.offlineProd || player.offTime.remain <= 0) player.offTime = undefined
+		
 	}
+	if (player.offTime==undefined) player.offTime = { remain: 0 }
 	if (player.devSpeed) diff *= player.devSpeed
 	player.time = now
 	if (needCanvasUpdate){ resizeCanvas();
