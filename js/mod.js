@@ -3,47 +3,52 @@ let modInfo = {
 	author: "QqQeInfinity & DeFe308",
 	id: "timewall remake",
 	pointsName: "points",
-	modFiles: ["layers.js", "tree.js", "Eternity.js"],
+	modFiles: ["layers.js", "tree.js", "Eternity.js","Infinity.js","ach.js"],
 
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 4,  // In hours
+	offlineLimit: 114514,  // In hours
 }
 
 document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.2",
-	name: "Eternity Challenge Update (Part. I)",
+	num: "2.3",
+	name: "Eternity Challenge Update (Part. II)",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.1 Basic 2026/1/10~2026/1/11</h3><br>
 		- Added 2 layers.<br>
-		- Added 10 achievements.<br>
+		- Added 10 achievements.<br><br>
+
 	<h3>v0.1.1 Bug Fix 2026/1/16</h3><br>
 		- Fixed a bug about 'resetTime', which made it impossible to import save.<br>
-		- Added speed-up in the achievement tab, and now you can speed up to 16x, which will reduce the timewall.<br>
+		- Added speed-up in the achievement tab, and now you can speed up to 16x, which will reduce the timewall.<br><br>
+
 	<h3>v0.2 Super Update 2026/1/17</h3><br>
 		- Added Super-Timewall layer, with 20 Upgrades, 4 Challenges, and of course, Automations.<br>
 		- Added QqQeInfinity layer, with 2 Milestones and Super-QqQe308.<br>
 		- Added more contents in QqQe308 layer.<br>
 		- The speed-up is nerfed, and you can only speed up to 8x now.<br>
 		- The point is capped at 1e150.<br>
-		- Some small text changes<br>
+		- Some small text changes<br><br>
+
 	<h3>v0.3 Mega Update 2026/1/24~2026/1/31</h3><br>
 		- Added Mega-Timewall layer, with 20 Upgrades, 4 Challenges, and 5 Milestones.<br>
 		- Added cokecole layer, with 3 Milestones.<br>
 		- Added more contents in QqQeInfinity layer.<br>
-		- Some other changes<br>
+		- Some other changes<br><br>
+
 	<h3>v1.0 Infinity Update 2026/2/1~2026/2/11</h3><br>
 		- Added Infinity layer, with 17 Upgrades, 6 Challenges, and Automations.<br>
 		- Added 10 achievements.<br>
 		- Added more contents in QqQe308 layer.<br>
 		- Some other changes.<br>
-		- Endgame: Break Infinity<br>
+		- Endgame: Break Infinity<br><br>
+
 	<h3>v1.0.1 Technical Update 2026/2/20</h3><br>
 		- The number less than 0.0001 can be expressed in scientific notation.<br>
 		- Incompleted achievements are shown now.<br>
@@ -51,29 +56,32 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added save notice popup.<br>
 		- I4-3 now use addPoints() function. (What am I saying?)<br>
 		- Fixed a bug in TMT: when a resource generation goes beyond 1.79e308, it will bring Infinity resources.<br>
-		- The Softcap exponent for point and Timewall is shown now.<br>
+		- The Softcap exponent for point and Timewall is shown now.<br><br>
+
 	<h3>v1.0.2 Another Technical Update 2026/2/21</h3><br>
-		- Added a setting which can hide save notifications.<br>
+		- Added a setting which can hide save notifications.<br><br>
+
 	<h3>v1.1 Break-Infinity Update 2026/2/21~2026/2/24</h3><br>
 		- Added 29 Upgrades, 8 Buyables, Infinity Generator, and 8 Infinity Challenges in I layer.<br>
 		- Added qaqe308 layer, with 2 Milestones, 4 Buyables, and 8 Upgrades.<br>
 		- Added more contents in QqQeInfinity layer.<br>
 		- Some other changes.<br>
 		- Endgame: Reach 1e120 Infinity Points<br>
-		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time.<br>
+		- Note: Some Infinity Challenge might contain a large timewall. Please use Speed-up at any time.<br><br>
+
 	<h3>v1.1.1 BI2-2 Fix 2026/2/25</h3><br>
 		- Fixed a bug: the effect of upgrade BI2-2 is NaNx when your Best Infinity time is very long.<br>
-		- Improved IC8 performance.<br>
+		- Improved IC8 performance.<br><br>
 	<h3>v1.1.2 NC5 & IC1 Fix 2026/2/26</h3><br>
 		- Fixed a bug: when in NC5 or IC1 and have BI4-3, Infinity Power will be NaN on reset.<br>
-		- Added ??? in Infinity layer.<br>
+		- Added ??? in Infinity layer.<br><br>
 	<h3>v1.2 Timewall Power Update 2026/2/27~2026/3/1</h3><br>
 		- Added Timewall Power in Infinity layer, with 12 Upgrades, 4 Buyables and 1 Challenges.<br>
 		- Added Upgrade Booster in Infinity layer, with 4 Upgrades and 1 Buyables.<br>
 		- Added more contents in QqQe308 and qaqe308 layer.<br>
 		- Some other changes.<br>
 		- Endgame: Reach 1.80e308 Infinity Points<br>
-		- Note: Some of the contents might contain a large timewall. Please use Speed-up at any time.<br>
+		- Note: Some of the contents might contain a large timewall. Please use Speed-up at any time.<br><br>
 	<h3>v1.2.1 Translation Update (Part. I) 2026/3/7</h3><br>
 		- Added language setting, and you can play this game in Chinese now!<br>
 		- Completed the translation of T and Q layer.<br>
@@ -81,16 +89,19 @@ let changelog = `<h1>Changelog:</h1><br>
 		Chinese version:<br>
 		- 增加语言设置，现在这个游戏适配中文了！<br>
 		- 完成了T，Q两个层级的翻译<br>
-		- 注意:资源名称等一些物品不会被翻译<br>
+		- 注意:资源名称等一些物品不会被翻译<br><br>
+
 	<h3>v1.2.2 Translation Update (Part. II) 2026/3/14</h3><br>
 		- Completed the translation of ST, Qi, MT and Co layer.<br>
 		- Added a softcap to Q1-3 Boost and Q2-3 Boost.(After 5000 QqQe308)<br>
 		Chinese version:<br>
 		- 完成了ST，Qi，MT, Co四个层级的翻译<br>
-		- 为Q1-3 Boost和Q2-3 Boost效果增加了软上限（始于5000 QqQe308）<br>
+		- 为Q1-3 Boost和Q2-3 Boost效果增加了软上限（始于5000 QqQe308）<br><br>
+
 	<h3>v1.2.3 Small Update 2026/3/15~2026/3/21</h3><br>
 		- Fixed some bugs and some small changes.<br>
-		- Added some features of the new layer.<br>
+		- Added some features of the new layer.<br><br>
+
 	<h3>v2.0 Eternity Update 2026/3/28~2026/4/5</h3><br>
 		- Added Eternity layer, with 16 Milestones, an Upgrade tree and Timeshard!<br>
 		- Added DeFe308 layer, with 1 Milestone.<br>
@@ -102,14 +113,17 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加DeFe308层级，包括1个里程碑<br>
 		- 在时间墙层级增加了更多的内容<br>
 		- 一些其他更改<br>
-		- 终局: 1 DeFe308<br>
+		- 终局: 1 DeFe308<br><br>
+
 	<h3>v2.0.1 Translation Update (Part. III) 2026/4/11~2026/4/12</h3><br>
 		- Completed the translation of I and Qa layer.<br>
 		Chinese version:<br>
-		- 完成了I和Qa两个层级的翻译<br>
+		- 完成了I和Qa两个层级的翻译<br><br>
+
 	<h3>v2.0.2 News Ticker Update 2026/4/25</h3><br>
 		- Added News Ticker. (only have English version)<br>
-		- Added 4 secret Achievements.<br>
+		- Added 4 secret Achievements.<br><br>
+
 	<h3>v2.1 Pre-Eternity Challenge Update 2026/5/1~2026/5/24</h3><br>
 		- Added more upgrades in the Upgrade tree.<br>
 		- Added 2 DeFe308 Milestones.<br>
@@ -121,7 +135,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了2个DeFe308里程碑<br>
 		- 增加了1个隐藏成就<br>
 		- 一些其他更改，以及更多的新闻消息<br>
-		- 终局: 5 DeFe308<br>
+		- 终局: 5 DeFe308<br><br>
+
 	<h3>v2.2 Eternity Challenge Update (Part. I) 2026/5/31~2026/6/19</h3><br>
 		- Added 7 Eternity Challenges and more upgrades in the Upgrade Tree.<br>
 		- Added 1 milestone in DeFe308 layer.<br>
@@ -133,7 +148,21 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了1个DeFe308里程碑<br>
 		- 增加了一个新层级，包含14个里程碑与12个升级<br>
 		- 一些其他更改，以及更多的新闻消息<br>
-		- 终局: 完成所有成就<br>
+		- 终局: 完成所有成就<br><br>
+
+	<h3>v2.3 Eternity Challenge Update (Part. II) 2026/7/13~2026/7/18</h3><br>
+		- Added 4 more Eternity Challenges and more upgrades in the Upgrade Tree.<br>
+		- Added I-Upgrade Booster and related contents in CF layer.<br>
+		- Added 5 secret Achievements.<br>
+		- Added Time Flux.<br>
+		- Some other changes, and more news messages.<br>
+		- Endgame: Unlock Liuliu66686.<br>
+		Chinese version:<br>
+		- 又增加了4个永恒挑战，在升级树中增加了更多的升级<br>
+		- 在CF层级中增加了I-升级增强器和相关的升级<br>
+		- 增加了5个隐藏成就与时间流量<br>
+		- 一些其他更改，以及更多的新闻消息<br>
+		- 终局: 解锁Liuliu66686<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -168,6 +197,8 @@ function addedPlayerData() { return {
 	//NiShuoDeDuiDanShiWoShiDeFe308NiMenWanLe:'DeFe308'
 	//offTime = { remain: 0 }
 	title:'The Timewall Tree Remake',
+	offlineTime: n(0),
+	Dif:n(0),
 }}
 
 // Display extra things at the top of the page
@@ -187,7 +218,8 @@ var displayThings = [
 function isEndgame() {
 	//return hasUpgrade('ST',54)
 	//return hasMilestone('df',2)
-	return hasUpgrade('cf',34)
+	//return hasUpgrade('cf',34)
+	return hasUpgrade('cf',52)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
@@ -265,3 +297,8 @@ function gba(a,b){return getBuyableAmount(a,b)}
 function gcs(a,b){return getClickableState(a,b)}
 
 function ce(a,b) {return clickableEffect(a,b)}
+
+function sleep(ms) {
+	const start = Date.now();
+	while (Date.now()-start<ms){}
+}

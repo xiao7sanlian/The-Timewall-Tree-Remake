@@ -407,12 +407,15 @@ var interval = setInterval(function() {
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3
 	let trueDiff = diff
+	player.Dif = trueDiff
 	if (player.offTime !== undefined) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600
-		if (player.offTime.remain > 0) {
-			let offlineDiff = Math.max(player.offTime.remain / 10, diff)
-			player.offTime.remain -= offlineDiff
-			diff += offlineDiff
+		if (player.offTime.remain != 0) {
+			//let offlineDiff = Math.max(player.offTime.remain / 10, diff)
+			//player.offTime.remain -= offlineDiff
+			//diff += offlineDiff
+			player.offlineTime = player.offlineTime.add(player.offTime.remain)
+			player.offTime.remain = 0
 		}
 		//if (!options.offlineProd || player.offTime.remain <= 0) player.offTime = undefined
 		
