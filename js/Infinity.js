@@ -76,10 +76,10 @@ addLayer("I", {
 
         if(hasUpgrade('I',171)) player.I.QUBF = player.I.QUBF.add(tmp.I.QUBFgain.times(diff))
 
-        if(inChallenge('I',31))player.I.C31base = player.T.points.add(1).times(player.ST.points.add(1)).times(player.MT.points.add(1)).pow(0.02).sub(1).max(player.I.C31base)
-        if(!inChallenge('I',31))player.I.CTbase = player.I.C31base.max(player.I.CTbase).min('1e100000')
+        if(inChallenge('I',31))player.I.C31base = player.T.points.add(1).times(player.ST.points.add(1)).times(player.MT.points.add(1)).pow(0.02).sub(1).max(player.I.C31base).min('1e2500')
+        if(!inChallenge('I',31))player.I.CTbase = player.I.C31base.max(player.I.CTbase).min('1e2500')
 
-        if(hasMilestone('E',14)&&player.E.CTauto&&hasUpgrade('I',131)) player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e100000')
+        if(hasMilestone('E',14)&&player.E.CTauto&&hasUpgrade('I',131)) player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
 
         if(hasMilestone('E',0)&&player.E.IPDauto) layers.I.buyables[11].buyMax()
 
@@ -469,7 +469,7 @@ addLayer("I", {
                 a=a+"<br><br>需求: "+format(tmp.I.boostedIU.add(1),0)+' 个 I-升级增强器'}
                 return a
             },
-            effect(){a=tmp.I.gainMult.pow(0.001)
+            effect(){a=tmp.I.gainMult.pow(0.001).min(1e10)
                 return a
             },
             unlocked(){return hasUpgrade('cf',34)},
@@ -1875,7 +1875,7 @@ addLayer("I", {
             display() {a= "Produce "+format(tmp.I.IGmult)+" Infinity Powers Per Second<br/>Effect:produces "+format(this.effect())
                 if(buyableEffect('I',33).neq(1)) a=a+'^'+format(buyableEffect('I',33))+'='+format(tmp.I.actualIPowgen)
                 a=a+" Infinity Powers/s<br/>"
-                if(tmp.I.actualIPowgen.gte(1e250)) a=a+'After softcap:'+format(tmp.I.reaalIPowgen)+'/s<br>'
+                if(tmp.I.actualIPowgen.neq(tmp.I.reaalIPowgen)) a=a+'After softcap:'+format(tmp.I.reaalIPowgen)+'/s<br>'
             if(tmp.I.ipowmult.neq(1)) a=a+'Your other effects multiply your Infinity Power gain by '+format(tmp.I.ipowmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' Infinity Points'
             if(options.Chinese) {a="每秒生产"+format(tmp.I.IGmult)+"无限之力<br/>效果:每秒生产"+format(this.effect())
@@ -1961,6 +1961,7 @@ addLayer("I", {
                 if(a.gte(1.5)) a=a.sub(1.5).div(10).add(1.5)
                 if(a.gte(2)) a=a.add(2).log(2)
                 a=a.times(tmp.I.IEFmult)
+                if(inChallenge('E',33)) a=n(1)
                     return a
             },
             display() { a="Add "+format(tmp.I.IEFbase)+" to Infinity Generator Effect Exponent<br/>Effect:^"+format(this.effect().div(tmp.I.IEFmult),4)
@@ -2228,6 +2229,7 @@ addLayer("I", {
         return a
     },
     IPDbase(){a=n(2)
+        a=a.pow(tmp.li.dpeff)
         return a
     },
     BItip(){a='You have gone Infinity '+format(player.I.inf)+' times.<br/>'
@@ -2251,12 +2253,13 @@ addLayer("I", {
         if(hasUpgrade('I',93)) a=a.times(upgradeEffect('I',93))
         if(hasChallenge('I',25)) a=a.times(challengeEffect('I',25))
         a=a.times(tmp.I.TPeff)
-        a=a.times(buyableEffect('I',32))
         if(hasUpgrade('E',102)) a=a.times(upgradeEffect('E',102))
         if(hasChallenge('E',12)) a=a.times(challengeEffect('E',12))
         if(hasUpgrade('E',162)) a=a.times('1e70')
 
         if(inChallenge('E',32)) a=n(0)
+        if(inChallenge('E',33)) a=n(1)
+        a=a.times(buyableEffect('I',32))
         return a
     },
     IGMbase(){a=n(2)
@@ -2266,6 +2269,7 @@ addLayer("I", {
         if(hasUpgrade('I',161)) a=a.times(upgradeEffect('I',161))
         if(hasMilestone('df',0)) a=a.times(tmp.df.effect[1])
         if(hasUpgrade('E',82)) a=a.times(upgradeEffect('E',82))
+        if(inChallenge('E',33)) a=n(2)
         return a
     },
     IEFbase(){a=n(0.01)
@@ -2329,6 +2333,7 @@ addLayer("I", {
     },
     reaalIPowgen(){a=tmp.I.actualIPowgen.times(tmp.I.ipowmult)//final!
         if(a.gte(1e250)) a=a.div(1e250).pow(tmp.I.IPowscexp).times(1e250)
+        if(tmp.li.dilationLevel.gt(0)&&a.gt(10)) a = n(10).pow(a.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
         return a
     },
     IPowscexp(){a=n(0.5)
@@ -2392,10 +2397,10 @@ addLayer("I", {
         if(hasUpgrade('E',21)) a=a.times(upgradeEffect('E',21))
         return a
     },
-    TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls, which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
+    TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls (capped at 1e2500), which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
         a=a+format(tmp.I.CTeff)+"</h3> Timewall Power per second.<br/>"
         a=a+"You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> Timewall Power, which multiply Infinity Generator base effect by "+format(tmp.I.TPeff)+'.'
-        if(options.Chinese) {a="你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> 压缩时间墙，每秒生产 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTeff)+"</h3> 时间墙能量<br/>"
+        if(options.Chinese) {a="你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> 压缩时间墙（在1e2500处达到上限），每秒生产 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTeff)+"</h3> 时间墙能量<br/>"
         a=a+"你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> 时间墙能量，使无限之力生成器基础效果x"+format(tmp.I.TPeff)+'.'}
         if(!hasUpgrade('I',131)) a=''
         return a
@@ -2437,7 +2442,7 @@ addLayer("I", {
     IUtip2(){
         a='You have '+format(getBuyableAmount('cf',11),0)+' I-Upgrade Booster(s).'
         if(options.Chinese) a='你有'+format(getBuyableAmount('cf',11),0)+'个I-升级增强器'
-        if(!hasUpgrade('I',171)) a=''
+        if(!hasUpgrade('cf',34)) a=''
         return a
     },
     totalInf(){a=player.I.inf.add(player.E.bankedInf)
@@ -2485,7 +2490,7 @@ addLayer("qa", {
         {key: "a",
         description: "A: Reset for qaqe308",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-        unlocked(){return (hasUpgrade('I',51)&&!hasMilestone('E',4))||hasUpgrade('E',131)}},
+        unlocked(){return (hasUpgrade('I',51)&&!hasMilestone('E',4))||(hasUpgrade('E',131)&&!hasUpgrade('li',23))}},
     ],
     layerShown(){return hasUpgrade('I',51)},
     branches: ['I'],
@@ -2506,11 +2511,11 @@ addLayer("qa", {
         if(hasMilestone('E',8)&&player.E.MB3auto) layers.qa.buyables[13].buyMax()
         if(hasMilestone('E',8)&&player.E.MB4auto) layers.qa.buyables[14].buyMax()
     },
-    autoPrestige() {a = hasMilestone('E',4)&&player.E.qaqauto&&!hasUpgrade('E',131)
+    autoPrestige() {a = hasMilestone('E',4)&&player.E.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))
         return a
     },
     resetsNothing() {return hasMilestone('E',4)},
-    canBuyMax() {return hasMilestone('E',5)&&player.E.qaqauto&&!hasUpgrade('E',131)},
+    canBuyMax() {return hasMilestone('E',5)&&player.E.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))},
     passiveGeneration()
     {
         mult = 0
@@ -2940,10 +2945,11 @@ addLayer("qa", {
         a = tmp.qa.effbeforeSC
         if(a.gte('1e100')) a=n(10).pow(a.log(10).div(100).pow(0.5).times(100))
         a=a.times(tmp.E.TSeffect)
-        if(hasUpgrade('E',133)) a=a.div(10)
+        if(hasUpgrade('E',133)&&!hasUpgrade('li',23)) a=a.div(10)
         if(hasUpgrade('E',132)) a=a.times(3)
         if(hasUpgrade('cf',33)) a=a.times(upgradeEffect('cf',33)[0])
         if(hasUpgrade('E',171)) a=a.pow(1.03)
+        if(isNaN(a)) a=n(0)
             return a
     },
     effbase(){a=n(2)

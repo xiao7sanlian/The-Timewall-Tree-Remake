@@ -61,6 +61,9 @@ addLayer("T", {
         if(inChallenge('MT',12)) d=d.pow(0.5)
 
         if(d.gt(10))d=d.div(10).pow(tmp.T.timewallscexp).times(10)
+
+        if(tmp.li.dilationLevel.gt(0)&&d.gt(10)) d = n(10).pow(d.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
+
         if(inChallenge('ST',14)) d=n(0)
         if(inChallenge('MT',14)) d=n(0)
             return d
@@ -209,7 +212,7 @@ addLayer("T", {
             },
             unlocked(){return player.T.total.gte(1)},
             effect(){a=getBuyableAmount('T',11).times(0.05).add(1)
-                //if(a.gte(4))a=a.div(4).pow(0.5).times(4)
+                if(hasUpgrade('E',221)) a=a.max(n(1.001).pow(getBuyableAmount('T',11)).min('1e100000'))
                     return a
             },
             effectDisplay(){return format(this.effect())+'x'},
@@ -237,7 +240,10 @@ addLayer("T", {
                 return a
             },
             unlocked(){return player.T.total.gte(1)},
-            effect(){return getBuyableAmount('T',12).times(0.1).add(1)},
+            effect(){a= getBuyableAmount('T',12).times(0.1).add(1)
+                if(hasUpgrade('E',222)) a=a.max(n(1.001).pow(getBuyableAmount('T',12).div(10)).min('1e10000'))
+                return a
+            },
             effectDisplay(){return format(this.effect())+'x'},
             cost(){
                 a=n(100)
@@ -451,7 +457,7 @@ addLayer("T", {
             display() {a= "Produce "+format(tmp.T.PPmult)+" Points Per Second<br/>Effect:produces "+format(this.effect())
                 if(buyableEffect('T',13).neq(1)&&!inChallenge('I',23)) a=a+'^'+format(buyableEffect('T',13))+'='+format(tmp.T.ptGain)
                 a=a+" points/s<br/>"
-            if(tmp.T.ptGain.gte(tmp.T.softcapstart)) a=a+'After softcap: '+format(tmp.A.realPTgen)+' points/s<br/>'
+            if(tmp.T.ptGain.neq(tmp.A.realPTgen)) a=a+'After softcaps: '+format(tmp.A.realPTgen)+' points/s<br/>'
             if(tmp.T.ptmult.neq(1)) a=a+'Your other effects multiply your point gain by '+format(tmp.T.ptmult)+'.<br>'
             a=a+"Cost: "+format(this.cost())+' points'
             if(options.Chinese) {a= "每秒生产"+format(tmp.T.PPmult)+"点数<br/>总效果:每秒生产"+format(this.effect())
@@ -548,6 +554,7 @@ addLayer("T", {
                 if(a.gte(3)) a=a.div(3).pow(0.5).times(3)
                 if(a.gte(4)) a=a.slog(2).add(2)
                 a=a.times(tmp.T.PEFmult)
+                if(inChallenge('E',33)) a=n(1)
                     return a
             },
             display() { a="Add "+format(tmp.T.PEFbase,4)+" to Point Producer Effect Exponent<br/>Effect:^"+format(this.effect().div(tmp.T.PEFmult),4)
@@ -695,7 +702,6 @@ addLayer("T", {
         },
     },
     PPmult(){a=n(1)
-        a=a.times(buyableEffect('T',12).pow(tmp.T.PPMexp).add(1))
         if(hasUpgrade('T',21)) a=a.times(upgradeEffect('T',21))
         if(hasUpgrade('T',22)) a=a.times(upgradeEffect('T',22))
         if(hasUpgrade('Q',12)&&!inChallenge('MT',13)) {a=a.times(upgradeEffect('Q',12))
@@ -727,14 +733,18 @@ addLayer("T", {
         if(hasUpgrade('I',94)) a=a.times(upgradeEffect('I',94))
         if(hasUpgrade('I',141)) a=a.times(upgradeEffect('I',141))
         if(hasUpgrade('E',101)) a=a.times(upgradeEffect('E',101))
-        a=a.times(tmp.I.IGtopt)
         if(hasUpgrade('E',161)) a=a.times('1e600')
         if(hasUpgrade('E',193)) a=a.times(upgradeEffect('E',193))
         if(hasUpgrade('cf',13)) a=a.times(upgradeEffect('cf',13))
         if(getClickableState('I',23)==1) a=a.times(clickableEffect('I',23))
+        if(hasUpgrade('li',12)) a=a.times(upgradeEffect('li',12))
 
         if(inChallenge('E',32)) a=a.times(tmp.E.challenges[32].inChaleffect)
-        if(!inChallenge('E',32)&&hasChallenge('E',32)) a=a.times(challengeEffect('E',32))    
+        if(!inChallenge('E',32)&&hasChallenge('E',32)) a=a.times(challengeEffect('E',32))
+
+        if(inChallenge('E',33)) a=n(1)
+        a=a.times(tmp.I.IGtopt)
+        a=a.times(buyableEffect('T',12).pow(tmp.T.PPMexp).add(1))
         return a
     },
     PPMbase(){a=n(1)
@@ -749,6 +759,8 @@ addLayer("T", {
         if(hasUpgrade('I',73)) a=a.times(upgradeEffect('I',73))
         if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         if(hasUpgrade('cf',13)) a=a.times(upgradeEffect('cf',13))
+        
+        if(inChallenge('E',33)) a=n(1)
         return a
     },
     PPMexp(){a=n(1)
@@ -767,6 +779,8 @@ addLayer("T", {
         //if(a.gte(100)) a=a.sub(99).log(10).add(100)
         if(inChallenge('I',13)) a=a.div(2)
         if(inChallenge('E',22)) a=n(1)
+
+        if(inChallenge('E',33)) a=n(1)
         return a
     },
     PEFbase(){a=n(0.01)
@@ -790,6 +804,7 @@ addLayer("T", {
 
         if(inChallenge('E',31)) a=a.times(tmp.E.challenges[31].inChaleffect)
         if(inChallenge('E',22)) a=n(1)
+        if(inChallenge('E',33)) a=n(1)
         return a
     },
     TDbase(){a=n(2)
@@ -816,6 +831,7 @@ addLayer("T", {
         if(hasUpgrade('E',71)) a=a.times(upgradeEffect('E',71))
         if(inChallenge('E',23)) a=a.times(player.I.ipower.pow(0.2))
         if(hasChallenge('E',23)) a=a.times(challengeEffect('E',23))
+        if(hasUpgrade('li',13)) a=a.times(upgradeEffect('li',13))
         if(hasUpgrade('I',162)) a=a.pow(1.1)
         if(inChallenge('MT',14)) a=n(0)
         if(inChallenge('I',15)) a=getBuyableAmount('T',11).div(-3)
@@ -1377,6 +1393,8 @@ addLayer("ST", {
 
             if(getClickableState('I',31)==1) d=d.pow(clickableEffect('I',31))
             if(inChallenge('MT',12)) d=d.pow(0.5)
+
+            if(tmp.li.dilationLevel.gt(0)&&d.gt(10)) d = n(10).pow(d.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
             return d
     },
     canReset(){return tmp.ST.getResetGain.gte(1)&&!inChallenge('I',28)},
@@ -2277,6 +2295,7 @@ addLayer("Qi", {
     },
     QqQeInfspeed(){a=n(1).div('1e120')
         a=a.times(tmp.Qi.effect)
+        if(hasUpgrade('li',14)) a=a.times(upgradeEffect('li',14))
         return a
     },
     QqQeInfeff(){a=tmp.Qi.effQqQeInf.add(1).log(10).add(1).log(2).add(1)
@@ -2340,6 +2359,8 @@ addLayer("MT", {
             if(hasUpgrade('I',83)) d=d.times(tmp.I.IGtomt)
 
             if(getClickableState('I',41)==1) d=d.pow(clickableEffect('I',41))
+
+            if(tmp.li.dilationLevel.gt(0)&&d.gt(10)) d = n(10).pow(d.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
             return d
     },
     canReset(){return tmp.MT.getResetGain.gte(1)&&(!hasUpgrade('MT',14)||hasMilestone('I',2))&&!inChallenge('I',28)},

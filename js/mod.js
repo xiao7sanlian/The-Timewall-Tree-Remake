@@ -15,8 +15,8 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.3",
-	name: "Eternity Challenge Update (Part. II)",
+	num: "2.4",
+	name: "Liuliu66686 Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -163,6 +163,17 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了5个隐藏成就与时间流量<br>
 		- 一些其他更改，以及更多的新闻消息<br>
 		- 终局: 解锁Liuliu66686<br><br>
+
+	<h3>v2.4 Liuliu66686 Update 2026/7/20~2026/7/25</h3><br>
+		- Added 1 more Eternity Challenges and more upgrades in the Upgrade Tree.<br>
+		- Added Li layer, with Liuliu66686 Dilation and many upgrades and buyables.<br>
+		- Some other changes.<br>
+		- Endgame: 1 Divinity Power.<br>
+		Chinese version:<br>
+		- 又增加了1个永恒挑战，在升级树中增加了更多的升级<br>
+		- 增加了Li层级，包括溜胀和一大堆升级与可购买<br>
+		- 一些其他更改<br>
+		- 终局: 1神权<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -186,8 +197,9 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = tmp.T.ptGain
-	if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
+	let gain = tmp.A.realPTgen
+	//if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
+	//if(tmp.li.dilationLevel.gt(0)&&gain.gt(10)) gain = n(10).pow(gain.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
 	gain = gain.times(tmp.T.ptmult)
 	return gain
 }
@@ -207,7 +219,8 @@ var displayThings = [
 		if(hasUpgrade('I',51)) {a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%'
 			a=a+'<br/>'}
 			//if(tmp.A.ProgressToEtr.gte(100)) a=a+"You have reached the Endgame!"
-		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!"
+		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!<br>"
+		if(inChallenge('E',34)) a=a+'EC12 progress: '+format(player.E.resetTime)+'s/'+format(tmp.E.challenges[34].goal2)+'s<br>'
 		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
 		if(options.NewsTicker) a=a+'<br>'+tmp.SA.news[player.SA.newsIndex]
 		return a
@@ -219,7 +232,8 @@ function isEndgame() {
 	//return hasUpgrade('ST',54)
 	//return hasMilestone('df',2)
 	//return hasUpgrade('cf',34)
-	return hasUpgrade('cf',52)
+	//return hasUpgrade('cf',52)
+	return getBuyableAmount('li',21).gte(1)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 

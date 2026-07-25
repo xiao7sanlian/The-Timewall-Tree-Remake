@@ -52,7 +52,7 @@ addLayer("A", {
         "milestones",["display-text", () => tmp.A.offTimetext],["text-input", "Speedmult"],'clickables',
     ],},
     },
-    effectDescription(){return ' and there are 100 in total.'},
+    effectDescription(){return ' and there are 110 in total.'},
     achievements: {
         11: {
      name() {return "First Point"},
@@ -1047,6 +1047,145 @@ addLayer("A", {
      }, 
      textStyle: {'color': '#ffe125'},
         },
+      211: {
+     name(){a="That's a lot"
+      if(options.Chinese) a='那可不少'
+        return a
+     },
+     done() {return player.li.points.gte(150)}, 
+     unlocked(){return player.A.points.gte(100)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 150 Liuliu66686 Points."
+        if(options.Chinese) a='获得150个溜溜点数'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+      212: {
+     name(){a="QqQeInfinity Level 4"
+      if(options.Chinese) a='超所有人'
+        return a
+     },
+     done() {return getBuyableAmount('Qi',11).gte(3)}, 
+     unlocked(){return player.A.points.gte(100)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Buy 'QqQeInfinity Effciency' 3 times."
+        if(options.Chinese) a='使QqQeInfinity同时超4个人'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+      213: {
+     name(){a="DeFe5544"
+      if(options.Chinese) a='DeFe5544'
+        return a
+     },
+     done() {return player.df.points.gte(18)}, 
+     unlocked(){return player.A.points.gte(100)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 18 DeFe308."
+        if(options.Chinese) a='获得18个DeFe308'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      214: {
+     name(){a="This achievement doesn't exist"
+      if(options.Chinese) a='此成就不存在'
+        return a
+     },
+     done() {return player.I.points.gte('9.99e9999')}, 
+     unlocked(){return player.A.points.gte(100)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Reach 9.99e9999 Infinity Points."
+        if(options.Chinese) a='获得9.99e9999无限点数'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      215: {
+     name(){a="The Last Eternity Upgrade"
+      if(options.Chinese) a='最后一个永恒升级'
+        return a
+     },
+     done() {return hasUpgrade('E',231)}, 
+     unlocked(){return player.A.points.gte(100)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Buy Upgrade E23-1."
+        if(options.Chinese) a='购买升级E23-1'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      221: {
+     name(){a="Infinity Infinity"
+      if(options.Chinese) a='双重无限'
+        return a
+     },
+     done() {return player.I.inf.gte(n(2).pow(1024))}, 
+     unlocked(){return player.A.points.gte(105)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Infinity 1.80e308 times."
+        if(options.Chinese) a='无限1.80e308次'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      222: {
+     name(){a="Buy whatever you want"
+      if(options.Chinese) a='随心所欲'
+        return a
+     },
+     done() {return tmp.E.totalUPcal.gte(1000)}, 
+     unlocked(){return player.A.points.gte(105)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Reach 1000 total Upgrade Points"
+        if(options.Chinese) a='总计获得1000升级点数'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      223: {
+     name(){a="DeFe6776"
+        return a
+     },
+     done() {return player.df.points.gte(22)}, 
+     unlocked(){return player.A.points.gte(105)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 22 DeFe308."
+        if(options.Chinese) a='获得22个DeFe308'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      224: {
+     name(){a="True Dilation"
+      if(options.Chinese) a='真正的膨胀'
+        return a
+     },
+     done() {return player.points.gte('6e6686')&&tmp.li.dilationLevel.gte(1)}, 
+     unlocked(){return player.A.points.gte(105)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Reach 6e6686 points in Liuliu66686 Dilation."
+        if(options.Chinese) a='在溜胀中达到6e6686点数'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      225: {
+     name(){a="Hover to see the name of this achievement"
+      if(options.Chinese) a='你被溜溜溜达嘿禁言29天23小时59分钟'
+        return a
+     },
+     done() {return hasUpgrade('li',31)}, 
+     unlocked(){return player.A.points.gte(105)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "You have been banned from speaking by Liuliu66686 for 29 days, 23 hours, and 59 minutes<br>Unlock Divinity Power."
+        if(options.Chinese) a='解锁神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
     },
     milestones:{
         0: {
@@ -1109,6 +1248,7 @@ addLayer("A", {
     realPTgen(){gain = tmp.T.ptGain
 	if(gain.gte(tmp.T.softcapstart)) gain = gain.div(tmp.T.softcapstart).pow(tmp.T.softcapexp).times(tmp.T.softcapstart)
     if(gain.gte('1e1e10')) gain =n(10).pow(gain.log(10).pow(0.5).times(1e5))
+   if(tmp.li.dilationLevel.gt(0)&&gain.gt(10)) gain = n(10).pow(gain.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
     return gain},
    offTimetext(){a='You have '+formatTime(player.offlineTime)+' Time Flux.<br>Enter the multiplier for speed-up here (1~64x):'
       if(options.Chinese) a='你有'+formatTime(player.offlineTime)+'时间流量<br>在下面输入你想要加速的倍率(1~64x)：'
@@ -1237,12 +1377,12 @@ addLayer("SA", {
         if(options.Chinese) a='一天一层'
         return a
      },
-     done() {return player.timePlayed > 864000+86400}, 
+     done() {return player.timePlayed > 86400*12}, 
      unlocked(){return player.SA.points.gte(0)},
      onComplete() {player.SA.points = player.SA.points.add(1)},
      tooltip() {a= "???"
-        if(hasAchievement('SA',this.id)) {a= "Play for 11 days."
-        if(options.Chinese) a='游玩11天'}
+        if(hasAchievement('SA',this.id)) {a= "Play for 12 days."
+        if(options.Chinese) a='游玩12天'}
         return a
      }, 
      textStyle: {'color': '#ffe125'},

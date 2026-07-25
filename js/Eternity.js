@@ -54,10 +54,12 @@ addLayer("E", {
     },
     canReset() {return player.I.points.gte(n(2).pow(1024))},//&&(player.I.points.lt(n(2).pow(1024)))
     update(diff){
-        player.E.timeshard = player.E.timeshard.add(tmp.E.TSgen.times(diff))
+        player.E.timeshard = player.E.timeshard.add(tmp.E.RealTSgen.times(diff))
         if(inChallenge('E',11)||inChallenge('E',32)) player.E.timeshard = n(1)
 
-        player.E.allupg = [11,21,22,31,32,33,41,42,51,61,71,72,73,81,82,83,91,92,93,101,102,103,111,121,122,123,131,132,133,141,142,143,151,161,162,171,181,191,192,193,201,202,203,204]
+        if(inChallenge('E',33)&&player.E.resetTime<0.3) player.E.timeshard = n(1)
+
+        player.E.allupg = [11,21,22,31,32,33,41,42,51,61,71,72,73,81,82,83,91,92,93,101,102,103,111,121,122,123,131,132,133,141,142,143,151,161,162,171,181,191,192,193,201,202,203,204,211,213,221,222,231]
     },
     row: 5, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -96,7 +98,7 @@ addLayer("E", {
         content: [ "main-display","prestige-button","resource-display",
             ["display-text", () => tmp.E.EUtip],['buyables',[2]],
             ["clickables",[1]],
-            ["upgrade-tree",[[11],[21, 22],[31,32,33,34],[41,42],[51],[61,62],[71,72,73],[81,82,83],[91,92,93],[101,102,103],[111,112],[121,122,123],[131,132,133],[141,142,143],[151,152],[161,162],[171],[181],[191,192,193],[201,202,203,204]]]
+            ["upgrade-tree",[[11],[21, 22],[31,32,33,34],[41,42],[51],[61,62],[71,72,73],[81,82,83],[91,92,93],[101,102,103],[111,112],[121,122,123],[131,132,133],[141,142,143],[151,152],[161,162],[171],[181],[191,192,193],[201,202,203,204],[211,212,213],[221,222],[231]]]
     ],
     unlocked(){return hasMilestone('E',1)},
     },
@@ -114,6 +116,7 @@ addLayer("E", {
                 if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
                 if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
                 if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
+                if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
                 player.E.upgrades=[]
             setClickableState('E',12,0)
             }
@@ -331,10 +334,12 @@ addLayer("E", {
             display() {a= "Produce "+format(tmp.E.TGmult)+" Timeshards Per Second<br/>Effect:produces "+format(this.effect())
                 //if(buyableEffect('E',13).neq(1)) a=a+'^'+format(buyableEffect('E',13))+'='+format(tmp.E.TSgen)
                 a=a+" timeshards/s<br/>"
+            if(tmp.E.TSgen.neq(tmp.E.RealTSgen)) a=a+'After Softcap:'+format(tmp.E.RealTSgen)+'/s<br>'
             a=a+"Cost: "+format(this.cost())+' Eternity Points'
             if(options.Chinese) {a= "每秒生产"+format(tmp.E.TGmult)+"时间碎片<br/>总效果:每秒生产"+format(this.effect())
                 //if(buyableEffect('E',13).neq(1)) a=a+'^'+format(buyableEffect('E',13))+'='+format(tmp.E.TSgen)
                 a=a+"时间碎片<br/>"
+            if(tmp.E.TSgen.neq(tmp.E.RealTSgen)) a=a+'<br>软上限后:'+format(tmp.E.RealTSgen)+'/s'
             a=a+"花费:"+format(this.cost())+'永恒点数'}
             return a },
             unlocked() {return hasMilestone('E', 0)},
@@ -567,8 +572,9 @@ addLayer("E", {
             if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
             if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
             if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
+            if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
             player.E.upgrades = []
-            doReset('E',true)
+            doReset('E',player.I.points.lt(n(2).pow(1024)))
            },
         },
         12: {
@@ -863,7 +869,7 @@ addLayer("E", {
             cost: new Decimal(3),
             branches:[61],
             unlocked() {return hasMilestone('E',1)},
-            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',72)&&!hasUpgrade('E',73)},
+            canAfford() {return hasUpgrade('E',61)&&tmp.E.cross1.gt(0)},
             currencyLocation() {return tmp.E},
             currencyDisplayName: 'Upgrade Points',
             currencyInternalName: 'currentUP',
@@ -911,11 +917,11 @@ addLayer("E", {
                 if(options.Chinese) a='E10-1 时间墙'
                 return a
             },
-            description() {a="Each bought Upgrade Points multiply your Point Producer base effect by 1e100."
-                if(options.Chinese) a='每个购买的升级点数使点数生产器基础效果x1e100'
+            description() {a="Each bought Upgrade Points multiply your Point Producer base effect by 1e100, capped at e100,000."
+                if(options.Chinese) a='每个购买的升级点数使点数生产器基础效果x1e100，在e100,000处达到上限'
                 return a
             },
-            effect() {a=n(1e100).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+            effect() {a=n(1e100).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))).min('e1e5')
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
@@ -939,7 +945,7 @@ addLayer("E", {
             cost: new Decimal(5),
             branches:[61],
             unlocked() {return hasMilestone('E',1)},
-            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',71)&&!hasUpgrade('E',73)},
+            canAfford() {return hasUpgrade('E',61)&&tmp.E.cross1.gt(0)},
             currencyLocation() {return tmp.E},
             currencyDisplayName: 'Upgrade Points',
             currencyInternalName: 'currentUP',
@@ -987,11 +993,11 @@ addLayer("E", {
                 if(options.Chinese) a='E10-2 无限'
                 return a
             },
-            description() {a="Each bought Upgrade Points multiply your Infinity Generator base effect by 1e6."
-                if(options.Chinese) a='每个购买的升级点数使无限生成器基础效果x1e6'
+            description() {a="Each bought Upgrade Points multiply your Infinity Generator base effect by 1e6, capped at 1e6000."
+                if(options.Chinese) a='每个购买的升级点数使无限生成器基础效果x1e6，在1e6000处达到上限'
                 return a
             },
-            effect() {a=n(1e6).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+            effect() {a=n(1e6).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))).min('e6000')
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
@@ -1019,7 +1025,7 @@ addLayer("E", {
             cost: new Decimal(5),
             branches:[61],
             unlocked() {return hasMilestone('E',1)},
-            canAfford() {return hasUpgrade('E',61)&&!hasUpgrade('E',71)&&!hasUpgrade('E',72)},
+            canAfford() {return hasUpgrade('E',61)&&tmp.E.cross1.gt(0)},
             currencyLocation() {return tmp.E},
             currencyDisplayName: 'Upgrade Points',
             currencyInternalName: 'currentUP',
@@ -1071,11 +1077,11 @@ addLayer("E", {
                 if(options.Chinese) a='E10-3 永恒'
                 return a
             },
-            description() {a="Each bought Upgrade Points multiply your Timeshard Generator base effect by 2."
-                if(options.Chinese) a='每个购买的升级点数使时间碎片生成器基础效果x2'
+            description() {a="Each bought Upgrade Points multiply your Timeshard Generator base effect by 2, capped at 1e200."
+                if(options.Chinese) a='每个购买的升级点数使时间碎片生成器基础效果x2，在1e200处达到上限'
                 return a
             },
-            effect() {a=n(2).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23)))
+            effect() {a=n(2).pow(getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))).min('1e200')
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
@@ -1146,8 +1152,12 @@ addLayer("E", {
                 if(options.Chinese) a='E13-1 活跃'
                 return a
             },
-            description() {a="You gain 10% more qaqe308, but Autobuyer and Buymax for qaqe308 and is disabled, and you can't gain DeFe308."
-                if(options.Chinese) a='qaqe308获取+10%，但禁用自动获取qaqe308与最大化获取qaqe308，且无法获取DeFe308'
+            description() {
+                a="You gain 10% more qaqe308, but Autobuyer and Buymax for qaqe308 and is disabled, and you can't gain DeFe308."
+                if(hasUpgrade('li',23))a="You gain 10% more qaqe308, but you can't gain DeFe308."
+                if(options.Chinese) {a='qaqe308获取+10%，但禁用自动获取qaqe308与最大化获取qaqe308，且无法获取DeFe308'
+                    if(hasUpgrade('li',23))a='qaqe308获取+10%，但你无法获取DeFe308'
+                }
                 return a
             },
             cost: new Decimal(8),
@@ -1265,7 +1275,10 @@ addLayer("E", {
                 return a
             },
             description() {a="Multiply qaqe308 base by (qaqe308 amount)^0.5, but Monika Point gain is divided by 10."
-                if(options.Chinese) a='基于qaqe308数量增强Monika点数获取基数（x^0.5），但Monika点数获取/10'
+                if(hasUpgrade('li',23))a="Multiply qaqe308 base by (qaqe308 amount)^0.5."
+                if(options.Chinese) {a='基于qaqe308数量增强Monika点数获取基数（x^0.5），但Monika点数获取/10'
+                    if(hasUpgrade('li',23))a='基于qaqe308数量增强Monika点数获取基数（x^0.5）'
+                }
                 return a
             },
             effect() {a=player.qa.points.pow(0.5)
@@ -1418,8 +1431,8 @@ addLayer("E", {
             title() {a= "E19-2"
                 return a
             },
-            description() {a="Pick another path from Eternity Upgrades in Rows 7-10.(WIP)"
-                if(options.Chinese) a='允许你从第7~10行中再选择一条升级路径进行购买(WIP)'
+            description() {a="Pick another path from Eternity Upgrades in Rows 7-10."
+                if(options.Chinese) a='允许你从第7~10行中再选择一条升级路径进行购买'
                 return a
             },
             cost: new Decimal(150),
@@ -1522,6 +1535,106 @@ addLayer("E", {
             branches:[193],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',193)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        211: {
+            title() {a= "E21-1"
+                return a
+            },
+            description() {a="Add 2 to effective DeFe308."
+                if(options.Chinese) a='使有效DeFe308增加2'
+                return a
+            },
+            cost: new Decimal(100),
+            branches:[201,203],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',201)||hasUpgrade('E',203)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        212: {
+            title() {a= "E21-2"
+                return a
+            },
+            description() {a="For each day you played, multiply Timeshard Generator Multiplier base effect by 2."
+                if(options.Chinese) a='每玩一天，你的时间碎片生产加成器效果翻倍'
+                return a
+            },
+            effect() {a=n(2).pow(Math.floor(player.timePlayed / 86400))
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            cost: new Decimal(1e50),
+            branches:[202,203],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',202)||hasUpgrade('E',203)},
+        },
+        213: {
+            title() {a= "E21-3"
+                return a
+            },
+            description() {a="Triple Dilation Point gain."
+                if(options.Chinese) a='膨胀点数获取x3'
+                return a
+            },
+            cost: new Decimal(100),
+            branches:[202,204],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',202)||hasUpgrade('E',204)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        221: {
+            title() {a= "E22-1"
+                return a
+            },
+            description() {a="The effect of T2-2 is a lot stronger."
+                if(options.Chinese) a='升级T2-2的效果大幅加强'
+                return a
+            },
+            cost: new Decimal(200),
+            branches:[211],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',211)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        222: {
+            title() {a= "E22-2"
+                return a
+            },
+            description() {a="The effect of T2-4 is a lot stronger."
+                if(options.Chinese) a='升级T2-4的效果大幅加强'
+                return a
+            },
+            cost: new Decimal(200),
+            branches:[213],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',213)},
+            currencyLocation() {return tmp.E},
+            currencyDisplayName: 'Upgrade Points',
+            currencyInternalName: 'currentUP',
+        },
+        231: {
+            title() {a= "E23-1"
+                return a
+            },
+            description() {a="Improve Dilation Point gain formula.<br>After improvement, your DP gain will be multiplied by "+format(this.effect())+'.'
+                if(options.Chinese) a='改进膨胀点数获取公式<br>在改进后，你的膨胀点数获取将会x'+format(this.effect())
+                return a
+            },
+            effect() {a=player.li.points.div(256).pow(0.5).max(1)
+                return a
+            },
+            cost: new Decimal(1),
+            branches:[221,222],
+            unlocked() {return hasMilestone('E',1)},
+            canAfford() {return hasUpgrade('E',221)||hasUpgrade('E',222)},
             currencyLocation() {return tmp.E},
             currencyDisplayName: 'Upgrade Points',
             currencyInternalName: 'currentUP',
@@ -1719,10 +1832,10 @@ addLayer("E", {
             },
             unlocked(){return challengeCompletions(this.layer,22)>=2},
         goal(){
-                let a=[n('1e1660'),n('e2222'),n('e3150'),n('e4000'),n('e10000'),n(1.79e309)]
+                let a=[n('1e1660'),n('e2222'),n('e3150'),n('e4000'),n('e5000'),n(1.79e309)]
                 return a[challengeCompletions(this.layer,this.id)]
             },
-        rewardEffect() {let a=[n(0),n(0.2),n(0.35),n(0.45),n(0.53),n(0.6)]
+        rewardEffect() {let a=[n(0),n(0.2),n(0.35),n(0.45),n(0.53),n(0.65)]
                 return player.E.timeshard.pow(a[challengeCompletions(this.layer,this.id)])
         },
             completionLimit() {return new Decimal(5)},
@@ -1747,7 +1860,7 @@ addLayer("E", {
             },
             unlocked(){return challengeCompletions(this.layer,23)>=2},
         goal(){
-                let a=[n('1e1500'),n('e2343'),n('e3200'),n('e10000'),n('e40000'),n(1.79e309)]
+                let a=[n('1e1500'),n('e2343'),n('e3200'),n('e4600'),n('e6160'),n(1.79e309)]
                 return a[challengeCompletions(this.layer,this.id)]
             },
         rewardEffect() {let a=[n(1),n(1e4),n(1e12),n(1e20),n(1e30),n(1e40)]
@@ -1778,10 +1891,10 @@ addLayer("E", {
             },
             unlocked(){return challengeCompletions(this.layer,24)>=2},
         goal(){
-                let a=[n('1e1840'),n('e2160'),n('e5000'),n('e10000'),n('e40000'),n(1.79e309)]
+                let a=[n('1e1840'),n('e2160'),n('e3000'),n('e4444'),n('e6000'),n(1.79e309)]
                 return a[challengeCompletions(this.layer,this.id)]
             },
-        rewardEffect() {let a=[n(1),n(1.005),n(1.01),n(1.013),n(1.017),n(1.022)]
+        rewardEffect() {let a=[n(1),n(1.005),n(1.01),n(1.015),n(1.02),n(1.025)]
                 return a[challengeCompletions(this.layer,this.id)]
         },
             completionLimit() {return new Decimal(5)},
@@ -1809,7 +1922,7 @@ addLayer("E", {
             },
             unlocked(){return challengeCompletions(this.layer,31)>=2},
         goal(){
-                let a=[n('1e2222'),n('e2560'),n('e5000'),n('e10000'),n('e40000'),n(1.79e309)]
+                let a=[n('1e2222'),n('e2560'),n('e5600'),n('e7500'),n('e9000'),n(1.79e309)]
                 return a[challengeCompletions(this.layer,this.id)]
             },
         rewardEffect() {let a=[n(0),n(0.15),n(0.35),n(0.5),n(0.75),n(1)]
@@ -1823,29 +1936,65 @@ addLayer("E", {
             name() {a="Eternity Challenge 11"
             if(options.Chinese) a='永恒挑战11'
             return a},
-            challengeDescription(){a="All Producer and Generator multipliers and power are disabled except for the effect of timeshard, Infinity Power and Producer/Generator Multiplier.<br>Completion："+challengeCompletions(this.layer,this.id)+"/5"
-                if(options.Chinese) a='所有生产器的倍率和指数被禁用，除了时间碎片、无限之力和生产加成器的效果<br>完成次数：'+challengeCompletions(this.layer,this.id)+"/5"
+            challengeDescription(){a="All boosts for Producer and Generator (and Multiplier) are disabled except for the effect of timeshard, Infinity Power and Producer/Generator Multiplier.<br>Completion："+challengeCompletions(this.layer,this.id)+"/5"
+                if(options.Chinese) a='所有生产(加成)器的加成被禁用，除了时间碎片、无限之力和生产加成器的效果<br>完成次数：'+challengeCompletions(this.layer,this.id)+"/5"
                 return a
             },
-            goalDescription(){a = format(this.goal())+" Infinity Points & 66686 unspent Upgrade Points"
-                if(options.Chinese) a=''+format(this.goal())+' 无限点数 & 66686 未使用的升级点数'
+            goalDescription(){a = format(this.goal())+" Infinity Points & 1 unspent Upgrade Point"
+                if(options.Chinese) a=''+format(this.goal())+' 无限点数 & 1 未使用的升级点数'
                 return a
             },
-            rewardDescription(){a="WIP.<br>Currently：x"+format(this.rewardEffect())
-                if(options.Chinese) a='WIP<br>当前：x'+format(this.rewardEffect())
+            rewardDescription(){a="Multiply Dilation Point effect.<br>Currently：x"+format(this.rewardEffect())
+                if(options.Chinese) a='倍增膨胀点数效果<br>当前：x'+format(this.rewardEffect())
                 return a
+            },
+            onEnter(){player.devSpeed=n(0)
+                player.E.timeshard=n(1)
             },
             unlocked(){return challengeCompletions(this.layer,32)>=2},
         goal(){
-                let a=[n(1e1500),n('e2343'),n('e3200'),n('e10000'),n('e40000'),n(1.79e309)]
+                let a=[n('1'),n('e1200'),n('e1600'),n('e2000'),n('e2250'),n(1.79e309)]
                 return a[challengeCompletions(this.layer,this.id)]
             },
-        rewardEffect() {let a=[n(1),n(1),n(1),n(1),n(1),n(1)]
+        rewardEffect() {let a=[n(1),n(1.1),n(1.21),n(1.33),n(1.46),n(1.6)]
                 return a[challengeCompletions(this.layer,this.id)]
         },
             completionLimit() {return new Decimal(5)},
             canComplete: function() {
-                return player.I.points.gte(this.goal())&&tmp.E.currentUP.gte(66686)},
+                return player.I.points.gte(this.goal())&&tmp.E.currentUP.gte(1)},
+        },
+        34: {
+            name() {a="Eternity Challenge 12"
+            if(options.Chinese) a='永恒挑战12'
+            return a},
+            challengeDescription(){a="You are trapped in Liuliu66686 Dilation level 3, and the effect of timeshard is fixed at 0.001. You have to reach the goal within certain time.<br>Completion："+challengeCompletions(this.layer,this.id)+"/5"
+                if(options.Chinese) a='你被困在三重溜胀中，时间碎片的效果固定为0.001，且你必须在一定时间内完成挑战<br>完成次数：'+challengeCompletions(this.layer,this.id)+"/5"
+                return a
+            },
+            goalDescription(){a = format(this.goal())+" points & 1 unspent Upgrade Point & within "+format(this.goal2(),0)+' seconds'
+                if(options.Chinese) a=''+format(this.goal())+' 点数 & 1 未使用的升级点数 & '+format(this.goal2(),0)+' 秒内完成挑战'
+                return a
+            },
+            rewardDescription(){a="Multiply Dilation Point gain.<br>Currently：x"+format(this.rewardEffect())
+                if(options.Chinese) a='倍增膨胀点数获取<br>当前：x'+format(this.rewardEffect())
+                return a
+            },
+            onEnter(){player.devSpeed=n(0)
+                player.E.timeshard=n(1)
+            },
+            unlocked(){return challengeCompletions(this.layer,33)>=2},
+        goal(){
+                let a=[n('1e25'),n('e30'),n('e35'),n('e40'),n('e45'),n(1.79e309)]
+                return a[challengeCompletions(this.layer,this.id)]
+            },
+        goal2(){let a=[n(1000),n(800),n(600),n(300),n(100),n(1)]
+                return a[challengeCompletions(this.layer,this.id)]},
+        rewardEffect() {let a=[n(1),n(2),n(4),n(16),n(256),n(65536)]
+                return a[challengeCompletions(this.layer,this.id)]
+        },
+            completionLimit() {return new Decimal(5)},
+            canComplete: function() {
+                return player.points.gte(this.goal())&&tmp.E.currentUP.gte(1)&&n(player.E.resetTime).lte(this.goal2())},
         },
     },
     etrgain(){a=n(1)
@@ -1868,16 +2017,21 @@ addLayer("E", {
         if(options.Chinese){a="你有 <h3 style='color: #b743de; text-shadow: 0 0 3px #c2b280'>" + format(player.E.timeshard) + "</h3> 时间碎片, 使所有永恒前资源生成与基于时间加成中的有效时间x" +format(tmp.E.TSeffect)+'，无视软上限与其他指数'
             a=a+'<br>你的永恒次数使你的时间碎片生成器效果x'+format(player.E.etr.times(0.01).min(1))
         }
-        a=a+'<br>('+format(tmp.E.TSgen)+'/sec)'
+        a=a+'<br>('+format(tmp.E.RealTSgen)+'/sec)'
         return a
     },
     TSeffect(){a=n(10).pow(player.E.timeshard.log(10).pow(0.5)).min(player.E.timeshard)
         if(hasChallenge('E',11)) a=a.times(challengeEffect('E',11))
         if(inChallenge('E',11)||inChallenge('E',23)) a=n(1)
+        if(inChallenge('E',34)) a=n(0.001)
         return a
     },
     TSgen(){a=buyableEffect('E',11)
-        a=a.times(buyableEffect('E',12))
+        //a=a.times(buyableEffect('E',12))
+        return a
+    },
+    RealTSgen(){a=tmp.E.TSgen
+        if(tmp.li.dilationLevel.gt(0)&&a.gt(10)) a = n(10).pow(a.log(10).pow(n(0.66686).pow(tmp.li.dilationLevel)))
         return a
     },
     TGmult(){a=player.E.etr.times(0.01).min(1)
@@ -1889,16 +2043,27 @@ addLayer("E", {
         if(hasUpgrade('E',112)) a=a.times(upgradeEffect('E',112))
         if(hasUpgrade('E',151)) a=a.times(upgradeEffect('E',151))
 
+
         if(hasUpgrade('cf',24)) a=a.times(upgradeEffect('cf',24))
         if(hasUpgrade('cf',31)) a=a.times(upgradeEffect('cf',31))
         if(hasUpgrade('cf',41)) a=a.times(upgradeEffect('cf',41))
+
+        if(hasUpgrade('li',13)) a=a.times(upgradeEffect('li',13))
+        if(hasUpgrade('li',21)) a=a.times(upgradeEffect('li',21))
+
         if(inChallenge('E',11)) a=a.times(0)
-         if(inChallenge('E',32)) a=n(0)
+        if(inChallenge('E',32)) a=n(0)
+
+        if(inChallenge('E',33)) a=n(1)
+
+        a=a.times(buyableEffect('E',12))
         return a
     },
     TMbase(){a=n(2)
         if(hasUpgrade('E',83)) a=a.times(upgradeEffect('E',83))
         if(hasUpgrade('E',152)) a=a.times(2.5)
+        if(hasUpgrade('E',212)) a=a.times(upgradeEffect('E',212))
+        if(inChallenge('E',33)) a=n(2)
         return a
     },
     FreeTG(){a=n(0)
@@ -1915,6 +2080,7 @@ addLayer("E", {
     },
     totalUPcal(){a=getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))
         if(hasMilestone('df',0)) a=a.add(tmp.df.effect[5])
+        if(hasUpgrade('li',24)) a=a.add(upgradeEffect('li',24))
         a=a.add(tmp.E.ECcomp)
         return a
     },
@@ -1936,10 +2102,19 @@ addLayer("E", {
         for (let i = 21; i <= 25; i++) {
             a=a.add(challengeCompletions('E',i))
         }
-        for (let i = 31; i <= 25; i++) {
+        for (let i = 31; i <= 35; i++) {
             a=a.add(challengeCompletions('E',i))
         }
         return a},
+    cross1(){a=n(1)
+        if(hasUpgrade('E',192)){a=a.add(1)
+            if(hasUpgrade('li',22)) a=a.add(1)
+        }
+        for (let i = 71; i <= 74; i++) {
+            if(hasUpgrade('E',i)) a=a.sub(1)
+        }
+        return a
+    },
 })
 
 addLayer("df", {
@@ -2004,14 +2179,15 @@ addLayer("df", {
                 a=a+'x'+format(tmp.df.effect[2])+' to qaqe308 base<br>'
                 a=a+'x'+format(tmp.df.effect[3])+' to Timewall Power<br>'
                 a=a+'x'+format(tmp.df.effect[4])+' to Eternity Point<br>'
-                a=a+'+'+format(tmp.df.effect[5])+' free Upgrade Points'
+                a=a+'+'+format(tmp.df.effect[5])+' free Upgrade Points<br>'
+                a=a+'Your current effective DeFe308 is '+format(tmp.df.effDeF)+'.'
                 if(options.Chinese){a='基于DeFe308数量获得各种加成。当前：<br>'
                 a=a+'点数指数因子效果x'+format(tmp.df.effect[0],3)+'，无视软上限<br>'
                 a=a+'无限之力加成器底数x'+format(tmp.df.effect[1])+'<br>'
                 a=a+'Monika点数获取基数x'+format(tmp.df.effect[2])+'<br>'
                 a=a+'时间墙能量x'+format(tmp.df.effect[3])+'<br>'
                 a=a+'永恒点数x'+format(tmp.df.effect[4])+'<br>'
-                a=a+'免费升级点数+'+format(tmp.df.effect[5])}
+                a=a+'免费升级点数+'+format(tmp.df.effect[5])+'<br>你当前有效的DeFe308数量为'+format(tmp.df.effDeF)}
                 return a
             },
             done() { return player.df.points.gte(1) }
@@ -2047,14 +2223,18 @@ addLayer("df", {
             unlocked() {return hasMilestone('df', 2)}
         },
     },
-    effect(){a=player.df.points.times(0.001).add(1)
-        b=player.df.points.times(0.1).add(1)
-        c=player.df.points.times(0.2).add(1)
-        d=n(100).pow(player.df.points)
-        e=n(3).pow(player.df.points)
-        f=n(2).times(player.df.points)
+    effect(){a=tmp.df.effDeF.times(0.001).add(1)
+        b=tmp.df.effDeF.times(0.1).add(1)
+        c=tmp.df.effDeF.times(0.2).add(1)
+        d=n(100).pow(tmp.df.effDeF)
+        e=n(3).pow(tmp.df.effDeF)
+        f=n(2).times(tmp.df.effDeF)
         g=[a,b,c,d,e,f]
         return g
+    },
+    effDeF(){a=player.df.points
+        if(hasUpgrade('E',211)) a=a.add(2)
+        return a
     },
 })
 
@@ -2092,7 +2272,7 @@ addLayer("cf", {
         {key: "c",
         description: "C: Reset for Compressed Fragment",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-    unlocked(){hasMilestone('df',3)}},
+        unlocked(){return hasMilestone('df',3)}},
     ],
     layerShown(){return hasMilestone('df',3)},
     branches: ['I'],
@@ -2644,11 +2824,11 @@ addLayer("cf", {
         return a
     },
     IBtip(){a="You have <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(player.cf.IUBF,4)+"</h3> I-Upgrade Booster Fragments."
-        a=a+"<br>You produce <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.cf.IUBFgain,4)+"</h3> I-Upgrade Booster Fragments per second based on your Q-Upgrade Booster Fragment."
+        a=a+"<br>You produce <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.cf.IUBFgain,4)+"</h3> I-Upgrade Booster Fragments per second based on your Q-Upgrade Booster Fragment and Compressed Fragment."
         //if(getBuyableAmount('I',61).gte(8)) {a=a+'<br>When all Q-Upgrade Boosters are bought, your extra QUBF multiply your IP and Timewall Power gain by '+format(tmp.I.QUBFeff)+'.'
         //if(player.I.QUBF.gte(1e10)) a=a+'(capped)'}
         if(options.Chinese) {a="你有 <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(player.cf.IUBF,4)+"</h3> I-升级增强器碎片<br/>"
-        a=a+"基于你的Q-升级增强器碎片，你每秒生产 <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.cf.IUBFgain,4)+"</h3> I-升级增强器碎片<br/>"
+        a=a+"基于你的Q-升级增强器碎片与压缩碎片，你每秒生产 <h3 style='color: #b67f33; text-shadow: 0 0 3px #c2b280'>"+format(tmp.cf.IUBFgain,4)+"</h3> I-升级增强器碎片<br/>"
         //if(getBuyableAmount('I',61).gte(8)) {a=a+'当所有Q-升级增强器都购买后，额外的Q-升级增强器碎片将使你的无限点数和时间墙能量获取x'+format(tmp.I.QUBFeff)+'.'
         //if(player.I.QUBF.gte(1e10)) a=a+'（已达到上限）'}
         }
@@ -2672,6 +2852,10 @@ addLayer("li", {
 		points: n(0),
         total: n(0),
         best:n(0),
+
+        dilpoint:n(0),
+        effGrid:[101,102,103,104,105,202,303,404,505,201,301,401,501],
+        chosenGrid:0,
     }},
     color: "#7c7c7c",
     requires(){a = new Decimal(1e36)
@@ -2706,6 +2890,7 @@ addLayer("li", {
        }
     },
     update(diff){
+        player.li.dilpoint=player.li.dilpoint.add(tmp.li.effect.times(diff))
     },
     autoPrestige() {a = false
         return a
@@ -2717,17 +2902,497 @@ addLayer("li", {
         return mult
     },
     tabFormat: {
-    "Upgrades": {
+    "Dilation": {
         content: [ "main-display","prestige-button",//"resource-display",
-            ["upgrades",[1,2,3]],
+            "clickables",["display-text", () => tmp.li.dptext],['buyables',[1]],["upgrades",[1,2,3]],
         ],
-        unlocked() {return hasMilestone('cf',52)},
+        unlocked() {return hasUpgrade('cf',52)},
+    },
+    "Divinity Power": {
+        content: [ "main-display","prestige-button",//"resource-display",
+            "clickables",["display-text", () => tmp.li.dptext],['buyables',[2]],["display-text", () => tmp.li.dvptext],'grid',//["upgrades",[1,2,3]],
+        ],
+        unlocked() {return hasUpgrade('li',31)},
     },
     },
     milestones: {
     },
     upgrades: {
+        11: {
+            title: "D1-1",
+            description() {a="Double the effect of Dilation Point."
+                if(options.Chinese) a='膨胀点数的效果翻倍'
+                return a
+            },
+            cost: new Decimal(5e5),
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        12: {
+            title: "D1-2",
+            description() {a="Multiply Point Producer base effect based on Dilation Point."
+                if(options.Chinese) a='基于膨胀点数提升点数生产器基础效果'
+                return a
+            },
+            cost: new Decimal(7.5e6),
+            unlocked() {return hasUpgrade('cf',52)},
+            effect() {a=player.li.dilpoint.add(1).pow(500)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            canAfford() {return true},
+            currencyLocation() {return player.li},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        13: {
+            title: "D1-3",
+            description() {a="Multiply free Point Producer and Timeshard Generator base effect based on Dilation Point."
+                if(options.Chinese) a='基于膨胀点数增益免费点数生产器数量与时间碎片生产器基础效果'
+                return a
+            },
+            cost: new Decimal(2.5e7),
+            unlocked() {return hasUpgrade('cf',52)},
+            effect() {a=player.li.dilpoint.add(1).pow(7)
+                //if(inChallenge('E',33)) a=a.pow(0.2)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        14: {
+            title: "D1-4",
+            description() {a="Multiply Super-QqQeInfinity generation speed based on Dilation Point."
+                if(options.Chinese) a='基于膨胀点数增益超QqQeInfinity的速度'
+                return a
+            },
+            cost: new Decimal(5e8),
+            unlocked() {return hasUpgrade('cf',52)},
+            effect() {a=player.li.dilpoint.add(1).pow(2)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        21: {
+            title: "D2-1",
+            description() {a="Multiply Timeshard Generator base effect based on Timewall Power, softcapped at 1e500."
+                if(options.Chinese) a='基于时间墙能量提升时间碎片生产器基础效果'
+                return a
+            },
+            cost: new Decimal(3e9),
+            unlocked() {return hasUpgrade('cf',52)},
+            effect() {a=player.I.tpower.add(1).pow(0.1)
+                if(a.gte('1e500')) a=a.pow(0.5).times(1e250)
+                return a
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        22: {
+            title: "D2-2",
+            description() {a="If E19-2 is bought, you can pick all path from Eternity Upgrades in Rows 7-10."
+                if(options.Chinese) a='当购买升级E19-2后，你将能购买永恒升级第7~10行的所有升级'
+                return a
+            },
+            cost: new Decimal(5e10),
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        23: {
+            title: "D2-3",
+            description() {a="Remove the side effect of E13-1 and E13-3. (You still can't get DeFe308 with E13-1)"
+                if(options.Chinese) a='移除升级E13-1与E13-3的副作用（你仍然不能在购买E13-1的情况下获得DeFe308）'
+                return a
+            },
+            cost: new Decimal(1e11),
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        24: {
+            title: "D2-4",
+            description() {a="Get free Upgrade Points based on Liuliu66686 Points."
+                if(options.Chinese) a='基于溜溜点数获得免费的升级点数'
+                return a
+            },
+            cost: new Decimal(5e12),
+            unlocked() {return hasUpgrade('cf',52)},
+            effect() {a=player.li.points.pow(0.5)
+                return a
+            },
+            effectDisplay() { return '+'+format(upgradeEffect(this.layer, this.id))},
+            canAfford() {return true},
+            tooltip(){
+                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
+        31: {
+            title: "D3-1",
+            description() {a="Unlock Divinity Power (Require 1e15 Dilation Points)."
+                if(options.Chinese) a='解锁神权（需要1e15膨胀点数）'
+                return a
+            },
+            cost: new Decimal(0),
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() {return player.li.dilpoint.gte(1e15)},
+            tooltip(){
+                t=n(1e15).sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            currencyLocation() {return player.li},
+            currencyDisplayName: 'Dilation Points',
+            currencyInternalName: 'dilpoint',
+        },
     },
-        buyables: {
+    buyables: {
+        11: {
+            title(){text = 'DP Doubler'
+                if(options.Chinese) text='膨胀点数倍增器'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))
+                text=text+')'
+                return text
+            },
+            cost(x) { return new Decimal(10).pow(x.add(4)) },
+            effect(x) {
+                a=n(2).pow(x)
+                    return a
+            },
+            display() { a="Multiply DP gain by "+format(2)+"<br/>Effect:"+format(this.effect())+'x'
+                a=a+"<br/>Cost: "+format(this.cost())+' Dilation Points'
+                if(options.Chinese) {a="膨胀点数获取量x"+format(2)+"<br/>效果:"+format(this.effect())+'x'
+                a=a+"<br/>花费: "+format(this.cost())+' 膨胀点数'}
+            return a},
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() { return player.li.dilpoint.gte(this.cost()) },
+            purchaseLimit() {a = n(1.79e309)
+                    return a
+            },
+            tooltip(){
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            buy() {
+                player.li.dilpoint = player.li.dilpoint.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.li.dilpoint.max(1).log(10).sub(4)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        12: {
+            title(){text = 'Formula Improver'
+                if(options.Chinese) text='公式改进器'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))
+                text=text+'/8.00)'
+                return text
+            },
+            cost(x) { return new Decimal(1e3).pow(x.add(2)) },
+            effect(x) {
+                a=n(10).sub(x)
+                    return a
+            },
+            display() { a="Improve DP effect formula, but reset Dilation Point<br/>Currently: (log<sub>"+format(this.effect(),0)+'</sub>(DP+1)+1)<sup>0.5</sup>'
+                if(getBuyableAmount(this.layer,this.id).lt(8)) a=a+'<br>Next level: (log<sub>'+format(this.effect().sub(1),0)+'</sub>(DP+1)+1)<sup>0.5</sup>'
+                a=a+"<br/>Cost: "+format(this.cost())+' Dilation Points'
+                if(options.Chinese) {a="改进膨胀点数效果公式，但是重置膨胀点数<br/>当前: (log<sub>"+format(this.effect(),0)+'</sub>(DP+1)+1)<sup>0.5</sup>'
+                if(getBuyableAmount(this.layer,this.id).lt(8)) a=a+'<br>下一级: (log<sub>'+format(this.effect().sub(1),0)+'</sub>(DP+1)+1)<sup>0.5</sup>'
+                a=a+"<br/>花费: "+format(this.cost())+' 膨胀点数'}
+            return a},
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() { return player.li.dilpoint.gte(this.cost()) },
+            purchaseLimit() {a = n(8)
+                    return a
+            },
+            tooltip(){
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||t.lte(0)||getBuyableAmount(this.layer,this.id).gte(8)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            buy() {
+                player.li.dilpoint = n(0)
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.li.dilpoint.max(1).log(1000).sub(2)
+					let target = tempBuy.plus(1).floor().min(8);
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        13: {
+            title(){text = 'LP Tripler'
+                if(options.Chinese) text='溜溜点数倍增器'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))
+                text=text+')'
+                return text
+            },
+            cost(x) { return new Decimal(100).pow(x).times(1e8) },
+            effect(x) {
+                a=n(3).pow(x)
+                    return a
+            },
+            display() { a="Multiply LP gain by "+format(3)+"<br/>Effect:"+format(this.effect())+'x'
+                a=a+"<br/>Cost: "+format(this.cost())+' Dilation Points'
+                if(options.Chinese) {a="溜溜点数获取量x"+format(3)+"<br/>效果:"+format(this.effect())+'x'
+                a=a+"<br/>花费: "+format(this.cost())+' 膨胀点数'}
+            return a},
+            unlocked() {return hasUpgrade('cf',52)},
+            canAfford() { return player.li.dilpoint.gte(this.cost()) },
+            purchaseLimit() {a = n(1.79e309)
+                    return a
+            },
+            tooltip(){
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            buy() {
+                player.li.dilpoint = player.li.dilpoint.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.li.dilpoint.max(1).div(1e8).max(1).log(100)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+        },
+        21: {
+            title(){text = 'Divinity Power'
+                if(options.Chinese) text='神权'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))
+                text=text+')'
+                return text
+            },
+            cost(x) { a=new Decimal(10).pow(n(x).pow(2)).times(1e15)
+                return a
+             },
+            effect(x) {
+                a=x
+                    return a
+            },
+            display() { a='Get 1 Divinity Power per purchase'
+                a=a+"<br/>Cost: "+format(this.cost())+' Dilation Points'
+                if(options.Chinese) {a='每次购买获得一个神权'
+                a=a+"<br/>花费: "+format(this.cost())+' 膨胀点数'}
+            return a},
+            tooltip(){
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
+                if(tmp.li.effect.eq(0)||t.lte(0)) return ''
+                a='Time remaining: '
+                if(options.Chinese) a='预计所需时间：'
+                a=a+formatTime(t)
+                return a
+            },
+            unlocked() {return hasUpgrade('li',31)},
+            canAfford() { return player.li.dilpoint.gte(this.cost()) },
+            purchaseLimit() {a = n(1.79e309)
+                    return a
+            },
+            buy() {
+                player.li.dilpoint = player.li.dilpoint.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+					if (!this.canAfford()) return;
+					let tempBuy = player.li.dilpoint.div(1e15).max(1).log(10).pow(2)
+					let target = tempBuy.plus(1).floor();
+					player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].max(target);
+			},
+            style: {'height':'100px','width':'250px'},
+        },
+    },
+    clickables:{
+        11: {
+            title() {a="Enter"
+                if(getClickableState(this.layer,this.id)==1) a='Exit'
+                a=a+' Liuliu66686 Dilation'
+                if(options.Chinese) {a="进入"
+                if(getClickableState(this.layer,this.id)==1) a='退出'
+                a=a+'溜胀'}
+                return a
+            },
+            display() {a="Your Liuliu66686 Dilation level is "+format(tmp.li.dilationLevel)
+                a=a+".<br>In Liuliu66686 Dilation, the exponent of your points, Timewall, Super Timewall, Mega Timewall, Infinite Power, and Timeshards is powered to ^0.66686 per Liuliu Dilation level!"
+                if(getClickableState(this.layer,this.id)==1)a=a+'<br>You can gain '+format(tmp.li.LPformula)+' Liuliu66686 Points if you exit Dilation now.'
+                if(options.Chinese) {a='你的溜胀等级为'+format(tmp.li.dilationLevel)
+                a=a+'<br>在溜胀中，每个溜胀等级将使你的点数、前3种时间墙、无限之力与时间碎片的指数变为原来的0.66686次方！'
+                if(getClickableState(this.layer,this.id)==1)a=a+'<br>现在退出膨胀，你将获得'+format(tmp.li.LPformula)+'溜溜溜达嘿点数'
+                }
+                return a
+            },
+            canClick() {return true},
+            onClick() {if(getClickableState(this.layer,this.id)==1) player.li.points=player.li.points.add(tmp.li.LPformula)
+                setClickableState(this.layer,this.id,1-getClickableState(this.layer,this.id))
+                doReset('E',player.I.points.lt(n(2).pow(1024)))
+                player.devSpeed=n(0)
+            },
+            style: {'height':'200px','width':'300px'},
+        },
+    },
+    grid: {
+    rows: 5, // If these are dynamic make sure to have a max value as well!
+    cols: 5,
+    getStartData(id) {
+        return 0
+    },
+    getUnlocked(id) { // Default
+        return true
+    },
+    //getStyle(data, id){
+    //    for (let i = 0; i < player.li.effGrid.length; i++) {
+    //        if(id !== player.li.effGrid[i]) return {'visibility':'hidden'}
+    //    }
+    //},
+    getCanClick(data, id) {
+        for (let i = 0; i < player.li.effGrid.length; i++) {
+            if(id == player.li.effGrid[i]) return true
+        }
+    },
+    onClick(data, id) { 
+        //player[this.layer].grid[id]++
+        //player.li.chosenGrid=id
+    },
+    getDisplay(data, id) {
+        for (let i = 0; i < player.li.effGrid.length; i++) {
+            if(id == player.li.effGrid[i]) return 'WIP'//data
+        }
+    },
+    },
+    effect(){a=player.li.points
+        a=a.times(buyableEffect('li',11))
+        if(hasUpgrade('E',213)) a=a.times(3)
+        if(hasChallenge('E',34)) a=a.times(challengeEffect('E',34))
+        if(hasUpgrade('E',231)) a=a.times(upgradeEffect('E',231))
+        return a
+    },
+    effectDescription(){a='producing '+format(this.effect())+' Dilation Points per second.'
+        if(options.Chinese) a='每秒生产'+format(this.effect())+'膨胀点数'
+        return a
+    },
+    dilationLevel(){a=n(getClickableState(this.layer,11))
+        if(inChallenge('E',34)) a=a.add(3)
+        return a
+    },
+    LPformula(){if(tmp.li.dilationLevel.eq(0)) return n(0)
+        a=player.points.add(1).log(100).div(100).pow(2)
+        a=a.times(buyableEffect('li',13))
+        a=a.sub(player.li.points).max(0)
+        return a
+    },
+    dpeff(){a=player.li.dilpoint.add(1).log(buyableEffect('li',12)).add(1).pow(0.5)
+        if(hasUpgrade('li',11)) a=a.times(2)
+        if(hasChallenge('E',33)) a=a.times(challengeEffect('E',33))
+        return a
+    },
+    dptext(){a='You have '+format(player.li.dilpoint)+' Dilation Points, raising IP doubler base to ^'+format(tmp.li.dpeff)+'.'
+        if(options.Chinese) a='你有'+format(player.li.dilpoint)+'膨胀点数, 使IP倍增器底数变为原来的'+format(tmp.li.dpeff)+'次方'
+        return a
+    },
+    dvptext(){a='You have '+format(tmp.li.unspentDvP,0)+'/'+format(getBuyableAmount('li',21),0)+' Divinity Power.'
+        if(options.Chinese) a='你有'+format(tmp.li.unspentDvP,0)+'/'+format(getBuyableAmount('li',21),0)+'神权'
+        return a
+    },
+    unspentDvP(){a=getBuyableAmount('li',21)
+        return a
     },
 })
