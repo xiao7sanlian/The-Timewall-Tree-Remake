@@ -1559,14 +1559,20 @@ addLayer("E", {
             title() {a= "E21-2"
                 return a
             },
-            description() {a="For each day you played, multiply Timeshard Generator Multiplier base effect by 2."
-                if(options.Chinese) a='每玩一天，你的时间碎片生产加成器效果翻倍'
+            description() {a="For each day you played, multiply Timeshard Generator Multiplier base effect by 2, effective day capped at "+format(this.hardcap(),0)+'.'
+                if(options.Chinese) a='每玩一天，你的时间碎片生产加成器效果翻倍，在'+format(this.hardcap(),0)+'天时达到上限'
                 return a
             },
-            effect() {a=n(2).pow(Math.floor(player.timePlayed / 86400))
+            hardcap(){return player.A.points.div(10).floor()},
+            effect() {b=n(Math.floor(player.timePlayed / 86400)).min(this.hardcap())
+                a=n(2).pow(b)
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
+            tooltip(){a='The cap formula: Achievement/10'
+                if(options.Chinese) a='上限公式：成就数量/10'
+                return a
+            },
             cost: new Decimal(1e50),
             branches:[202,203],
             unlocked() {return hasMilestone('E',1)},

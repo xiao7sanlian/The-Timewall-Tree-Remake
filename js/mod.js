@@ -15,7 +15,7 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.4",
+	num: "2.4.1",
 	name: "Liuliu66686 Update",
 }
 
@@ -174,6 +174,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了Li层级，包括溜胀和一大堆升级与可购买<br>
 		- 一些其他更改<br>
 		- 终局: 1神权<br><br>
+
+	<h3>v2.4.1 Balance 2026/7/27</h3><br>
+		- Added a hardcap for the effect of E21-2.<br>
+		Chinese version:<br>
+		- 对升级E21-2增加了软上限<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
