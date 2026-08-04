@@ -274,13 +274,20 @@ function exportSave() {
 }
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined)
-		imported = prompt("Paste your save here");
+		imported = prompt("Paste (or imput) your save:");
+	if(imported === 'your save:'){grantAchievement('SA',33)
+		return 
+	}
 	try {
 		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)));
+		if(tempPlr.versionType === 'timewall') {grantAchievement('SA',34);
+			return
+		}
 		if (tempPlr.versionType != getModID() && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
 			return;
 		player = tempPlr;
 		player.versionType = getModID();
+		player.T.pause = n(1)
 		fixSave();
 		versionCheck();
 		NaNcheck(save)

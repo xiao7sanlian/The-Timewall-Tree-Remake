@@ -78,6 +78,10 @@ function achievementEffect(layer, id) {
 	return (tmp[layer].achievements[id].effect)
 }
 
+function milestoneEffect(layer, id) {
+	return (tmp[layer].milestones[id].effect)
+}
+
 function gridEffect(layer, id) {
 	return (gridRun(layer, 'getEffect', player[layer].grid[id], id))
 }

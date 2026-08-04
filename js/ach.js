@@ -29,13 +29,17 @@ addLayer("A", {
         if(player.A.speed2==true) dev=dev.add(2)
         if(player.A.speed3==true) dev=dev.add(4)
         if(player.A.speed4==true) dev=dev.add(8)
+         //if(inChallenge('E',34)&&challengeCompletions('E',34)==5) dev=n(0.001)
         if(getClickableState('A',11)==1) dev=dev.times(player.A.Speedmult)
         if(player.T.pause.gte(1))dev=n(0)
 	    return dev
 	   },
       update(diff){
          if(getClickableState('A',11)==1&&player.devSpeed.gte(1)) player.offlineTime = player.offlineTime.sub(player.A.Speedmult.sub(1).times(diff).div(player.devSpeed)).max(0)
-         if(player.devSpeed.eq(0)) player.offlineTime = player.offlineTime.add(player.Dif)
+         if(player.devSpeed.lt(1)) player.offlineTime = player.offlineTime.add(n(player.Dif).times(n(1).sub(player.devSpeed)))
+         if(player.offlineTime.lte(0)) {setClickableState(this.layer,11,0)
+            player.offlineTime=n(0)
+         }
       },
        doReset(resettingLayer) {
     },
@@ -52,7 +56,7 @@ addLayer("A", {
         "milestones",["display-text", () => tmp.A.offTimetext],["text-input", "Speedmult"],'clickables',
     ],},
     },
-    effectDescription(){return ' and there are 110 in total.'},
+    effectDescription(){return ' and there are 120 in total.'},
     achievements: {
         11: {
      name() {return "First Point"},
@@ -97,7 +101,7 @@ addLayer("A", {
         21: {
      name() {return "A Huge Point"},
      done() {return player.points.gte(16777216)}, 
-     unlocked(){return player.A.points.gte(5)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 16,777,216 Points."}, 
      textStyle: {'color': '#ffe125'},
@@ -105,7 +109,7 @@ addLayer("A", {
         22: {
      name() {return "Automated"},
      done() {return hasUpgrade('T',31)}, 
-     unlocked(){return player.A.points.gte(5)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Unlock Automation."}, 
      textStyle: {'color': '#ffe125'},
@@ -113,7 +117,7 @@ addLayer("A", {
         23: {
      name() {return "Waiting for so long"},
      done() {return hasUpgrade('Q',11)}, 
-     unlocked(){return player.A.points.gte(5)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy a QqQe308 Upgrade."}, 
      textStyle: {'color': '#ffe125'},
@@ -121,7 +125,7 @@ addLayer("A", {
         24: {
      name(){return "Rich Employer"},
      done() {return getBuyableAmount('T',11).gte(100)}, 
-     unlocked(){return player.A.points.gte(5)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy 100 Point Producers."}, 
      textStyle: {'color': '#ffe125'},
@@ -129,7 +133,7 @@ addLayer("A", {
         25: {
      name(){return "Challenging"},
      done() {return hasUpgrade('T',34)}, 
-     unlocked(){return player.A.points.gte(5)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Unlock Challenges."}, 
      textStyle: {'color': '#ffe125'},
@@ -137,7 +141,7 @@ addLayer("A", {
         31: {
      name(){return "Super Wall"},
      done() {return player.ST.points.gte(1)}, 
-     unlocked(){return player.A.points.gte(10)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 Super Timewall."}, 
      textStyle: {'color': '#ffe125'},
@@ -145,7 +149,7 @@ addLayer("A", {
         32: {
      name(){return "All is for Points"},
      done() {return hasUpgrade('ST',11)&&hasUpgrade('ST',12)&&hasUpgrade('ST',13)&&hasUpgrade('ST',14)}, 
-     unlocked(){return player.A.points.gte(10)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy All Upgrades of S1-x."}, 
      textStyle: {'color': '#ffe125'},
@@ -153,7 +157,7 @@ addLayer("A", {
         33: {
      name(){return "Remarkable Progress"},
      done() {return tmp.A.ProgressToInf.gte(10)}, 
-     unlocked(){return player.A.points.gte(10)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 10% Progress to Infinity."}, 
      textStyle: {'color': '#ffe125'},
@@ -161,7 +165,7 @@ addLayer("A", {
         34: {
      name(){return "Fully Automated"},
      done() {return hasUpgrade('ST',21)&&hasUpgrade('ST',22)&&hasUpgrade('ST',23)&&hasUpgrade('ST',24)}, 
-     unlocked(){return player.A.points.gte(10)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy All Upgrades of S2-x."}, 
      textStyle: {'color': '#ffe125'},
@@ -169,7 +173,7 @@ addLayer("A", {
         35: {
      name(){return "Another Side Layer"},
      done() {return player.Qi.points.gte(1)}, 
-     unlocked(){return player.A.points.gte(10)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 QqQeInfinity."}, 
      textStyle: {'color': '#ffe125'},
@@ -177,7 +181,7 @@ addLayer("A", {
         41: {
      name(){return "Really Persistant"},
      done() {return tmp.Qi.effQqQe308.gte(20)}, 
-     unlocked(){return player.A.points.gte(15)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 20 Super-QqQe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -185,7 +189,7 @@ addLayer("A", {
         42: {
      name(){return "Challenging Again"},
      done() {return hasChallenge('ST',11)}, 
-     unlocked(){return player.A.points.gte(15)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete a ST-Challenge."}, 
      textStyle: {'color': '#ffe125'},
@@ -193,7 +197,7 @@ addLayer("A", {
         43: {
      name(){return "Googol"},
      done() {return player.points.gte(1e100)}, 
-     unlocked(){return player.A.points.gte(15)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1e100 Points."}, 
      textStyle: {'color': '#ffe125'},
@@ -201,7 +205,7 @@ addLayer("A", {
         44: {
      name(){return "How the tables have turned..."},
      done() {return tmp.T.freePP.gte(getBuyableAmount('T',11).times(100000))&&tmp.T.freePP.gt(0)&&getBuyableAmount('T',11).gt(0)}, 
-     unlocked(){return player.A.points.gte(15)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Make free Point Producer 100,000 times more than bought Point Producer."}, 
      textStyle: {'color': '#ffe125'},
@@ -209,7 +213,7 @@ addLayer("A", {
         45: {
      name(){return "Now it becomes easier"},
      done() {return tmp.Qi.effQqQe308.gte(1e4)}, 
-     unlocked(){return player.A.points.gte(15)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 10,000 effective Super-QqQe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -217,7 +221,7 @@ addLayer("A", {
         51: {
      name(){return "Mega Wall"},
      done() {return player.MT.points.gte(1)}, 
-     unlocked(){return player.A.points.gte(20)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 Mega Timewall."}, 
      textStyle: {'color': '#ffe125'},
@@ -225,7 +229,7 @@ addLayer("A", {
         52: {
      name(){return "Halfway to Infinity"},
      done() {return tmp.A.ProgressToInf.gte(50)}, 
-     unlocked(){return player.A.points.gte(20)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 50% Progress to Infinity."}, 
      textStyle: {'color': '#ffe125'},
@@ -233,7 +237,7 @@ addLayer("A", {
         53: {
      name(){return "Round Three"},
      done() {return tmp.MT.totalcomp.gte(1)}, 
-     unlocked(){return player.A.points.gte(20)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete a MT-Challenge."}, 
      textStyle: {'color': '#ffe125'},
@@ -241,7 +245,7 @@ addLayer("A", {
         54: {
      name(){return "Layer 6"},
      done() {return player.co.points.gte(1)}, 
-     unlocked(){return player.A.points.gte(20)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 cokecole."}, 
      textStyle: {'color': '#ffe125'},
@@ -249,7 +253,7 @@ addLayer("A", {
         55: {
      name(){return "Googol^2"},
      done() {return player.points.gte(1e200)}, 
-     unlocked(){return player.A.points.gte(20)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1e200 points."}, 
      textStyle: {'color': '#ffe125'},
@@ -257,7 +261,7 @@ addLayer("A", {
         61: {
      name(){return "The Final Trial"},
      done() {return hasChallenge('MT',14)}, 
-     unlocked(){return player.A.points.gte(25)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete MT-Challenge 4 once."}, 
      textStyle: {'color': '#ffe125'},
@@ -265,7 +269,7 @@ addLayer("A", {
         62: {
      name(){return "Even More Timewall"},
      done() {return tmp.Qi.effcokecole.gte(10)}, 
-     unlocked(){return player.A.points.gte(25)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 10 effective Super-cokecole."}, 
      textStyle: {'color': '#ffe125'},
@@ -273,7 +277,7 @@ addLayer("A", {
         63: {
      name(){return "Is this useful?"},
      done() {return getClickableState('T',12)==100}, 
-     unlocked(){return player.A.points.gte(25)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Click \"+1 Point\" clickable when point is more than 1e250."}, 
      textStyle: {'color': '#ffe125'},
@@ -281,7 +285,7 @@ addLayer("A", {
         64: {
      name(){return "Free Day"},
      done() {return tmp.T.freePP.gte(1e13)}, 
-     unlocked(){return player.A.points.gte(25)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Have 1e13 free Point Producers."}, 
      textStyle: {'color': '#ffe125'},
@@ -289,7 +293,7 @@ addLayer("A", {
         65: {
      name(){return "The End is a New Start"},
      done() {return tmp.A.ProgressToInf.gte(100)}, 
-     unlocked(){return player.A.points.gte(25)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach Infinity."}, 
      textStyle: {'color': '#ffe125'},
@@ -297,7 +301,7 @@ addLayer("A", {
         71: {
      name(){return "Real reset"},
      done() {return player.I.inf.gte(1)}, 
-     unlocked(){return player.A.points.gte(30)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity once."}, 
      textStyle: {'color': '#ffe125'},
@@ -305,7 +309,7 @@ addLayer("A", {
         72: {
      name(){return "From 9:00 a.m. to 5:00 p.m."},
      done() {return player.I.bestTime.lte(n(8).times(3600))}, 
-     unlocked(){return player.A.points.gte(30)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity in less than 8 hours."}, 
      textStyle: {'color': '#ffe125'},
@@ -313,7 +317,7 @@ addLayer("A", {
         73: {
      name(){return "Major Challenge"},
      done() {return tmp.I.NCcomp.gte(3)}, 
-     unlocked(){return player.A.points.gte(30)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete 3 Normal Challenges."}, 
      textStyle: {'color': '#ffe125'},
@@ -321,7 +325,7 @@ addLayer("A", {
         74: {
      name(){return "It's fast"},
      done() {return player.I.bestTime.lte(3600)}, 
-     unlocked(){return player.A.points.gte(30)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity in less than 1 hour."}, 
      textStyle: {'color': '#ffe125'},
@@ -329,7 +333,7 @@ addLayer("A", {
         75: {
      name(){return "Lots of Infinities"},
      done() {return player.I.inf.gte(10)}, 
-     unlocked(){return player.A.points.gte(30)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity 10 times."}, 
      textStyle: {'color': '#ffe125'},
@@ -337,7 +341,7 @@ addLayer("A", {
         81: {
      name(){return "It's even faster!"},
      done() {return player.I.bestTime.lte(600)}, 
-     unlocked(){return player.A.points.gte(35)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity in less than 10 minutes."}, 
      textStyle: {'color': '#ffe125'},
@@ -345,7 +349,7 @@ addLayer("A", {
         82: {
      name(){return "No DLC Required"},
      done() {return player.I.upgrades.length >= 16}, 
-     unlocked(){return player.A.points.gte(35)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy 16 Infinity Upgrades."}, 
      textStyle: {'color': '#ffe125'},
@@ -353,7 +357,7 @@ addLayer("A", {
         83: {
      name(){return "Forever isn't that long"},
      done() {return player.I.bestTime.lte(60)}, 
-     unlocked(){return player.A.points.gte(35)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity in less than 1 minutes."}, 
      textStyle: {'color': '#ffe125'},
@@ -361,7 +365,7 @@ addLayer("A", {
         84: {
      name(){return "Prepared to Break Infinity"},
      done() {return tmp.I.NCcomp.gte(6)}, 
-     unlocked(){return player.A.points.gte(35)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete all Normal Challenges."}, 
      textStyle: {'color': '#ffe125'},
@@ -369,7 +373,7 @@ addLayer("A", {
         85: {
      name(){return "You don't need it"},
      done() {return player.points.gte(n(2).pow(1024))&&player.MT.challenges[11]==0}, 
-     unlocked(){return player.A.points.gte(35)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach Infinity without completing MT-Challenge 1."}, 
      textStyle: {'color': '#ffe125'},
@@ -377,7 +381,7 @@ addLayer("A", {
         91: {
      name(){return "Break Limit"},
      done() {return hasUpgrade('I',51)}, 
-     unlocked(){return player.A.points.gte(40)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Break Infinity."}, 
      textStyle: {'color': '#ffe125'},
@@ -385,7 +389,7 @@ addLayer("A", {
         92: {
      name(){return "QqQe30800?"},
      done() {return player.Q.points.gte(100)}, 
-     unlocked(){return player.A.points.gte(40)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 100 QqQe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -393,7 +397,7 @@ addLayer("A", {
         93: {
      name(){return "New Beginning!"},
      done() {return player.I.ipower.gt(1)}, 
-     unlocked(){return player.A.points.gte(40)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Start Generating Infinity Power."}, 
      textStyle: {'color': '#ffe125'},
@@ -401,7 +405,7 @@ addLayer("A", {
         94: {
      name(){return "Point Inflation"},
      done() {return player.points.gt('1e1500')}, 
-     unlocked(){return player.A.points.gte(40)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1e1500 points."}, 
      textStyle: {'color': '#ffe125'},
@@ -409,7 +413,7 @@ addLayer("A", {
         95: {
      name(){return "Blink of an eye"},
      done() {return player.I.bestTime.lte(0.25)}, 
-     unlocked(){return player.A.points.gte(40)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity in under 250 ms."}, 
      textStyle: {'color': '#ffe125'},
@@ -417,7 +421,7 @@ addLayer("A", {
         101: {
      name(){return "Infinity Challenging"},
      done() {return tmp.I.ICcomp.gte(1)}, 
-     unlocked(){return player.A.points.gte(45)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete an Infinity Challenge."}, 
      textStyle: {'color': '#ffe125'},
@@ -425,7 +429,7 @@ addLayer("A", {
         102: {
      name(){return "Infinity Timewall"},
      done() {return player.T.points.gte(n(2).pow(1024))}, 
-     unlocked(){return player.A.points.gte(45)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1.80e308 Timewall."}, 
      textStyle: {'color': '#ffe125'},
@@ -433,7 +437,7 @@ addLayer("A", {
         103: {
      name(){return "A Strong Wall"},
      done() {return tmp.Qi.effqaqe308.gte(10)}, 
-     unlocked(){return player.A.points.gte(45)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 10 effective Super-qaqe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -441,7 +445,7 @@ addLayer("A", {
         104: {
      name(){return "Squared Points"},
      done() {return buyableEffect('T',13).gte(2)}, 
-     unlocked(){return player.A.points.gte(45)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Make your PEF effect more than 2."}, 
      textStyle: {'color': '#ffe125'},
@@ -449,7 +453,7 @@ addLayer("A", {
         105: {
      name(){return "Is this enough?"},
      done() {return player.qa.points.gte(7)}, 
-     unlocked(){return player.A.points.gte(45)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 7 qaqe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -457,7 +461,7 @@ addLayer("A", {
         111: {
      name(){return "It took about 1 hour"},
      done() {return hasChallenge('I',24)}, 
-     unlocked(){return player.A.points.gte(50)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete Infinity Challenge 4."}, 
      textStyle: {'color': '#ffe125'},
@@ -465,7 +469,7 @@ addLayer("A", {
         112: {
      name(){return "Another Remarkable Progress"},
      done() {return tmp.A.ProgressToEtr.gte(10)}, 
-     unlocked(){return player.A.points.gte(50)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 10% progress to Eternity."}, 
      textStyle: {'color': '#ffe125'},
@@ -473,7 +477,7 @@ addLayer("A", {
         113: {
      name(){return "Infinity is now useful"},
      done() {return hasChallenge('I',25)}, 
-     unlocked(){return player.A.points.gte(50)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete Infinity Challenge 5."}, 
      textStyle: {'color': '#ffe125'},
@@ -481,7 +485,7 @@ addLayer("A", {
         114: {
      name(){return "I promise there will be no more BI-Upgrades"},
      done() {return hasUpgrade('I',124)}, 
-     unlocked(){return player.A.points.gte(50)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy the last BI-Upgrade."}, 
      textStyle: {'color': '#ffe125'},
@@ -489,7 +493,7 @@ addLayer("A", {
         115: {
      name(){return "Preparation for Another Feature"},
      done() {return hasChallenge('I',28)}, 
-     unlocked(){return player.A.points.gte(50)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Complete Infinity Challenge 8."}, 
      textStyle: {'color': '#ffe125'},
@@ -497,7 +501,7 @@ addLayer("A", {
         121: {
      name(){return "New Beginning II"},
      done() {return player.I.tpower.gt(0)}, 
-     unlocked(){return player.A.points.gte(55)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Start producing Timewall Power."}, 
      textStyle: {'color': '#ffe125'},
@@ -505,7 +509,7 @@ addLayer("A", {
         122: {
      name(){return "Is Replicanti Exist?"},
      done() {return player.I.points.gte(1e140)}, 
-     unlocked(){return player.A.points.gte(55)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1e140 Infinity Points."}, 
      textStyle: {'color': '#ffe125'},
@@ -513,7 +517,7 @@ addLayer("A", {
         123: {
      name(){return "QqQe308000?!"},
      done() {return player.Q.points.gte(1000)}, 
-     unlocked(){return player.A.points.gte(55)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1000 QqQe308."}, 
      textStyle: {'color': '#ffe125'},
@@ -521,7 +525,7 @@ addLayer("A", {
         124: {
      name(){return "Halfway to Eternity"},
      done() {return tmp.A.ProgressToEtr.gte(50)}, 
-     unlocked(){return player.A.points.gte(55)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 50% progress to Eternity."}, 
      textStyle: {'color': '#ffe125'},
@@ -529,7 +533,7 @@ addLayer("A", {
         125: {
      name(){return "Compress To 1e30"},
      done() {return tmp.I.CTgain.gte(1e30)}, 
-     unlocked(){return player.A.points.gte(55)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1e30 Compressed Timewalls."}, 
      textStyle: {'color': '#ffe125'},
@@ -537,7 +541,7 @@ addLayer("A", {
         131: {
      name(){return "New Beginning III"},
      done() {return player.I.QUBF.gt(0)}, 
-     unlocked(){return player.A.points.gte(60)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Start producing Q-Upgrade Booster Fragment."}, 
      textStyle: {'color': '#ffe125'},
@@ -545,7 +549,7 @@ addLayer("A", {
         132: {
      name(){return "When can we reach it?"},
      done() {return player.I.QUBF.gt(9)}, 
-     unlocked(){return player.A.points.gte(60)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 9 Q-Upgrade Booster Fragment."}, 
      textStyle: {'color': '#ffe125'},
@@ -553,7 +557,7 @@ addLayer("A", {
         133: {
      name(){return "2 Million Infinities"},
      done() {return player.I.inf.gt(2000000)}, 
-     unlocked(){return player.A.points.gte(60)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 2,000,000 Infinities."}, 
      textStyle: {'color': '#ffe125'},
@@ -561,7 +565,7 @@ addLayer("A", {
         134: {
      name(){return "Fully Boosted"},
      done() {return getBuyableAmount('I',61).gte(8)}, 
-     unlocked(){return player.A.points.gte(60)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Buy 8 Q-Upgrade Boosters."}, 
      textStyle: {'color': '#ffe125'},
@@ -569,7 +573,7 @@ addLayer("A", {
         135: {
      name(){return "v2.0 is 5 hours later"},
      done() {return tmp.A.ProgressToEtr.gte(100)}, 
-     unlocked(){return player.A.points.gte(60)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Reach 1.80e308 Infinity Points."}, 
      textStyle: {'color': '#ffe125'},
@@ -577,7 +581,7 @@ addLayer("A", {
         141: {
      name(){return "v2.0 is now!"},
      done() {return player.E.etr.gte(1)}, 
-     unlocked(){return player.A.points.gte(65)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Eternity."}, 
      textStyle: {'color': '#ffe125'},
@@ -588,7 +592,7 @@ addLayer("A", {
         return a
      },
      done() {return player.E.bestTime.lte(3600)}, 
-     unlocked(){return player.A.points.gte(65)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Eternity in under 1 hour."
         if(options.Chinese) a='在1小时内永恒'
@@ -602,7 +606,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(1)}, 
-     unlocked(){return player.A.points.gte(65)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 1 DeFe308."
         if(options.Chinese) a='获得1个DeFe308'
@@ -616,7 +620,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.inf.gte(2e10)}, 
-     unlocked(){return player.A.points.gte(65)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 2e10 Infinities."
         if(options.Chinese) a='无限2e10次'
@@ -629,7 +633,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(2)}, 
-     unlocked(){return player.A.points.gte(65)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 2 DeFe308."
         if(options.Chinese) a='获得2个DeFe308'
@@ -643,7 +647,7 @@ addLayer("A", {
         return a
      },
      done() {return player.E.bestTime.lte(60)}, 
-     unlocked(){return player.A.points.gte(70)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Eternity in under 1 minute."
         if(options.Chinese) a='在1分钟内永恒'
@@ -656,7 +660,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(3)}, 
-     unlocked(){return player.A.points.gte(70)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 3 DeFe308."
         if(options.Chinese) a='获得3个DeFe308'
@@ -670,7 +674,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.points.gte(n(2).pow(1024))&&player.I.inf.lt(10)}, 
-     unlocked(){return player.A.points.gte(70)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 1.79e308 Infinity Points with less than 10 Infinities."
         if(options.Chinese) a='在10次无限内达到1.79e308无限点数'
@@ -683,7 +687,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(4)}, 
-     unlocked(){return player.A.points.gte(70)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 4 DeFe308."
         if(options.Chinese) a='获得4个DeFe308'
@@ -697,7 +701,7 @@ addLayer("A", {
         return a
      },
      done() {return hasMilestone('df',2)}, 
-     unlocked(){return player.A.points.gte(70)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Unlock Eternity Challenges."
         if(options.Chinese) a='解锁永恒挑战'
@@ -711,7 +715,7 @@ addLayer("A", {
         return a
      },
      done() {return getBuyableAmount('I',53).gte(5)}, 
-     unlocked(){return player.A.points.gte(75)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Buy 'cokecole Boost' 5 times."
         if(options.Chinese) a='购买5次\'cokecole获取加成\'可购买'
@@ -724,7 +728,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(6)}, 
-     unlocked(){return player.A.points.gte(75)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 6 DeFe308."
         if(options.Chinese) a='获得6个DeFe308'
@@ -737,7 +741,7 @@ addLayer("A", {
         return a
      },
      done() {return player.Qi.points.gte(100)}, 
-     unlocked(){return player.A.points.gte(75)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 100 QqQeInfinity."
         if(options.Chinese) a='获得100个QqQeInfinity'
@@ -751,7 +755,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.points.gte('9.99e999')}, 
-     unlocked(){return player.A.points.gte(75)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 9.99e999 Infinity Points."
         if(options.Chinese) a='获得9.99e999无限点数'
@@ -765,7 +769,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.QUBF.gte(1e36)}, 
-     unlocked(){return player.A.points.gte(75)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 1e36 Q-Upgrade Booster Fragments."
         if(options.Chinese) a='获得1e36个Q-升级增强器碎片'
@@ -778,7 +782,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(8)}, 
-     unlocked(){return player.A.points.gte(80)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 8 DeFe308."
         if(options.Chinese) a='获得8个DeFe308'
@@ -792,7 +796,7 @@ addLayer("A", {
         return a
      },
      done() {return player.cf.upgrades.length >= 4}, 
-     unlocked(){return player.A.points.gte(80)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Have 4 CF-Upgrades."
         if(options.Chinese) a='购买4个CF层级的升级'
@@ -806,7 +810,7 @@ addLayer("A", {
         return a
      },
      done() {return buyableEffect('T',13).gte(4)}, 
-     unlocked(){return player.A.points.gte(80)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Make your PEF effect greater than 4."
         if(options.Chinese) a='使你的点数指数因子的效果超过^4'
@@ -820,7 +824,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.points.gte(n(2).pow(1024))&&player.I.inf.lte(1)}, 
-     unlocked(){return player.A.points.gte(80)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 1.79e308 Infinity Points in 1 Infinity."
         if(options.Chinese) a='在1次无限内达到1.79e308无限点数'
@@ -833,7 +837,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(10)}, 
-     unlocked(){return player.A.points.gte(80)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 10 DeFe308."
         if(options.Chinese) a='获得10个DeFe308'
@@ -847,7 +851,7 @@ addLayer("A", {
         return a
      },
      done() {return challengeCompletions('E',12)>=5}, 
-     unlocked(){return player.A.points.gte(85)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Fully complete Eternity Challenge 2."
         if(options.Chinese) a='完整完成永恒挑战2'
@@ -861,7 +865,7 @@ addLayer("A", {
         return a
      },
      done() {return tmp.qa.MBeff.gte(2)}, 
-     unlocked(){return player.A.points.gte(85)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Make Monika Buyables twice effective."
         if(options.Chinese) a='使Monika可购买强度+100%'
@@ -874,7 +878,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(11)}, 
-     unlocked(){return player.A.points.gte(85)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 11 DeFe308."
         if(options.Chinese) a='获得11个DeFe308'
@@ -888,7 +892,7 @@ addLayer("A", {
         return a
      },
      done() {return player.qa.monika.gte(n(2).pow(1024))}, 
-     unlocked(){return player.A.points.gte(85)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 1.80e308 Monika points."
         if(options.Chinese) a='获得1.79e308 Monika点数'
@@ -902,7 +906,7 @@ addLayer("A", {
         return a
      },
      done() {return hasUpgrade('cf',34)}, 
-     unlocked(){return player.A.points.gte(85)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Unlock I-Upgrade Booster."
         if(options.Chinese) a='解锁I-升级增强器<br>!?强强?!'
@@ -916,7 +920,7 @@ addLayer("A", {
         return a
      },
      done() {return player.cf.IUBF.gte(1)}, 
-     unlocked(){return player.A.points.gte(90)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 1 I-Upgrade Booster Fragment."
         if(options.Chinese) a='获得1个I-升级增强器碎片<br>!?墙墙?!'
@@ -929,7 +933,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(12)}, 
-     unlocked(){return player.A.points.gte(90)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 12 DeFe308."
         if(options.Chinese) a='获得12个DeFe308'
@@ -943,7 +947,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(13)}, 
-     unlocked(){return player.A.points.gte(90)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 13 DeFe308."
         if(options.Chinese) a='获得13个DeFe308'
@@ -956,7 +960,7 @@ addLayer("A", {
         return a
      },
      done() {return player.qa.points.gte(100)}, 
-     unlocked(){return player.A.points.gte(90)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 100 qaqe308."
         if(options.Chinese) a='获得100个qaqe308'
@@ -970,7 +974,7 @@ addLayer("A", {
         return a
      },
      done() {return tmp.E.ECcomp.gte(30)}, 
-     unlocked(){return player.A.points.gte(90)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Complete 30 EC Tiers."
         if(options.Chinese) a='完成30次永恒挑战'
@@ -983,11 +987,11 @@ addLayer("A", {
         if(options.Chinese) a='永恒是新的无限'
         return a
      },
-     done() {return player.E.bestTime.lte(0.25)}, 
-     unlocked(){return player.A.points.gte(70)},
+     done() {return player.E.bestTime.lte(1)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
-     tooltip() {a= "Eternity in under 250 ms."
-        if(options.Chinese) a='在250毫秒内永恒'
+     tooltip() {a= "Eternity in under 1000 ms."
+        if(options.Chinese) a='在1000毫秒内永恒'
         return a
      }, 
      textStyle: {'color': '#ffe125'},
@@ -997,7 +1001,7 @@ addLayer("A", {
         return a
      },
      done() {return player.points.gte('1e1e6')}, 
-     unlocked(){return player.A.points.gte(95)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 1e1,000,000 points."
         if(options.Chinese) a='获得1e1,000,000点数'
@@ -1011,7 +1015,7 @@ addLayer("A", {
         return a
      },
      done() {return player.Qi.QqQeInf.gte(1)}, 
-     unlocked(){return player.A.points.gte(95)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 1 Super-QqQeInfinity."
         if(options.Chinese) a='超一次QqQeInfinity'
@@ -1025,7 +1029,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(15)}, 
-     unlocked(){return player.A.points.gte(95)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 15 DeFe308."
         if(options.Chinese) a='获得15个DeFe308'
@@ -1039,7 +1043,7 @@ addLayer("A", {
         return a
      },
      done() {return hasUpgrade('cf',52)}, 
-     unlocked(){return player.A.points.gte(95)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Unlock Liuliu66686."
         if(options.Chinese) a='解锁溜溜溜达嘿'
@@ -1053,7 +1057,7 @@ addLayer("A", {
         return a
      },
      done() {return player.li.points.gte(150)}, 
-     unlocked(){return player.A.points.gte(100)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 150 Liuliu66686 Points."
         if(options.Chinese) a='获得150个溜溜点数'
@@ -1067,7 +1071,7 @@ addLayer("A", {
         return a
      },
      done() {return getBuyableAmount('Qi',11).gte(3)}, 
-     unlocked(){return player.A.points.gte(100)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Buy 'QqQeInfinity Effciency' 3 times."
         if(options.Chinese) a='使QqQeInfinity同时超4个人'
@@ -1081,7 +1085,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(18)}, 
-     unlocked(){return player.A.points.gte(100)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 18 DeFe308."
         if(options.Chinese) a='获得18个DeFe308'
@@ -1095,7 +1099,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.points.gte('9.99e9999')}, 
-     unlocked(){return player.A.points.gte(100)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 9.99e9999 Infinity Points."
         if(options.Chinese) a='获得9.99e9999无限点数'
@@ -1104,12 +1108,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
       },
       215: {
-     name(){a="The Last Eternity Upgrade"
-      if(options.Chinese) a='最后一个永恒升级'
+     name(){a="The Last Eternity Upgrade...?"
+      if(options.Chinese) a='最后一个永恒升级…？'
         return a
      },
      done() {return hasUpgrade('E',231)}, 
-     unlocked(){return player.A.points.gte(100)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Buy Upgrade E23-1."
         if(options.Chinese) a='购买升级E23-1'
@@ -1123,7 +1127,7 @@ addLayer("A", {
         return a
      },
      done() {return player.I.inf.gte(n(2).pow(1024))}, 
-     unlocked(){return player.A.points.gte(105)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Infinity 1.80e308 times."
         if(options.Chinese) a='无限1.80e308次'
@@ -1137,9 +1141,9 @@ addLayer("A", {
         return a
      },
      done() {return tmp.E.totalUPcal.gte(1000)}, 
-     unlocked(){return player.A.points.gte(105)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
-     tooltip() {a= "Reach 1000 total Upgrade Points"
+     tooltip() {a= "Reach 1000 total Upgrade Points."
         if(options.Chinese) a='总计获得1000升级点数'
         return a
      }, 
@@ -1150,7 +1154,7 @@ addLayer("A", {
         return a
      },
      done() {return player.df.points.gte(22)}, 
-     unlocked(){return player.A.points.gte(105)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Get 22 DeFe308."
         if(options.Chinese) a='获得22个DeFe308'
@@ -1163,8 +1167,8 @@ addLayer("A", {
       if(options.Chinese) a='真正的膨胀'
         return a
      },
-     done() {return player.points.gte('6e6686')&&tmp.li.dilationLevel.gte(1)}, 
-     unlocked(){return player.A.points.gte(105)},
+     done() {return player.points.gte('6e6686')&&tmp.li.dilationLevel.gt(0)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "Reach 6e6686 points in Liuliu66686 Dilation."
         if(options.Chinese) a='在溜胀中达到6e6686点数'
@@ -1178,10 +1182,150 @@ addLayer("A", {
         return a
      },
      done() {return hasUpgrade('li',31)}, 
-     unlocked(){return player.A.points.gte(105)},
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {a= "You have been banned from speaking by Liuliu66686 for 29 days, 23 hours, and 59 minutes<br>Unlock Divinity Power."
         if(options.Chinese) a='解锁神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      231: {
+     name(){a="Double Divinity Power"
+      if(options.Chinese) a='双倍神权'
+        return a
+     },
+     done() {return getBuyableAmount('li',21).gte(2)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 2 total Divinity Power."
+        if(options.Chinese) a='获得2神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      232: {
+     name(){a="Triple Divinity Power"
+      if(options.Chinese) a='三重神权'
+        return a
+     },
+     done() {return getBuyableAmount('li',21).gte(3)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 3 total Divinity Power."
+        if(options.Chinese) a='获得3神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      233: {
+     name(){a="Divinity Power^4"
+      if(options.Chinese) a='四重神权'
+        return a
+     },
+     done() {return getBuyableAmount('li',21).gte(4)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 4 total Divinity Power."
+        if(options.Chinese) a='获得4神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      234: {
+     name(){a="We all make miskate"
+      if(options.Chinese) a='我们都会范错'
+        return a
+     },
+     done() {return false}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Reset DvP upgrades when spending at least 5 total Divinity Power."
+        if(options.Chinese) a='在至少花费5神权的情况下重置神权升级'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      235: {
+     name(){a="Re: The end of Eternity Challenges"
+      if(options.Chinese) a='永恒挑战之终'
+        return a
+     },
+     done() {return tmp.E.ECcomp.gte(60)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Complete all EC Tiers."
+        if(options.Chinese) a='完成所有永恒挑战'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+      241: {
+     name(){a="Expension Pack"
+      if(options.Chinese) a='扩展包'
+        return a
+     },
+     done() {return hasMilestone('li',3)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Unlock more Eternity Upgrades."
+        if(options.Chinese) a='解锁更多永恒升级'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+      242: {
+     name(){a="Eternal DeFe308"
+      if(options.Chinese) a='永恒的DeFe308'
+        return a
+     },
+     done() {return player.df.points.gte(25)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 25 DeFe308."
+        if(options.Chinese) a='获得25个DeFe308'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+      243: {
+     name(){a="Close To [5 hours]"
+      if(options.Chinese) a='离[5小时]很近了'
+        return a
+     },
+     done() {return getBuyableAmount('li',21).gte(8)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Get 8 total Divinity Power."
+        if(options.Chinese) a='获得8神权'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+      244: {
+     name(){a="Exponental Time"
+      if(options.Chinese) a='指数时间'
+        return a
+     },
+     done() {return getBuyableAmount('E',13).gte(1)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Buy a Timeshard Exponent Factory."
+        if(options.Chinese) a='购买一个时间碎片指数因子'
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+      },
+   245: {
+     name(){a="Pure Memory"
+      if(options.Chinese) a='您PM了'
+        return a
+     },
+     done() {return player.points.gte('ee7')}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {a= "Reach e10,000,000 points."
+        if(options.Chinese) a='获得e10,000,000点数'
         return a
      }, 
      textStyle: {'color': '#ffe125'},
@@ -1241,6 +1385,10 @@ addLayer("A", {
         //if(a.gte(50)) a=a.div(50).pow(0.5).times(50)
         return a
     },
+    ProgressTo3(){a=player.points.max(1).log(10).div('e7').times(100).min(100)
+        //if(a.gte(50)) a=a.div(50).pow(0.5).times(50)
+        return a
+    },
     IC8eff(){a=n(1)
         if(inChallenge('I',28)) a=a.times(1e-50)
         return a
@@ -1267,6 +1415,7 @@ addLayer("SA", {
         newsIndex:n(0),
         newsTime:n(0),
         newshasSeen:n(0),
+        newsShowInTop:'This is the first news message in the news message list.',
     }},
     color: "#878787",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
@@ -1289,6 +1438,7 @@ addLayer("SA", {
         if(player.SA.newsTime.gte(10)) {
             player.SA.newsTime = n(0)
             player.SA.newsIndex = n(tmp.SA.news.length).times(Math.random()).floor()
+            player.SA.newsShowInTop = tmp.SA.news[player.SA.newsIndex]
             if(options.NewsTicker) player.SA.newshasSeen = player.SA.newshasSeen.add(1)
         }
     },
@@ -1304,10 +1454,10 @@ addLayer("SA", {
         content: [ "main-display",
     ["display-text", () => tmp.SA.newsShowed],
     ],
-        unlocked(){return hasAchievement('SA',24)},
+        unlocked(){return hasAchievement('SA',44)},
     },
     },
-    effectDescription(){return ' and there are 10 in total.'},
+    effectDescription(){return ' and there are 16 in total.'},
     achievements: {
         11: {
      name(){a="This isn't '+1 Point'"
@@ -1421,19 +1571,16 @@ addLayer("SA", {
      textStyle: {'color': '#ffe125'},
         },
         24: {
-     name(){a="News Addiction III"
-        if(options.Chinese) a='消息成瘾 III'
+     name(){a="undefined"
+        //if(options.Chinese) a='消息成瘾 III'
         return a
      },
-     done() {return player.SA.newshasSeen.gte(1000000)}, 
+     done() {return tmp.SA.news[player.SA.newsIndex]===undefined}, 
      unlocked(){return player.SA.points.gte(0)},
      onComplete() {player.SA.points = player.SA.points.add(1)},
      tooltip() {a= "???"
-        if(hasAchievement('SA',this.id)) {a= "See 1,000,000 news messages."
-            a=a+'<br>Reward: Show all news messages in the "News Messages" tab.'
-        if(options.Chinese) {a='看到1,000,000条新闻消息'
-            a=a+'<br>奖励：在"News Messages"标签页中显示所有新闻消息'
-        }}
+        if(hasAchievement('SA',this.id)) {a= "undefined"
+        }
         return a
      }, 
      textStyle: {'color': '#ffe125'},
@@ -1470,6 +1617,99 @@ addLayer("SA", {
      }, 
      textStyle: {'color': '#ffe125'},
         },
+        33: {
+     name(){a="Follow Instructions"
+        if(options.Chinese) a='按指示操作'
+        return a
+     },
+     done() {return false},//about load 
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Follow the instruction."
+        if(options.Chinese) a='按指示操作'}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+        34: {
+     name(){a="Nostalgia"
+        if(options.Chinese) a='怀旧'
+        return a
+     },
+     done() {return false},//about load 
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Try to import save that from The Timewall Tree 'Unremake'."
+        if(options.Chinese) a='尝试导入时间墙树未重置版的存档'}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+        42: {
+     name(){a="The Meaning of Life"
+        if(options.Chinese) a='人生的意义'
+        return a
+     },
+     done() {return player.A.Speedmult.eq(42)},
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Input 42 in somewhere.<br>The id of this achievement is 42!"
+        if(options.Chinese) a='在某个地方输入42'}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+        41: {
+     name(){a="Chinese Lover"
+        if(options.Chinese) a='中文爱好者'
+        return a
+     },
+     done() {return options.Chinese && options.CNNewsTicker},
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Turn the language to Chinese and turn on Chinese News Ticker."
+        if(options.Chinese) a='将语言切换到中文并打开中文新闻消息'}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+        43: {
+     name(){a="Do you really know how these work?"
+        if(options.Chinese) a='你真的知道这些是怎么运作的吗？'
+        return a
+     },
+     done() {return false}, 
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Reset Divinity Power Upgrades without buying any of them."
+        if(options.Chinese) a='在不购买任何神权升级的情况下重置神权升级'}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
+        44: {
+     name(){a="Secret Master"
+        if(options.Chinese) a='dsa'
+        return a
+     },
+     done() {return player.SA.points.gte(15)},
+     unlocked(){return player.SA.points.gte(0)},
+     onComplete() {player.SA.points = player.SA.points.add(1)},
+     tooltip() {a= "???"
+        if(hasAchievement('SA',this.id)) {a= "Have 15 total secret achievements."
+         a=a+'<br>Reward: Show all news messages in the "News Messages" tab.'
+        if(options.Chinese) {a='拥有15个隐藏成就'
+         a=a+'<br>奖励：在"News Messages"标签页中显示所有新闻消息'
+        }}
+        return a
+     }, 
+     textStyle: {'color': '#ffe125'},
+        },
     },
     clickables:{
         11: {
@@ -1485,6 +1725,7 @@ addLayer("SA", {
             unlocked(){return hasAchievement('SA',23)},
             onClick() {player.SA.newsTime = n(0)
             player.SA.newsIndex = n(tmp.SA.news.length).times(Math.random()).floor()
+            //player.SA.newsShowInTop = tmp.SA.news[player.SA.newsIndex]
             if(options.NewsTicker) player.SA.newshasSeen = player.SA.newshasSeen.add(1)
             },
         },
@@ -1496,7 +1737,7 @@ addLayer("SA", {
     'Not on Steam!',
     'Click this news message to get nothing.',
     'You have played this game for '+formatTime(player.timePlayed)+'.',
-    'Currently, the version of The Timewall Tree Remake is v2.3.',
+    'Currently, the version of The Timewall Tree Remake is v2.5.',
     'Do you know that the duration of per news message is 10 seconds? and '+format(n(10).sub(player.SA.newsTime))+' seconds left for this message.',
     'This is a unique news message, and the chance of seeing it is 1/'+format(n(tmp.SA.news.length),0)+'.',
     "If you want to play The Timewall Tree 'Unremake', you can click this button: <a href='https://xiao7sanlian.github.io/The-Timewall-Tree/' target='_blank'>https://xiao7sanlian.github.io/The-Timewall-Tree/</a>. However, the 'Unremake' version is not updated anymore, and it may contain some bugs and unbalanced content. Moreover, it has only Chinese language.",
@@ -1516,7 +1757,12 @@ addLayer("SA", {
     '',//v2.3
     'Liuliu66686 is too dilated',//v2.3
     'Liuliu too ated',//v2.3
-    'How dare Revolution Idle copy our idea of Time Flux'//v2.3
+    'How dare Revolution Idle copy our idea of Time Flux',//v2.3
+    'Also try <a href="https://galaxy.click/play/580" target="_blank">Discouragement-Tree</a>!',//v2.5
+    'x x xxx o o ooo xx x xxx oo o ooo x x x xxxx o o o oooo xx xx xxx x x oo oo ooo o o',//v2.5
+    'RNGdle 625511 UNCOMMON • Top 31%; Contiguous Two Pair; Two Pair; Dunes; +9 more 8,038 EP <a href="https://rngdle.com" target="_blank">https://rngdle.com</a>',//v2.5
+   "Only feels like nothing could be better when I'm with you when I'm with you~",//v2.5
+   //'The Time Wall Tree Remake has at least half of its content plagiarized from the Antimatter Dimension, with the remaining parts copied from Revolution Idle, supported by evidence in the form of images:<a href="jt.png" target="_blank">jt.png</a>'//v2.5
     ]
     if(hasAchievement('A',23)) a.push("Do you know why the first side layer is called 'QqQe308'? Well, I don't know as well.")
     if(hasAchievement('A',51)) a.push("Here we have 3 kinds of Timewall. Will there be more Timewall in the future?")
@@ -1533,8 +1779,19 @@ addLayer("SA", {
         "The spoiler for next layer: Reality, Glyphs, Perk, Celestials, and so on.",
     )
     if(player.SA.points.gte(2)) a.push('"I Just Got 2 Secret Achievements" - Felipe')//v2.2
+    if(options.CNNewsTicker) {for (let i = 0; i < tmp.SA.CNnews.length; i++) {
+      a.push(tmp.SA.CNnews[i])
+    }}
         return a
     },
+    CNnews(){a=['我们加入了中文新闻消息！',//added in v2.5
+      '溜溜溜达嘿太膨胀了',
+      '时间墙树重置版至少一半内容抄袭反物质维度，剩下的内容都是抄袭旋转放置，有图为据：<a href="jt.png" target="_blank">图片</a>',
+      '很多人说我们时间墙树重置版的墙太少了，对此我们在v2.5版本的神权部分加入了5h, 3h, 3h, 2h, 2h, 10h, 6h, 3h, 13h, 3h, 2h, 1h等40+个大墙',
+      '滚木滚木滚木滚木滚木滚木滚木滚木滚木',
+      '脑子有问题 —— 溜溜溜达嘿',
+    ]
+   return a},
     newsShowed(){a=''
         for (let i = 0; i < tmp.SA.news.length; i++) {
             a=a+tmp.SA.news[i]+'<br>'

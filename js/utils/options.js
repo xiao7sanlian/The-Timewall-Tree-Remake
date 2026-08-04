@@ -18,6 +18,7 @@ function getStartOptions() {
 		hideSaveNotifications: true,
 		Chinese: false,
 		NewsTicker: false,
+		CNNewsTicker: false,
 	}
 }
 

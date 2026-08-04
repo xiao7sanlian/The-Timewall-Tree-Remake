@@ -15,8 +15,8 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.4.1",
-	name: "Liuliu66686 Update",
+	num: "2.5",
+	name: "Divinity Power Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -72,9 +72,11 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v1.1.1 BI2-2 Fix 2026/2/25</h3><br>
 		- Fixed a bug: the effect of upgrade BI2-2 is NaNx when your Best Infinity time is very long.<br>
 		- Improved IC8 performance.<br><br>
+
 	<h3>v1.1.2 NC5 & IC1 Fix 2026/2/26</h3><br>
 		- Fixed a bug: when in NC5 or IC1 and have BI4-3, Infinity Power will be NaN on reset.<br>
 		- Added ??? in Infinity layer.<br><br>
+
 	<h3>v1.2 Timewall Power Update 2026/2/27~2026/3/1</h3><br>
 		- Added Timewall Power in Infinity layer, with 12 Upgrades, 4 Buyables and 1 Challenges.<br>
 		- Added Upgrade Booster in Infinity layer, with 4 Upgrades and 1 Buyables.<br>
@@ -82,6 +84,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Some other changes.<br>
 		- Endgame: Reach 1.80e308 Infinity Points<br>
 		- Note: Some of the contents might contain a large timewall. Please use Speed-up at any time.<br><br>
+
 	<h3>v1.2.1 Translation Update (Part. I) 2026/3/7</h3><br>
 		- Added language setting, and you can play this game in Chinese now!<br>
 		- Completed the translation of T and Q layer.<br>
@@ -179,6 +182,23 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added a hardcap for the effect of E21-2.<br>
 		Chinese version:<br>
 		- 对升级E21-2增加了软上限<br><br>
+
+	<h3>v2.5 Divinity Power Update 2026/7/30~2026/8/4</h3><br>
+		- Added Divinity Power Tree, with a grid containing 13 'upgrades'.<br>
+		- Added more upgrades in the Upgrade Tree.<br>
+		- Reduced the requirement of 'Eternities are the new infinity' achievement.
+		- Some other changes, and more news messages.<br>
+		- Added Chinese News Ticker.<br>
+		- Added 6 secret Achievements, and modified SA24.<br>
+		- Endgame: Unlock [5 hours later]. (e10,000,000 points)<br>
+		Chinese version:<br>
+		- 增加了神权树，包括13个"升级"<br>
+		- 在升级树中增加了更多的升级<br>
+		- 成就'永恒是新的无限'的需求被降低了<br>
+		- 一些其他更改，以及更多的新闻消息<br>
+		- 增加了中文新闻消息<br>
+		- 增加了6个隐藏成就，并修改了隐藏成就24<br>
+		- 终局: 解锁[5小时后更新]（e10,000,000点数）<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -193,7 +213,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	//return player.points.lt(1e150)
+	return player.points.lt('ee7')
 	return true
 }
 
@@ -221,10 +241,11 @@ function addedPlayerData() { return {
 // Display extra things at the top of the page
 var displayThings = [
 	function(){a='Progress to Infinity:'+format(tmp.A.ProgressToInf)+'%<br/>'
-		if(hasUpgrade('I',51)) {a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%'
-			a=a+'<br/>'}
+		if(hasUpgrade('I',51)&&player.points.gte(n(2).pow(1024))) {a='Progress to Eternity:'+format(tmp.A.ProgressToEtr)+'%<br>'}
+		if(tmp.E.ECcomp.gte(1)&&player.I.points.gte(n(2).pow(1024))) {a='Progress to Universe Filled:'+format(tmp.A.ProgressTo3)+'%<br>'}
 			//if(tmp.A.ProgressToEtr.gte(100)) a=a+"You have reached the Endgame!"
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!<br>"
+		if(tmp.A.ProgressTo3.gte(100)) a=a+quickColor("Your point is hardcapped at e10,000,000!",'#ff0000')+"<br>"
 		if(inChallenge('E',34)) a=a+'EC12 progress: '+format(player.E.resetTime)+'s/'+format(tmp.E.challenges[34].goal2)+'s<br>'
 		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
 		if(options.NewsTicker) a=a+'<br>'+tmp.SA.news[player.SA.newsIndex]
@@ -238,7 +259,8 @@ function isEndgame() {
 	//return hasMilestone('df',2)
 	//return hasUpgrade('cf',34)
 	//return hasUpgrade('cf',52)
-	return getBuyableAmount('li',21).gte(1)
+	//return getBuyableAmount('li',21).gte(1)
+	return hasUpgrade('E',272)
 	//return player.points.gte(new Decimal("e280000000"))
 }
 
@@ -320,4 +342,63 @@ function ce(a,b) {return clickableEffect(a,b)}
 function sleep(ms) {
 	const start = Date.now();
 	while (Date.now()-start<ms){}
+}
+
+function dvpuText(id,Chinese = false){
+	if(!Chinese){switch (id) {
+		case 101:
+			return '<br>DvP-C<br>Increase DP gain by 1% per OoM of Eternity Point per level<br>Currently: x'+format(gridEffect('li',id));
+		case 102:
+			return '<br>DvP-T-1<br>Nerf Liuliu66686 Dilation by multipling its level by 0.99 (-0.01 per level)<br>Currently: x'+format(gridEffect('li',id));
+		case 103:
+			return '<br>DvP-T-2<br>Multiply the effect of Point Exponent Factory by 1.2 (+0.2 per level), but only in Liuliu66686 Dilation<br>Currently: x'+format(gridEffect('li',id));
+		case 104:
+			return '<br>DvP-T-3<br>After having at least 48 Eternity Upgrades, multiply DP gain by Upgrade Point^0.1 (+0.1 per level)<br>Currently: x'+format(gridEffect('li',id));
+		case 105:
+			return '<br>DvP-T-4<br>Upgrade DvP-B-x (x=1,2,3) is 20% stronger per level<br>Currently: x'+format(gridEffect('li',id));
+		case 202:
+			return '<br>DvP-M-1<br>Add 0.1 to the base of buyable "DP Doubler" per level<br>Currently: +'+format(gridEffect('li',id));
+		case 303:
+			return '<br>DvP-M-2<br>Monika buyable is 10% stronger per level<br>Currently: +'+format(gridEffect('li',id).times(100))+'%';
+		case 404:
+			return '<br>DvP-M-3<br>Raise all effects of DeFe308 to the power of 1.08 (+0.08 per level)<br>Currently: ^'+format(gridEffect('li',id));
+		case 505:
+			return '<br>DvP-M-4<br>Upgrade DvP-M-x (x=1,2,3) is 20% stronger per level<br>Currently: x'+format(gridEffect('li',id));
+		case 201:
+			return '<br>DvP-B-1<br>Multiply the effect of Dilation Point by 1.1 (+0.1 per level)<br>Currently: x'+format(gridEffect('li',id));
+		case 301:
+			return '<br>DvP-B-2<br>Raise the Compressed Timewall cap to the power of 1.2 (+0.2 per level)<br>Currently: ^'+format(gridEffect('li',id));
+		case 401:
+			return '<br>DvP-B-3<br>Each DeFe308 multiply DP gain by 2^0.1 (+0.1 per level)<br>Currently: x'+format(gridEffect('li',id));
+		case 501:
+			return '<br>DvP-B-4<br>Upgrade DvP-T-x (x=1,2,3) is 20% stronger per level<br>Currently: x'+format(gridEffect('li',id));
+	}}
+	else{switch (id) {
+		case 101:
+			return '<br>DvP-C<br>永恒点数每多一个数量级，膨胀点数获取+1%，每级使效果作用次数+1<br>当前: x'+format(gridEffect('li',id));
+		case 102:
+			return '<br>DvP-T-1<br>削弱溜胀，将其等级x0.99 (每级-0.01)<br>当前: x'+format(gridEffect('li',id));
+		case 103:
+			return '<br>DvP-T-2<br>点数指数因子效果x1.2 (每级+0.2)，但只在溜胀中生效<br>当前: x'+format(gridEffect('li',id));
+		case 104:
+			return '<br>DvP-T-3<br>在拥有至少48个永恒升级后，膨胀点数获取x(总升级点数^0.1) (每级指数+0.1)<br>当前: x'+format(gridEffect('li',id));
+		case 105:
+			return '<br>DvP-T-4<br>每级使升级DvP-B-x (x=1,2,3) 的有效等级+20%<br>当前: +'+format(gridEffect('li',id))+'%';
+		case 202:
+			return '<br>DvP-M-1<br>每级使膨胀点数倍增器的底数+0.1<br>当前: +'+format(gridEffect('li',id));
+		case 303:
+			return '<br>DvP-M-2<br>每级使Monika可购买的强度+10%<br>当前: +'+format(gridEffect('li',id).times(100))+'%';
+		case 404:
+			return '<br>DvP-M-3<br>DeFe308的所有效果变为原来的1.08次方 (每级+0.08)<br>当前: ^'+format(gridEffect('li',id));
+		case 505:
+			return '<br>DvP-M-4<br>每级使升级DvP-M-x (x=1,2,3) 的有效等级+20%<br>当前: +'+format(gridEffect('li',id))+'%';
+		case 201:
+			return '<br>DvP-B-1<br>膨胀点数的效果x1.05 (每级+0.05)<br>当前: x'+format(gridEffect('li',id));
+		case 301:
+			return '<br>DvP-B-2<br>压缩时间墙上限变为原来的1.2次方 (每级+0.2)<br>当前: ^'+format(gridEffect('li',id));
+		case 401:
+			return '<br>DvP-B-3<br>每个DeFe308使膨胀点数获取变为原来的2^0.1倍 (每级使指数+0.1)<br>当前: x'+format(gridEffect('li',id));
+		case 501:
+			return '<br>DvP-B-4<br>每级使升级DvP-T-x (x=1,2,3) 的有效等级+20%<br>当前: +'+format(gridEffect('li',id))+'%';
+	}}
 }

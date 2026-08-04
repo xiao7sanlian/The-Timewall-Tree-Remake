@@ -178,6 +178,7 @@ var systemComponents = {
             </tr>
 			<tr>
                 <td><button class="opt" onclick="toggleOpt('NewsTicker')">News Ticker: {{ formatOption(options.NewsTicker) }}</button></td>
+				<td><button class="opt" onclick="toggleOpt('CNNewsTicker')">Chinese News Ticker: {{ formatOption(options.CNNewsTicker) }}</button></td>
         </table>`
     },
 

@@ -79,7 +79,9 @@ addLayer("I", {
         if(inChallenge('I',31))player.I.C31base = player.T.points.add(1).times(player.ST.points.add(1)).times(player.MT.points.add(1)).pow(0.02).sub(1).max(player.I.C31base).min('1e2500')
         if(!inChallenge('I',31))player.I.CTbase = player.I.C31base.max(player.I.CTbase).min('1e2500')
 
-        if(hasMilestone('E',14)&&player.E.CTauto&&hasUpgrade('I',131)) player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
+        if(hasMilestone('E',14)&&player.E.CTauto&&hasUpgrade('I',131)) {player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
+            if(hasMilestone('li',0)) player.I.CTbase = tmp.I.ctCap
+        }
 
         if(hasMilestone('E',0)&&player.E.IPDauto) layers.I.buyables[11].buyMax()
 
@@ -461,15 +463,17 @@ addLayer("I", {
                 if(options.Chinese) a='I4-3 增强'
                 return a
             },
-            display() {a="Multiply EP gain based on IP multiplier."
+            display() {a="Multiply EP gain based on IP multiplier, capped at 1e10."
                 a=a+'<br>Currently: '+format(this.effect())+'x'
                 a=a+"<br><br>Requirement: "+format(tmp.I.boostedIU.add(1),0)+' I-Upgrade Booster(s)'
-                if(options.Chinese) {a='基于无限点数获取倍率提升永恒点数获取'
+                if(options.Chinese) {a='基于无限点数获取倍率提升永恒点数获取，在1e10处达到上限'
                     a=a+'<br>当前: '+format(this.effect())+'x'
                 a=a+"<br><br>需求: "+format(tmp.I.boostedIU.add(1),0)+' 个 I-升级增强器'}
                 return a
             },
-            effect(){a=tmp.I.gainMult.pow(0.001).min(1e10)
+            effect(){a=tmp.I.gainMult.pow(0.001)
+                if(a.gte(1e10)) a=a.div(1e10).pow(0.25).times(1e10)
+                if(!hasUpgrade('E',271))a=a.min(1e10)
                 return a
             },
             unlocked(){return hasUpgrade('cf',34)},
@@ -1966,10 +1970,11 @@ addLayer("I", {
             },
             display() { a="Add "+format(tmp.I.IEFbase)+" to Infinity Generator Effect Exponent<br/>Effect:^"+format(this.effect().div(tmp.I.IEFmult),4)
                 if(buyableEffect('I',33).gte(1.5)) a=a+'(Softcapped)' 
-                if(tmp.I.IEFmult.neq(1)) a=a+'x'+format(tmp.I.IEFmult)+'='+format(this.effect())
+                if(tmp.I.IEFmult.neq(1)) a=a+'x'+format(tmp.I.IEFmult,4)+'='+format(this.effect(),4)
                 a=a+"<br/>Cost: "+format(this.cost())+' Infinity Points'
                 if(options.Chinese) {a="无限之力生成器效果指数+"+format(tmp.I.IEFbase)+"<br/>效果:^"+format(this.effect(),4)
                 if(buyableEffect('I',33).gte(1.5)) a=a+'（受软上限限制）'
+                if(tmp.I.IEFmult.neq(1)) a=a+'x'+format(tmp.I.IEFmult,4)+'='+format(this.effect(),4)
                 a=a+"<br/>花费: "+format(this.cost())+' 无限点数'
                 }
             return a },
@@ -2269,15 +2274,19 @@ addLayer("I", {
         if(hasUpgrade('I',161)) a=a.times(upgradeEffect('I',161))
         if(hasMilestone('df',0)) a=a.times(tmp.df.effect[1])
         if(hasUpgrade('E',82)) a=a.times(upgradeEffect('E',82))
+
+        if(hasMilestone('li',6)) a=a.times(milestoneEffect('li',6))
         if(inChallenge('E',33)) a=n(2)
         return a
     },
     IEFbase(){a=n(0.01)
         if(hasUpgrade('I',104)) a=a.times(1.5)
         if(hasChallenge('I',28)) a=a.times(2)
+        if(hasUpgrade('E',261)) a=a.times(1.5)
         return a
     },
     IEFmult(){a=n(1)
+        if(hasUpgrade('E',261)) a=a.times(1.05)
         if(inChallenge('E',13)) a=a.times(0.5)
         return a
     },
@@ -2397,10 +2406,10 @@ addLayer("I", {
         if(hasUpgrade('E',21)) a=a.times(upgradeEffect('E',21))
         return a
     },
-    TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls (capped at 1e2500), which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
+    TPtip(){a="You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> Compressed Timewalls (capped at "+format(tmp.I.ctCap)+"), which produce <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"
         a=a+format(tmp.I.CTeff)+"</h3> Timewall Power per second.<br/>"
         a=a+"You have <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> Timewall Power, which multiply Infinity Generator base effect by "+format(tmp.I.TPeff)+'.'
-        if(options.Chinese) {a="你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> 压缩时间墙（在1e2500处达到上限），每秒生产 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTeff)+"</h3> 时间墙能量<br/>"
+        if(options.Chinese) {a="你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTgain)+"</h3> 压缩时间墙（在"+format(tmp.I.ctCap)+"处达到上限），每秒生产 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(tmp.I.CTeff)+"</h3> 时间墙能量<br/>"
         a=a+"你有 <h3 style='color: #00eeff; text-shadow: 0 0 3px #c2b280'>"+format(player.I.tpower)+"</h3> 时间墙能量，使无限之力生成器基础效果x"+format(tmp.I.TPeff)+'.'}
         if(!hasUpgrade('I',131)) a=''
         return a
@@ -2448,6 +2457,10 @@ addLayer("I", {
     totalInf(){a=player.I.inf.add(player.E.bankedInf)
         return a
     },
+    ctCap(){a=n('1e2500')
+        a=a.pow(gridEffect('li',301))
+        return a
+    }
 })
 
 addLayer("qa", {
@@ -2948,6 +2961,7 @@ addLayer("qa", {
         if(hasUpgrade('E',133)&&!hasUpgrade('li',23)) a=a.div(10)
         if(hasUpgrade('E',132)) a=a.times(3)
         if(hasUpgrade('cf',33)) a=a.times(upgradeEffect('cf',33)[0])
+        if(hasUpgrade('E',251)) a=a.times(upgradeEffect('E',251))
         if(hasUpgrade('E',171)) a=a.pow(1.03)
         if(isNaN(a)) a=n(0)
             return a
@@ -2972,6 +2986,7 @@ addLayer("qa", {
         if(hasUpgrade('E',132)) a=a.add(0.15)
         if(hasChallenge('E',21)) a=a.add(challengeEffect('E',21))
         if(hasUpgrade('cf',43)) a=a.add(upgradeEffect('cf',43))
+        a=a.add(gridEffect('li',303))
         if(inChallenge('I',27)) a=a.times(0.5)
         return a
     },

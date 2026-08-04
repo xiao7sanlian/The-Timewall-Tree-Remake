@@ -55,6 +55,8 @@ addLayer("T", {
         if(hasUpgrade('I',141)) d=d.times(upgradeEffect('I',141))
         if(hasUpgrade('I',81)) d=d.times(tmp.I.IGtotw)
 
+        if(hasChallenge('MT',12)&&hasMilestone('Q',8)) d=d.times(milestoneEffect('Q',8))
+
         if(hasUpgrade('Q',14)&&getClickableState('Q',14)==1) d=d.pow(1.1)
         if(hasUpgrade('cf',23)) d=d.pow(upgradeEffect('cf',23))
         if(getClickableState('I',31)==1) d=d.pow(clickableEffect('I',31))
@@ -141,6 +143,7 @@ addLayer("T", {
     update(diff){
         player.devSpeed = tmp.A.devSpeedCal
         if(!hasUpgrade('I',51)) player.points=player.points.min(n(2).pow(1024))
+        player.points=player.points.min('ee7')
         if(!hasMilestone('Q',1)){
         if(((hasMilestone('T',0)&&player.T.PPauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buy()
         if(((hasMilestone('T',0)&&player.T.PPMauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[12].canAfford()) layers.T.buyables[12].buy()
@@ -738,6 +741,7 @@ addLayer("T", {
         if(hasUpgrade('cf',13)) a=a.times(upgradeEffect('cf',13))
         if(getClickableState('I',23)==1) a=a.times(clickableEffect('I',23))
         if(hasUpgrade('li',12)) a=a.times(upgradeEffect('li',12))
+        if(hasMilestone('li',0)) a=a.times(tmp.li.mil0eff)
 
         if(inChallenge('E',32)) a=a.times(tmp.E.challenges[32].inChaleffect)
         if(!inChallenge('E',32)&&hasChallenge('E',32)) a=a.times(challengeEffect('E',32))
@@ -759,6 +763,8 @@ addLayer("T", {
         if(hasUpgrade('I',73)) a=a.times(upgradeEffect('I',73))
         if(hasUpgrade('Q',24)&&!inChallenge('MT',13)&&getClickableState('Q',24)==1) a=a.times(clickableEffect('Q',24))
         if(hasUpgrade('cf',13)) a=a.times(upgradeEffect('cf',13))
+
+        if(hasUpgrade('E',241)) a=a.times(upgradeEffect('E',241))
         
         if(inChallenge('E',33)) a=n(1)
         return a
@@ -801,6 +807,8 @@ addLayer("T", {
         if(inChallenge('E',13)) a=a.times(0.5)
         if(getClickableState('I',11)==1) a=a.times(clickableEffect('I',11))
         if(getClickableState('I',13)==1) a=a.times(clickableEffect('I',13))
+
+        if(tmp.li.dilationLevel.gt(0))a=a.times(gridEffect('li',103))
 
         if(inChallenge('E',31)) a=a.times(tmp.E.challenges[31].inChaleffect)
         if(inChallenge('E',22)) a=n(1)
@@ -1064,7 +1072,7 @@ addLayer("Q", {
                 if(options.Chinese) a="cokecole不重置任何东西"
                 return a
             },
-            unlocked(){return hasMilestone('Q',5)&&hasMilestone('I',2)},
+            unlocked(){return hasMilestone('Q',4)&&hasMilestone('I',2)},
             done() { return player.Q.points.gte(80)&&hasMilestone('I',2) }
         },
         7: {
@@ -1075,6 +1083,30 @@ addLayer("Q", {
             },
             unlocked(){return hasMilestone('Q',4)&&hasMilestone('I',2)},
             done() { return player.Q.points.gte(100)&&hasMilestone('I',2) }
+        },
+        8: {
+            requirementDescription: "1,500,000 QqQe308",
+            effectDescription() {a="The effect of MT-Challenge 'Less Resource' also applies to Timewall and Super Timewall in a reduced rate.<br>Currently: x"+format(this.effect())
+                if(options.Chinese) a="MT挑战'资源减少'的效果以削弱的效果作用于时间墙与超级时间墙获取<br>当前：x"+format(this.effect())
+                return a
+            },
+            effect(){a=challengeEffect('MT',12).pow(0.25)
+                return a
+            },
+            unlocked(){return hasMilestone('Q',7)&&hasMilestone('li',5)},
+            done() { return player.Q.points.gte(1.5e6)&&hasMilestone('li',5) }
+        },
+        9: {
+            requirementDescription: "1,536,000 QqQe308",
+            effectDescription() {a="Raise the effect of milestone '4 Total Divinity Power' to the power of Liuliu66686 Dilation level.<br>Currently: ^"+format(this.effect())
+                if(options.Chinese) a="里程碑'4神权点数'的效果^(溜胀等级)<br>当前：^"+format(this.effect())
+                return a
+            },
+            effect(){a=tmp.li.dilationLevel
+                return a
+            },
+            unlocked(){return hasMilestone('Q',7)&&hasMilestone('li',5)},
+            done() { return player.Q.points.gte(1.536e6)&&hasMilestone('li',5) }
         },
     },
     upgrades: {
@@ -1390,6 +1422,8 @@ addLayer("ST", {
             if(hasUpgrade('I',31)) d=d.times(upgradeEffect('I',31))
             if(hasUpgrade('I',163)) d=d.times(upgradeEffect('I',141))
             if(hasUpgrade('I',82)) d=d.times(tmp.I.IGtost)
+            
+            if(hasChallenge('MT',12)&&hasMilestone('Q',8)) d=d.times(milestoneEffect('Q',8))
 
             if(getClickableState('I',31)==1) d=d.pow(clickableEffect('I',31))
             if(inChallenge('MT',12)) d=d.pow(0.5)
@@ -2296,6 +2330,7 @@ addLayer("Qi", {
     QqQeInfspeed(){a=n(1).div('1e120')
         a=a.times(tmp.Qi.effect)
         if(hasUpgrade('li',14)) a=a.times(upgradeEffect('li',14))
+        if(hasUpgrade('E',242)) a=a.times(upgradeEffect('E',242))
         return a
     },
     QqQeInfeff(){a=tmp.Qi.effQqQeInf.add(1).log(10).add(1).log(2).add(1)
@@ -2996,6 +3031,7 @@ addLayer("co", {
     },
     directMult() {mult = n(1)
         mult=mult.times(buyableEffect('I',53))
+        if(hasUpgrade('E',271)) mult=mult.times(1.1)
         return mult
     },
     row: 3, // Row the layer is in on the tree (0 is the first row)
