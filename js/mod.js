@@ -15,8 +15,8 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.5",
-	name: "Divinity Power Update",
+	num: "2.5.1",
+	name: "A small update, not v3.0",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -199,6 +199,17 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了中文新闻消息<br>
 		- 增加了6个隐藏成就，并修改了隐藏成就24<br>
 		- 终局: 解锁[5小时后更新]（e10,000,000点数）<br><br>
+
+	<h3>v2.5.1 A small update, not v3.0 2026/8/11~2026/8/12</h3><br>
+		- Divided achievements into stages. (just visual effect)<br>
+		- Changed the color of clickables in Qi layer.<br>
+		- Changed the layer most automation belongs.<br>
+		- Note: You may need to re-enable your automation.<br>
+		Chinese version:<br>
+		- 在成就界面中为成就分阶段了（不过没有实际用途）<br>
+		- 更改了Qi层级超人按钮的颜色<br>
+		- 更改了大部分自动化所属的层级<br>
+		- 注：在更新后，你可能需要重新启用自动化<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`

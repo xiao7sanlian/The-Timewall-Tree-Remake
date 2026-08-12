@@ -79,21 +79,23 @@ addLayer("I", {
         if(inChallenge('I',31))player.I.C31base = player.T.points.add(1).times(player.ST.points.add(1)).times(player.MT.points.add(1)).pow(0.02).sub(1).max(player.I.C31base).min('1e2500')
         if(!inChallenge('I',31))player.I.CTbase = player.I.C31base.max(player.I.CTbase).min('1e2500')
 
-        if(hasMilestone('E',14)&&player.E.CTauto&&hasUpgrade('I',131)) {player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
+        if(hasMilestone('E',14)&&player.I.CTauto&&hasUpgrade('I',131)) {player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
             if(hasMilestone('li',0)) player.I.CTbase = tmp.I.ctCap
         }
+    },
+    automate(){
+        if(hasMilestone('E',0)&&player.I.IPDauto) layers.I.buyables[11].buyMax()
 
-        if(hasMilestone('E',0)&&player.E.IPDauto) layers.I.buyables[11].buyMax()
-
-        if(hasMilestone('E',3)&&player.E.BIB1auto) layers.I.buyables[21].buyMax()
-        if(hasMilestone('E',3)&&player.E.BIB2auto) layers.I.buyables[22].buyMax()
-        if(hasMilestone('E',3)&&player.E.BIB3auto) layers.I.buyables[23].buyMax()
-        if(hasMilestone('E',3)&&player.E.BIB4auto) layers.I.buyables[24].buyMax()
+        if(hasMilestone('E',3)){
+            if(player.I.BIB1auto) layers.I.buyables[21].buyMax()
+            if(player.I.BIB2auto) layers.I.buyables[22].buyMax()
+            if(player.I.BIB3auto) layers.I.buyables[23].buyMax()
+            if(player.I.BIB4auto) layers.I.buyables[24].buyMax()}
 
         if(hasMilestone('E',2)&&player.I.upgrades.length < 4) {player.I.upgrades=['14','24','34','44']
             if(hasMilestone('E',10)) player.I.upgrades.push('61','84')
         }
-        if(hasMilestone('E',2)&&player.E.NCauto) {player.I.challenges[11]=1
+        if(hasMilestone('E',2)&&player.I.NCauto) {player.I.challenges[11]=1
             player.I.challenges[12]=1
             player.I.challenges[13]=1
             player.I.challenges[14]=1
@@ -102,20 +104,19 @@ addLayer("I", {
         }
 
         if(hasUpgrade('E',33)) player.I.bestTime = n(0.001)
-    },
-    automate(){
-        if(hasMilestone('E',7)&&player.E.IGauto) layers.I.buyables[31].buyMax()
-        if(hasMilestone('E',7)&&player.E.IGMauto) layers.I.buyables[32].buyMax()
-        if(hasMilestone('E',7)&&player.E.IEFauto) layers.I.buyables[33].buyMax()
 
-        if(hasMilestone('E',11)&&player.E.ICauto1&&layers.I.buyables[41].canAfford()) layers.I.buyables[41].buy()
-        if(hasMilestone('E',11)&&player.E.ICauto2){
+        if(hasMilestone('E',7)&&player.I.IGauto) layers.I.buyables[31].buyMax()
+        if(hasMilestone('E',7)&&player.I.IGMauto) layers.I.buyables[32].buyMax()
+        if(hasMilestone('E',7)&&player.I.IEFauto) layers.I.buyables[33].buyMax()
+
+        if(hasMilestone('E',11)&&player.I.ICauto1&&layers.I.buyables[41].canAfford()) layers.I.buyables[41].buy()
+        if(hasMilestone('E',11)&&player.I.ICauto2){
             for (let i = 1; i < 9; i++) {
                 if(getBuyableAmount('I',41).gte(i)) player.I.challenges[20+i] =1
             }
         }
 
-        if(hasMilestone('E',12)&&player.E.QUBauto&&hasUpgrade('I',171)) {setBuyableAmount('I', 61,getBuyableAmount('I',61).max(8))
+        if(hasMilestone('E',12)&&player.Q.QUBauto&&hasUpgrade('I',171)) {setBuyableAmount('I', 61,getBuyableAmount('I',61).max(8))
             setClickableState('Q',11,1)
             setClickableState('Q',12,1)
             setClickableState('Q',13,1)
@@ -126,12 +127,12 @@ addLayer("I", {
             setClickableState('Q',24,1)
         }
 
-        if(hasMilestone('E',13)&&player.E.TPB1auto) layers.I.buyables[51].buyMax()
-        if(hasMilestone('E',13)&&player.E.TPB2auto) layers.I.buyables[52].buyMax()
-        if(hasMilestone('E',13)&&player.E.TPB3auto) layers.I.buyables[53].buyMax()
-        if(hasMilestone('E',13)&&player.E.TPB4auto) layers.I.buyables[54].buyMax()
+        if(hasMilestone('E',13)&&player.I.TPB1auto) layers.I.buyables[51].buyMax()
+        if(hasMilestone('E',13)&&player.I.TPB2auto) layers.I.buyables[52].buyMax()
+        if(hasMilestone('E',13)&&player.I.TPB3auto) layers.I.buyables[53].buyMax()
+        if(hasMilestone('E',13)&&player.I.TPB4auto) layers.I.buyables[54].buyMax()
 
-        if(hasMilestone('cf',0)&&player.cf.QUBauto) layers.I.buyables[61].buyMax()
+        if(hasMilestone('cf',0)&&player.I.QUBauto) layers.I.buyables[61].buyMax()
     },
     row: 4, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -142,7 +143,7 @@ addLayer("I", {
     ],
     layerShown(){return hasAchievement('A',65)},
     branches: ['MT'],
-    autoUpgrade() {return hasMilestone('E',6)&&player.E.IUauto},
+    autoUpgrade() {return hasMilestone('E',6)&&player.I.IUauto},
     passiveGeneration()
     {
         mult = new Decimal(0)
@@ -1647,36 +1648,36 @@ addLayer("I", {
                 if(options.Chinese) a='购买升级 I1-4'
                 return a
             },
-            effectDescription() {a="Unlock Autobuyers for T-Upgrades, T-Buyables(exclude Timewall Doubler), T-Challenges, QqQe308 reset and Q-Upgrades, keep 25 points on reset, and always show Q layer."
-                if(options.Chinese) a='解锁时间墙升级、时间墙可购买（不包括时间墙倍增器）、时间墙挑战、QqQe308和QqQe308升级的自动购买器，重置时保留25点数，且始终显示Q层级。'
+            effectDescription() {a="Unlock (or keep) Autobuyers for T-Upgrades, T-Buyables(exclude Timewall Doubler), T-Challenges, QqQe308 reset and Q-Upgrades (arranged in order), keep 25 points on reset, and always show Q layer."
+                if(options.Chinese) a='解锁（或保留）时间墙升级、时间墙可购买（不包括时间墙倍增器）、时间墙挑战、QqQe308和QqQe308升级的自动购买器（按顺序排列，下面的里程碑同理），重置时保留25点数，且始终显示Q层级。'
                 return a
             },
             done() { return hasUpgrade('I',14) },
-            toggles:[["I", "TUauto"],["I", "TBauto"],["I", "TCauto"],["I", "QqQauto"],["I", "QUauto"]]
+            toggles:[["T", "TUauto"],["T", "PPauto"],["T", "PPMauto"],["T", "PEFauto"],["T", "TCauto"],["Q", "QqQauto"],["Q", "QUauto"]]
         },
         1: {
             requirementDescription() {a="Buy Upgrade I2-4"
                 if(options.Chinese) a='购买升级 I2-4'
                 return a
             },
-            effectDescription() {a="Unlock Autobuyers for ST-Upgrades, Timewall Doubler, ST-Challenges(even in MT-Challenge), QqQeInfinity reset, always show Qi layer, and unlock a new Q-Milestone."
-                if(options.Chinese) a='解锁超级时间墙升级、时间墙倍增器、超级时间墙挑战（即使在巨大时间墙挑战中）、QqQeInfinity的自动购买器，始终显示Qi层级，并解锁新的QqQe308里程碑。'
+            effectDescription() {a="Unlock (or keep) Autobuyers for ST-Upgrades, Timewall Doubler, ST-Challenges(even in MT-Challenge), QqQeInfinity reset (arranged in order), always show Qi layer, and unlock a new Q-Milestone."
+                if(options.Chinese) a='解锁（或保留）超级时间墙升级、时间墙倍增器、超级时间墙挑战（即使在巨大时间墙挑战中）、QqQeInfinity的自动购买器，始终显示Qi层级，并解锁新的QqQe308里程碑。'
                 return a
             },
             done() { return hasUpgrade('I',24) },
-            toggles:[["I", "STUauto"],["I", "TDauto"],["I", "STCauto"],["I", "Qiauto"]]
+            toggles:[["ST", "STUauto"],["T", "TDauto"],["ST", "STCauto"],["Qi", "Qiauto"]]
         },
         2: {
             requirementDescription() {a="Buy Upgrade I3-4"
                 if(options.Chinese) a='购买升级 I3-4'
                 return a
             },
-            effectDescription() {a="Unlock Autobuyers for MT-Upgrades, MT-Challenge buyable and cokecole reset, always show Co layer, unlock 2 new Q-Milestones, and you can always reset for Mega Timewall manually."
+            effectDescription() {a="Unlock Autobuyers for MT-Upgrades, MT-Challenge buyable and cokecole reset (arranged in order), always show Co layer, unlock 2 new Q-Milestones, and you can always reset for Mega Timewall manually."
                 if(options.Chinese) a='解锁巨大时间墙升级、巨大时间墙挑战可购买和cokecole的自动购买器，始终显示Co层级，解锁2个新的QqQe308里程碑，且你一直可以手动重置以获得巨大时间墙。'
                 return a
             },
             done() { return hasUpgrade('I',34) },
-            toggles:[["I", "MTUauto"],["I", "MTCUauto"],["I", "Coauto"]]
+            toggles:[["MT", "MTUauto"],["MT", "MTCUauto"],["co", "Coauto"]]
         },
         3: {
             requirementDescription() {a="Buy Upgrade I4-4"
@@ -1688,7 +1689,7 @@ addLayer("I", {
                 return a
             },
             done() { return hasUpgrade('I',44) },
-            toggles:[["I", "MTC1auto"],["I", "MTC2auto"],["I", "MTC3auto"],["I", "MTC4auto"]]
+            toggles:[["MT", "MTC1auto"],["MT", "MTC2auto"],["MT", "MTC3auto"],["MT", "MTC4auto"]]
         },
     },
     buyables: {
@@ -2503,7 +2504,7 @@ addLayer("qa", {
         {key: "a",
         description: "A: Reset for qaqe308",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-        unlocked(){return (hasUpgrade('I',51)&&!hasMilestone('E',4))||(hasUpgrade('E',131)&&!hasUpgrade('li',23))}},
+        unlocked(){return layers[this.layer].layerShown()&&!layers[this.layer].autoPrestige()}},
     ],
     layerShown(){return hasUpgrade('I',51)},
     branches: ['I'],
@@ -2517,18 +2518,19 @@ addLayer("qa", {
     update(diff){
         player.qa.monika = player.qa.monika.add(tmp.qa.effect.times(diff))
     },
-    autoUpgrade(){return hasMilestone('E',9)&&player.E.qaUauto},
+    autoUpgrade(){return hasMilestone('E',9)&&player.qa.qaUauto},
     automate(){
-        if(hasMilestone('E',8)&&player.E.MB1auto) layers.qa.buyables[11].buyMax()
-        if(hasMilestone('E',8)&&player.E.MB2auto) layers.qa.buyables[12].buyMax()
-        if(hasMilestone('E',8)&&player.E.MB3auto) layers.qa.buyables[13].buyMax()
-        if(hasMilestone('E',8)&&player.E.MB4auto) layers.qa.buyables[14].buyMax()
+        if(hasMilestone('E',8)){
+            if(player.qa.MB1auto) layers.qa.buyables[11].buyMax()
+            if(player.qa.MB2auto) layers.qa.buyables[12].buyMax()
+            if(player.qa.MB3auto) layers.qa.buyables[13].buyMax()
+            if(player.qa.MB4auto) layers.qa.buyables[14].buyMax()}
     },
-    autoPrestige() {a = hasMilestone('E',4)&&player.E.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))
+    autoPrestige() {a = hasMilestone('E',4)&&player.qa.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))
         return a
     },
     resetsNothing() {return hasMilestone('E',4)},
-    canBuyMax() {return hasMilestone('E',5)&&player.E.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))},
+    canBuyMax() {return hasMilestone('E',5)&&player.qa.qaqauto&&(!hasUpgrade('E',131)||hasUpgrade('li',23))},
     passiveGeneration()
     {
         mult = 0

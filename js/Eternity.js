@@ -141,7 +141,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(1) },
-            toggles:[["E", "IPDauto"]]
+            toggles:[["I", "IPDauto"]]
         },
         1: {
             requirementDescription() {a="2 Eternities"
@@ -164,7 +164,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(3) },
-            toggles:[["E", "NCauto"]]
+            toggles:[["I", "NCauto"]]
         },
         3: {
             requirementDescription() {a="4 Eternities"
@@ -176,7 +176,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(4) },
-            toggles:[["E", "BIB1auto"],["E", "BIB2auto"],["E", "BIB3auto"],["E", "BIB4auto"]]
+            toggles:[["I", "BIB1auto"],["I", "BIB2auto"],["I", "BIB3auto"],["I", "BIB4auto"]]
         },
         4: {
             requirementDescription() {a="5 Eternities"
@@ -188,7 +188,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(5) },
-            toggles:[["E", "qaqauto"]]
+            toggles:[["qa", "qaqauto"]]
         },
         5: {
             requirementDescription() {a="6 Eternities"
@@ -211,7 +211,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(7) },
-            toggles:[["E", "IUauto"]]
+            toggles:[["I", "IUauto"]]
         },
         7: {
             requirementDescription() {a="8 Eternities"
@@ -223,7 +223,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(8) },
-            toggles:[["E", "IGauto"],["E", "IGMauto"],["E", "IEFauto"],]
+            toggles:[["I", "IGauto"],["I", "IGMauto"],["I", "IEFauto"],]
         },
         8: {
             requirementDescription() {a="9 Eternities"
@@ -235,7 +235,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(9) },
-            toggles:[["E", "MB1auto"],["E", "MB2auto"],["E", "MB3auto"],["E", "MB4auto"],]
+            toggles:[["qa", "MB1auto"],["qa", "MB2auto"],["qa", "MB3auto"],["qa", "MB4auto"],]
         },
         9: {
             requirementDescription() {a="10 Eternities"
@@ -247,7 +247,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(10) },
-            toggles:[["E", "qaUauto"]]
+            toggles:[["qa", "qaUauto"]]
         },
         10: {
             requirementDescription() {a="11 Eternities"
@@ -270,7 +270,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(12) },
-            toggles:[["E", "ICauto1"],['E','ICauto2']]
+            toggles:[["I", "ICauto1"],['I','ICauto2']]
         },
         12: {
             requirementDescription() {a="13 Eternities"
@@ -282,7 +282,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(13) },
-            toggles:[["E", "QUBauto"]]
+            toggles:[["Q", "QUBauto"]]
         },
         13: {
             requirementDescription() {a="14 Eternities"
@@ -294,7 +294,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(14) },
-            toggles:[["E", "TPB1auto"],["E", "TPB2auto"],["E", "TPB3auto"],["E", "TPB4auto"]]
+            toggles:[["I", "TPB1auto"],["I", "TPB2auto"],["I", "TPB3auto"],["I", "TPB4auto"]]
         },
         14: {
             requirementDescription() {a="15 Eternities"
@@ -306,7 +306,7 @@ addLayer("E", {
                 return a
             },
             done() { return player.E.etr.gte(15) },
-            toggles:[["E", "CTauto"]]
+            toggles:[["I", "CTauto"]]
         },
         15: {
             requirementDescription() {a="16 Eternities"
@@ -2401,7 +2401,7 @@ addLayer("df", {
         {key: "d",
         description: "D: Reset for DeFe308",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-    unlocked(){hasMilestone('E',15)}},
+        unlocked(){return layers[this.layer].layerShown()&&!layers[this.layer].autoPrestige()}},
     ],
     layerShown(){return hasMilestone('E',15)},
     branches: ['E','qa'],
@@ -2524,8 +2524,8 @@ addLayer("cf", {
     },
     row: 5, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "c",
-        description: "C: Reset for Compressed Fragment",
+        {key: "f",
+        description: "F: Reset for Compressed Fragment",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
         unlocked(){return hasMilestone('df',3)}},
     ],
@@ -2580,7 +2580,7 @@ addLayer("cf", {
                 return a
             },
             done() { return player.cf.points.gte(1) },
-            toggles:[["cf", "QUBauto"]],
+            toggles:[["I", "QUBauto"]],
         },
         1: {
             requirementDescription() {a="5 Compressed Fragments"

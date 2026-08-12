@@ -144,22 +144,25 @@ addLayer("T", {
         player.devSpeed = tmp.A.devSpeedCal
         if(!hasUpgrade('I',51)) player.points=player.points.min(n(2).pow(1024))
         player.points=player.points.min('ee7')
+    if(hasMilestone('T',0)||hasMilestone('I',0)){
         if(!hasMilestone('Q',1)){
-        if(((hasMilestone('T',0)&&player.T.PPauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buy()
-        if(((hasMilestone('T',0)&&player.T.PPMauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[12].canAfford()) layers.T.buyables[12].buy()
-        if(((hasMilestone('T',0)&&player.T.PEFauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[13].canAfford()) layers.T.buyables[13].buy()}
-        if(hasMilestone('Q',1)){
-        if(((hasMilestone('T',0)&&player.T.PPauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buyMax()
-        if(((hasMilestone('T',0)&&player.T.PPMauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[12].canAfford()) layers.T.buyables[12].buyMax()
-        if(((hasMilestone('T',0)&&player.T.PEFauto==true)||(hasMilestone('I',0)&&player.I.TBauto))&&layers.T.buyables[13].canAfford()) layers.T.buyables[13].buyMax()}
-        if(((hasMilestone('ST',1)&&player.ST.TDauto==true)||(hasMilestone('I',1)&&player.I.TDauto))&&layers.T.buyables[14].canAfford()&&!hasMilestone('Q',4)) layers.T.buyables[14].buy()
-        if(((hasMilestone('ST',1)&&player.ST.TDauto==true)||(hasMilestone('I',1)&&player.I.TDauto))&&layers.T.buyables[14].canAfford()&&hasMilestone('Q',4)) layers.T.buyables[14].buyMax()
+        if(player.T.PPauto==true&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buy()
+        if(player.T.PPMauto==true&&layers.T.buyables[12].canAfford()) layers.T.buyables[12].buy()
+        if(player.T.PEFauto==true&&layers.T.buyables[13].canAfford()) layers.T.buyables[13].buy()}
+        else {
+        if(player.T.PPauto==true&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buyMax()
+        if(player.T.PPMauto==true&&layers.T.buyables[12].canAfford()) layers.T.buyables[12].buyMax()
+        if(player.T.PEFauto==true&&layers.T.buyables[13].canAfford()) layers.T.buyables[13].buyMax()}
+    }
+        if((hasMilestone('ST',1)||(hasMilestone('I',1))&&player.T.TDauto)&&layers.T.buyables[14].canAfford()) {
+            if(!hasMilestone('Q',4)) {layers.T.buyables[14].buy()}
+            else {layers.T.buyables[14].buyMax()}}
         if(hasUpgrade('T',33)||hasMilestone('I',0)) player.points = player.points.max(25)
         if(hasUpgrade('MT',11)&&!hasUpgrade('T',31)) player.T.upgrades.push(31)
         if(hasUpgrade('MT',11)&&!hasUpgrade('T',33)) player.T.upgrades.push(33)
         if(hasUpgrade('MT',12)&&!hasMilestone('Q',1)) player.Q.milestones.push(1)
         if(hasUpgrade('MT',12)&&!hasMilestone('Q',2)) player.Q.milestones.push(2)
-        if(hasMilestone('I',0)&&player.I.TCauto){
+        if(hasMilestone('I',0)&&player.T.TCauto){
             if(hasUpgrade('T',34)&&player.points.gte(1e10)) player.T.challenges[11] = 1
             if(hasUpgrade('ST',23)&&player.points.gte(1e23)) player.T.challenges[12] = 1
         if(hasUpgrade('T',42)&&player.points.gte(1e23)&&hasMilestone('E',5)) player.T.challenges[13] = 1}
@@ -173,7 +176,7 @@ addLayer("T", {
         mult=mult.times(tmp.E.TSeffect)
         return mult
     },
-    autoUpgrade() { return hasMilestone('I',0)&&player.I.TUauto},
+    autoUpgrade() { return hasMilestone('I',0)&&player.T.TUauto},
     upgrades: {
         11: {
             title: "T1-1",
@@ -949,9 +952,9 @@ addLayer("Q", {
         {key: "q",
         description: "Q: Reset for QqQe308",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-        unlocked() {return hasUpgrade('T',31)&&(!player.ST.QqQauto||!hasMilestone('ST',0))}},
+        unlocked() {return layers[this.layer].layerShown()&&!layers[this.layer].autoPrestige()}},
     ],
-    autoPrestige() {a = (player.ST.QqQauto&&hasMilestone('ST',0))||(player.I.QqQauto&&hasMilestone('I',0))
+    autoPrestige() {a = player.Q.QqQauto&&(hasMilestone('ST',0)||hasMilestone('I',0))
         return a
     },
     canBuyMax() {a = hasMilestone('Q',3)
@@ -1011,7 +1014,7 @@ addLayer("Q", {
         mult = 0
         return mult
     },
-    autoUpgrade(){return hasMilestone('I',0)&&player.I.QUauto},
+    autoUpgrade(){return hasMilestone('I',0)&&player.Q.QUauto},
     milestones: {
         0: {
             requirementDescription: "1 QqQe308",
@@ -1474,7 +1477,7 @@ addLayer("ST", {
     layerDataReset(this.layer, kept)
        }
     },
-    autoUpgrade() {return (hasMilestone('co',1)&&player.co.STupgauto)||(hasMilestone('I',1)&&player.I.STUauto)},
+    autoUpgrade() {return (hasMilestone('co',1)||(hasMilestone('I',1)))&&player.ST.STUauto},
     passiveGeneration()
     {
         mult = n(0)
@@ -1490,11 +1493,12 @@ addLayer("ST", {
         if(hasUpgrade('MT',13)&&!hasUpgrade('ST',22)) player.ST.upgrades.push(22)
         if(hasUpgrade('MT',13)&&!hasUpgrade('ST',23)) player.ST.upgrades.push(23)
         if(hasUpgrade('MT',13)&&!hasUpgrade('ST',24)) player.ST.upgrades.push(24)
-        if(hasMilestone('I',1)&&player.I.STCauto&&hasUpgrade('ST',44)){
+        if((hasMilestone('I',1)||hasMilestone('MT',2))&&player.ST.STCauto&&hasUpgrade('ST',44)){
+            if((!inChallenge('MT',11)&&!inChallenge('MT',12)&&!inChallenge('MT',13)&&!inChallenge('MT',14))||hasMilestone('I',1)){
             player.ST.challenges[11] = 1
             player.ST.challenges[12] = 1
             player.ST.challenges[13] = 1
-            player.ST.challenges[14] = 1
+            player.ST.challenges[14] = 1}
         }
     },
     upgrades: {
@@ -1784,7 +1788,7 @@ addLayer("ST", {
                 return a
             },
             done() { return hasUpgrade('ST',22) },
-            toggles:[["ST", "QqQauto"]]
+            toggles:[["Q", "QqQauto"]]
         },
         1: {
             requirementDescription() {a="Buy Upgrade S2-4"
@@ -1796,7 +1800,7 @@ addLayer("ST", {
                 return a
             },
             done() { return hasUpgrade('ST',24) },
-            toggles:[["ST", "TDauto"]]
+            toggles:[["T", "TDauto"]]
         },
     },
     challenges: {
@@ -1967,7 +1971,7 @@ addLayer("Qi", {
         {key: "i",
         description: "I: Reset for QqQeInfinity",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-        unlocked(){return hasUpgrade('ST',34)&&!(hasMilestone('co',0)&&player.co.Qiauto)}},
+        unlocked(){return layers[this.layer].layerShown()&&!layers[this.layer].autoPrestige()}},
     ],
     layerShown(){return hasUpgrade('ST',34)||hasUpgrade('MT',34)||hasMilestone('I',1)},
     doReset(resettingLayer) {
@@ -1992,7 +1996,7 @@ addLayer("Qi", {
     layerDataReset(this.layer, kept)
        }
     },
-    autoPrestige() {a = (hasMilestone('co',0)&&player.co.Qiauto)||(hasMilestone('I',1)&&player.I.Qiauto)
+    autoPrestige() {a = (hasMilestone('co',0)||hasMilestone('I',1))&&player.Qi.Qiauto
         return a
     },
     resetsNothing() {return hasMilestone('co',0)},
@@ -2058,6 +2062,7 @@ addLayer("Qi", {
             unlocked() {return hasMilestone('Qi', 0)},
             canClick() {return hasMilestone('Qi', 0)&&(tmp.Qi.currentActive.lt(tmp.Qi.maxActive)||getClickableState(this.layer, this.id)==1)},
             onClick() {setClickableState(this.layer, this.id, 1-getClickableState(this.layer, this.id))},
+            style: {'background-color':"#eee308"},
         },
         12: {
             title(){ a="Make Super-cokecole"
@@ -2076,6 +2081,7 @@ addLayer("Qi", {
             unlocked() {return hasMilestone('Qi', 0)&&hasMilestone('MT',3)},
             canClick() {return hasMilestone('Qi', 0)&&hasMilestone('MT',3)&&(tmp.Qi.currentActive.lt(tmp.Qi.maxActive)||getClickableState(this.layer, this.id)==1)},
             onClick() {setClickableState(this.layer, this.id, 1-getClickableState(this.layer, this.id))},
+            style: {'background-color':"#cce308"},
         },
         13: {
             title(){ a="Make Super-qaqe308"
@@ -2094,6 +2100,7 @@ addLayer("Qi", {
             unlocked() {return hasMilestone('Qi', 0)&&hasMilestone('MT',3)&&hasUpgrade('I',84)},
             canClick() {return hasMilestone('Qi', 0)&&hasMilestone('MT',3)&&hasUpgrade('I',84)&&(tmp.Qi.currentActive.lt(tmp.Qi.maxActive)||getClickableState(this.layer, this.id)==1)},
             onClick() {setClickableState(this.layer, this.id, 1-getClickableState(this.layer, this.id))},
+            style: {'background-color':"#ab4308"},
         },
         14: {
             title(){ a="Make Super-QqQeInfinity"
@@ -2424,18 +2431,12 @@ addLayer("MT", {
         if(inChallenge('MT',12)) player.MT.challenges[12] = player.points.max(1).log(1e5).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',12)).toNumber()
         if(inChallenge('MT',13)) player.MT.challenges[13] = player.points.max(1).log(1e5).sub(23).floor().min(1.79e308).max(challengeCompletions('MT',13)).toNumber()
         if(inChallenge('MT',14)) player.MT.challenges[14] = player.points.max(1).log(1e3).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',14)).toNumber()
-        if(hasMilestone('MT',2)&&player.MT.STCauto&&!inChallenge('MT',11)&&!inChallenge('MT',12)&&!inChallenge('MT',13)&&!inChallenge('MT',14)&&hasUpgrade('ST',44)){
-            player.ST.challenges[11] = 1
-            player.ST.challenges[12] = 1
-            player.ST.challenges[13] = 1
-            player.ST.challenges[14] = 1
-        }
-        if((hasMilestone('I',2)&&player.I.MTCUauto)&&layers.MT.buyables[11].canAfford()) layers.MT.buyables[11].buy()
+        if((hasMilestone('I',2)&&player.MT.MTCUauto)&&layers.MT.buyables[11].canAfford()) layers.MT.buyables[11].buy()
         if(hasMilestone('I',3)){
-            if(player.I.MTC1auto&&getBuyableAmount('MT',11).gte(1)) player.MT.challenges[11] = player.points.pow(0.5).max(1).log(10).sub(2).floor().min(1.79e308).max(challengeCompletions('MT',11)).toNumber()
-            if(player.I.MTC2auto&&getBuyableAmount('MT',11).gte(2)) player.MT.challenges[12] = player.points.max(1).log(1e5).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',12)).toNumber()
-            if(player.I.MTC3auto&&getBuyableAmount('MT',11).gte(3)) player.MT.challenges[13] = player.points.max(1).log(1e5).sub(23).floor().min(1.79e308).max(challengeCompletions('MT',13)).toNumber()
-            if(player.I.MTC4auto&&getBuyableAmount('MT',11).gte(4)) player.MT.challenges[14] = player.points.pow(0.5).max(1).log(1e3).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',14)).toNumber()
+            if(player.MT.MTC1auto&&getBuyableAmount('MT',11).gte(1)) player.MT.challenges[11] = player.points.pow(0.5).max(1).log(10).sub(2).floor().min(1.79e308).max(challengeCompletions('MT',11)).toNumber()
+            if(player.MT.MTC2auto&&getBuyableAmount('MT',11).gte(2)) player.MT.challenges[12] = player.points.max(1).log(1e5).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',12)).toNumber()
+            if(player.MT.MTC3auto&&getBuyableAmount('MT',11).gte(3)) player.MT.challenges[13] = player.points.max(1).log(1e5).sub(23).floor().min(1.79e308).max(challengeCompletions('MT',13)).toNumber()
+            if(player.MT.MTC4auto&&getBuyableAmount('MT',11).gte(4)) player.MT.challenges[14] = player.points.pow(0.5).max(1).log(1e3).sub(9).floor().min(1.79e308).max(challengeCompletions('MT',14)).toNumber()
         }
     },
     branches: ['Qi','ST'],
@@ -2456,7 +2457,7 @@ addLayer("MT", {
     ],
     unlocked(){return hasMilestone('MT',0)},},
     },
-    autoUpgrade(){return hasMilestone('I',2)&&player.I.MTUauto},
+    autoUpgrade(){return hasMilestone('I',2)&&player.MT.MTUauto},
     doReset(resettingLayer) {
         if (layers[resettingLayer].row == 4) {
     let kept = []
@@ -2949,7 +2950,7 @@ addLayer("MT", {
                 return a
             },
             done() { return tmp.MT.totalcomp.gte(32) },
-            toggles:[["MT", "STCauto"]]
+            toggles:[["ST", "STCauto"]]
         },
         3: {
             requirementDescription() {a="64 MT-Challenge completion"
@@ -3039,7 +3040,7 @@ addLayer("co", {
         {key: "c",
         description: "C: Reset for cokecole",
         onPress(){if (canReset(this.layer)) doReset(this.layer)},
-        unlocked(){return (hasUpgrade('MT',24)||hasMilestone('I',2))&&(!hasMilestone('I',2)&&player.I.Coauto)}},
+        unlocked(){return layers[this.layer].layerShown()&&!layers[this.layer].autoPrestige()}},
     ],
     layerShown(){return hasUpgrade('MT',24)||hasMilestone('I',2)},
     branches: ['MT'],
@@ -3055,7 +3056,7 @@ addLayer("co", {
     layerDataReset(this.layer, kept)
        }
     },
-    autoPrestige() {a = hasMilestone('I',2)&&player.I.Coauto
+    autoPrestige() {a = hasMilestone('I',2)&&player.co.Coauto
         return a
     },
     update(diff){
@@ -3088,7 +3089,7 @@ addLayer("co", {
                 return a
             },
             done() { return player.co.points.gte(1) },
-            toggles:[["co", "Qiauto"]]
+            toggles:[["Qi", "Qiauto"]]
         },
         1: {
             requirementDescription: "2 cokecole",
@@ -3098,7 +3099,7 @@ addLayer("co", {
             },
             done() { return player.co.points.gte(2) },
             unlocked(){return hasMilestone('co',0)},
-            toggles:[["co", "STupgauto"]]
+            toggles:[["ST", "STUauto"]]
         },
         2: {
             requirementDescription: "3 cokecole",

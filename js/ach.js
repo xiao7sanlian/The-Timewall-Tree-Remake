@@ -59,12 +59,12 @@ addLayer("A", {
     effectDescription(){return ' and there are 120 in total.'},
     achievements: {
         11: {
-     name() {return "First Point"},
+     name() {return "Stage 1 - First Point"},
      done() {return player.points.gte(1)}, 
      unlocked(){return true},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 Point."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         12: {
      name(){return "Not Autoclicker"},
@@ -139,12 +139,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         31: {
-     name(){return "Super Wall"},
+     name(){return "Stage 2 - Super Wall"},
      done() {return player.ST.points.gte(1)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 Super Timewall."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         32: {
      name(){return "All is for Points"},
@@ -219,12 +219,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         51: {
-     name(){return "Mega Wall"},
+     name(){return "Stage 3 - Mega Wall"},
      done() {return player.MT.points.gte(1)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Get 1 Mega Timewall."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         52: {
      name(){return "Halfway to Infinity"},
@@ -299,12 +299,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         71: {
-     name(){return "Real reset"},
+     name(){return "Stage 4 - Real reset"},
      done() {return player.I.inf.gte(1)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Infinity once."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         72: {
      name(){return "From 9:00 a.m. to 5:00 p.m."},
@@ -379,12 +379,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         91: {
-     name(){return "Break Limit"},
+     name(){return "Stage 5 - Break Limit"},
      done() {return hasUpgrade('I',51)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Break Infinity."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         92: {
      name(){return "QqQe30800?"},
@@ -499,12 +499,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         121: {
-     name(){return "New Beginning II"},
+     name(){return "Stage 6 - New Beginning II"},
      done() {return player.I.tpower.gt(0)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Start producing Timewall Power."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         122: {
      name(){return "Is Replicanti Exist?"},
@@ -539,12 +539,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         131: {
-     name(){return "New Beginning III"},
+     name(){return "Stage 7 - New Beginning III"},
      done() {return player.I.QUBF.gt(0)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Start producing Q-Upgrade Booster Fragment."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         132: {
      name(){return "When can we reach it?"},
@@ -579,12 +579,12 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         141: {
-     name(){return "v2.0 is now!"},
+     name(){return "Stage 8 - v2.0 is now!"},
      done() {return player.E.etr.gte(1)}, 
      unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
      onComplete() {player.A.points = player.A.points.add(1)},
      tooltip() {return "Eternity."}, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         142: {
      name(){a="Eternity is not so long"
@@ -696,8 +696,8 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
         155: {
-     name(){a="Challenge Tier 6"
-        if(options.Chinese) a='第六挑战层'
+     name(){a="Stage 9 - Challenge Tier 6"
+        if(options.Chinese) a='阶段9 - 第六挑战层'
         return a
      },
      done() {return hasMilestone('df',2)}, 
@@ -707,7 +707,7 @@ addLayer("A", {
         if(options.Chinese) a='解锁永恒挑战'
         return a
      }, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
         161: {
      name(){a="The End of Timewall Power Buyables"
@@ -901,8 +901,8 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
     185: {
-     name(){a="Another One"
-        if(options.Chinese) a='另一个'
+     name(){a="Stage 10 - Another One"
+        if(options.Chinese) a='阶段10 - 另一个'
         return a
      },
      done() {return hasUpgrade('cf',34)}, 
@@ -912,7 +912,7 @@ addLayer("A", {
         if(options.Chinese) a='解锁I-升级增强器<br>!?强强?!'
         return a
      }, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
     191: {
      name(){a="The 'Fast' Progress"
@@ -1038,8 +1038,8 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
       205: {
-     name(){a="Liuliu66686 is too dilated"
-      if(options.Chinese) a='溜溜溜达嘿太膨胀了'
+     name(){a="Stage 11 - Liuliu66686 is too dilated"
+      if(options.Chinese) a='阶段11 - 溜溜溜达嘿太膨胀了'
         return a
      },
      done() {return hasUpgrade('cf',52)}, 
@@ -1049,7 +1049,7 @@ addLayer("A", {
         if(options.Chinese) a='解锁溜溜溜达嘿'
         return a
      }, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
         },
       211: {
      name(){a="That's a lot"
@@ -1177,8 +1177,8 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
       },
       225: {
-     name(){a="Hover to see the name of this achievement"
-      if(options.Chinese) a='你被溜溜溜达嘿禁言29天23小时59分钟'
+     name(){a="Stage 12 - Hover to see the name of this achievement"
+      if(options.Chinese) a='阶段12 - 你被溜溜溜达嘿禁言29天23小时59分钟'
         return a
      },
      done() {return hasUpgrade('li',31)}, 
@@ -1188,7 +1188,7 @@ addLayer("A", {
         if(options.Chinese) a='解锁神权'
         return a
      }, 
-     textStyle: {'color': '#ffe125'},
+     textStyle: {'color': '#65fffc'},
       },
       231: {
      name(){a="Double Divinity Power"
