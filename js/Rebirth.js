@@ -5,17 +5,20 @@ addLayer("R", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
-        pause: n(0),
+        gemPoints:n(0),
+        shard:n(0),
+        rPower:n(0),
+        reb:n(0),
         total:n(0),
         best:n(0),
         resetTime:0,
-        pauseTime:n(0),
+        bestTime:n(1e300),
     }},
     color: "#4adb13",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
     resource: "Rebirth Timewalls", // Name of prestige currency
     baseResource: "Eternity Points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
+    baseAmount() {return player.E.points}, // Get the current amount of baseResource
     type: "costum", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -27,15 +30,30 @@ addLayer("R", {
         return exp
     },
     row: 6, // Row the layer is in on the tree (0 is the first row)
-    prestigeButtonText(){a='Reset for '+format(tmp.R.getResetGain)+' Rebirth Timewalls'
+    prestigeButtonText(){a='Reset for '+formatWhole(tmp.R.getResetGain)+' Rebirth Timewalls'
         if(tmp.R.getResetGain.lt(1)) a=a+'<br>You need 1.80e308 Eternity Points to reset'
-        if(options.Chinese){a='重置以获得 '+format(tmp.R.getResetGain)+' 重生时间墙'
+        if(options.Chinese){a='重置以获得 '+formatWhole(tmp.R.getResetGain)+' 重生时间墙'
         if(tmp.R.getResetGain.lt(1)) a=a+'<br>你需要1.80e308永恒点数以进行重置'}
         return a
      },
-    getResetGain(){a=n(0)
-            return a
+    getResetGain(){a=n(10).pow(player.E.points.log(2).div(1024).sub(1)).times(player.cf.points.pow(0.00125).div(10))
+
+        a=a.floor()
+
+        if(player.E.points.lt(n(2).pow(1024))||player.cf.points.lt('1e800'))a=n(0)
+        return a
     },
+    getResetGP(){b=player.E.points.pow(1/1024).div(2)
+        c=player.E.etr.pow(1/6).div(10).max(1)
+        d=player.li.points.div(1e6).pow(1/10).max(1)
+        a=b.times(c).times(d)
+        a=a.floor()
+        return a
+    },
+    getResetShard(){a=n(1)
+        return a
+    },
+    branches: ['E','cf'],
     canReset(){return tmp.R.getResetGain.gte(1)},
     hotkeys: [
         {key: "r",
@@ -67,7 +85,7 @@ addLayer("R", {
     update(diff){
     },
     passiveGeneration(){
-        mult = new Decimal(0)
+        mult = n(0)
         return mult
     },
     autoUpgrade() { return false},

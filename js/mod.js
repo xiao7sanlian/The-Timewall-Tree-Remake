@@ -3,7 +3,7 @@ let modInfo = {
 	author: "QqQeInfinity & DeFe308",
 	id: "timewall remake",
 	pointsName: "points",
-	modFiles: ["layers.js", "tree.js", "Eternity.js","Infinity.js","ach.js"],
+	modFiles: ["tree.js","layers.js","Infinity.js","Eternity.js","ach.js"],//'Rebirth.js',
 
 	discordName: "",
 	discordLink: "",
@@ -15,8 +15,10 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.5.1",
-	name: "A small update, not v3.0",
+	num: "2.5.2",
+	name: "Another small update, still not v3.0",
+	beta:'',
+	pre:'',
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -210,6 +212,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 更改了Qi层级超人按钮的颜色<br>
 		- 更改了大部分自动化所属的层级<br>
 		- 注：在更新后，你可能需要重新启用自动化<br><br>
+
+	<h3>v2.5.2 Another small update, still not v3.0 2026/8/15</h3><br>
+		- Fixed an issue about negative Q-Upgrade Booster, I-Upgrade Booster and Divinity Power.<br>
+		Chinese version:<br>
+		- 修复了负数升级增强器与神权的bug<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -412,4 +419,13 @@ function dvpuText(id,Chinese = false){
 		case 501:
 			return '<br>DvP-B-4<br>每级使升级DvP-T-x (x=1,2,3) 的有效等级+20%<br>当前: +'+format(gridEffect('li',id))+'%';
 	}}
+}
+
+function resetDvp(){
+	if(getBuyableAmount('li',21).sub(tmp.li.unspentDvP).gte(5)) grantAchievement('A',234)
+    if(getBuyableAmount('li',21).sub(tmp.li.unspentDvP).eq(0)) grantAchievement('SA',43)
+    for (let i = 0; i < player.li.effGrid.length; i++) {setGridData('li',player.li.effGrid[i],0)}
+    if(!hasMilestone('li',2)) player.li.points=n(0)
+    player.li.dilpoint=n(0)
+    doReset('E',player.I.points.lt(n(2).pow(1024)))
 }

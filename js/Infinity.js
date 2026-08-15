@@ -82,6 +82,11 @@ addLayer("I", {
         if(hasMilestone('E',14)&&player.I.CTauto&&hasUpgrade('I',131)) {player.I.CTbase = player.T.points.times(player.ST.points).times(player.MT.points).add(1).pow(0.0045).max(player.I.CTbase).min('1e2500')
             if(hasMilestone('li',0)) player.I.CTbase = tmp.I.ctCap
         }
+
+        if(getBuyableAmount('cf',11).add(0.5).lt(tmp.I.boostedIU)) {confirm("Your I-Upgrade Booster is negative! You will be forced to do an Eternity reset to reset it!")
+            setClickableState('I',51,1)
+            doReset('E',player.I.points.gte(n(2).pow(1024)))
+        }
     },
     automate(){
         if(hasMilestone('E',0)&&player.I.IPDauto) layers.I.buyables[11].buyMax()

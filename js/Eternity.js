@@ -3150,6 +3150,10 @@ addLayer("li", {
     },
     update(diff){
         player.li.dilpoint=player.li.dilpoint.add(tmp.li.effect.times(diff))
+
+        if(tmp.li.unspentDvP.lt(0)) {confirm("Your Divinity Power is negative! You will be forced to do an Eternity reset to reset it!")
+            resetDvp()
+        }
     },
     autoPrestige() {a = false
         return a
@@ -3721,12 +3725,7 @@ addLayer("li", {
             },
             canClick() {return true},
             onClick() {if (!confirm("Are you sure you want to reset your DvP upgrade?")) return
-            if(getBuyableAmount('li',21).sub(tmp.li.unspentDvP).gte(5)) grantAchievement('A',234)
-            if(getBuyableAmount('li',21).sub(tmp.li.unspentDvP).eq(0)) grantAchievement('SA',43)
-            for (let i = 0; i < player.li.effGrid.length; i++) {setGridData('li',player.li.effGrid[i],0)}
-            if(!hasMilestone('li',2)) player.li.points=n(0)
-            player.li.dilpoint=n(0)
-            doReset('E',player.I.points.lt(n(2).pow(1024)))
+            resetDvp()
             },
             //style: {'height':'200px','width':'300px'},
         },

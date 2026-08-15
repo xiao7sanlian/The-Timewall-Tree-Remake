@@ -960,6 +960,12 @@ addLayer("Q", {
     canBuyMax() {a = hasMilestone('Q',3)
         return a
     },
+    update(diff){
+        if(getBuyableAmount('I',61).add(0.5).lt(tmp.Q.boostedQU)) {confirm("Your Q-Upgrade Booster is negative! You will be forced to do an Infinity reset to reset it!")
+            setClickableState('Q',31,1)
+            doReset('I',player.points.gte(n(2).pow(1024)))
+        }
+    },
     resetsNothing() {return hasMilestone('Q',2)},
     layerShown(){return hasUpgrade('T',31)||hasMilestone('ST',0)||hasMilestone('I',0)},
     branches: ['T'],
