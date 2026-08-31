@@ -44,6 +44,8 @@ addLayer("E", {
 
         if(hasUpgrade('cf',41)) mult=mult.times(buyableEffect('cf',12))
 
+        if(player.R.reb.gte(1)) mult=mult.times(tmp.R.rebEff[2])
+
         if(getClickableState('I',43)==1) mult=mult.times(clickableEffect('I',43))
         return mult
     },
@@ -127,6 +129,7 @@ addLayer("E", {
         if (layers[resettingLayer].row == 6) {
     let kept = []
     layerDataReset(this.layer, kept)
+    if(hasUpgrade('R',11))player.E.milestones.push(1)
        }
     },
     autoPrestige(){return hasMilestone('E',15)&&player.E.ETRauto},
@@ -2244,6 +2247,8 @@ addLayer("E", {
         if(hasUpgrade('E',193)) a=a.times(2)
         if(hasUpgrade('E',203)) a=a.times(10)
         if(hasUpgrade('E',243)) a=a.times(upgradeEffect('E',243))
+
+        if(player.R.reb.gte(1)) a=a.times(tmp.R.rebEff[1])
         return a
     },
     EMtip(){a='You have gone Eternity '+format(player.E.etr)+' times.<br/>'
@@ -2333,6 +2338,7 @@ addLayer("E", {
     totalUPcal(){a=getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))
         if(hasMilestone('df',0)) a=a.add(tmp.df.effect[5])
         if(hasUpgrade('li',24)) a=a.add(upgradeEffect('li',24))
+        a=a.add(tmp.R.rpEff)
         a=a.add(tmp.E.ECcomp)
         return a
     },
@@ -3800,6 +3806,8 @@ addLayer("li", {
         a=a.times(gridEffect('li',101))
         a=a.times(gridEffect('li',104))
         a=a.times(gridEffect('li',401))
+
+        if(player.R.reb.gte(1)) a=a.times(tmp.R.rebEff[3])
 
         if(hasMilestone('li',1)&&tmp.li.dilationLevel.gt(0)) a=a.times(milestoneEffect('li',1))
         return a

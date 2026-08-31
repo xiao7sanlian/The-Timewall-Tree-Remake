@@ -57,6 +57,8 @@ addLayer("T", {
 
         if(hasChallenge('MT',12)&&hasMilestone('Q',8)) d=d.times(milestoneEffect('Q',8))
 
+        d=d.times(buyableEffect('R',21)[1])
+
         if(hasUpgrade('Q',14)&&getClickableState('Q',14)==1) d=d.pow(1.1)
         if(hasUpgrade('cf',23)) d=d.pow(upgradeEffect('cf',23))
         if(getClickableState('I',31)==1) d=d.pow(clickableEffect('I',31))
@@ -137,6 +139,10 @@ addLayer("T", {
        if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('E',2)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -746,6 +752,8 @@ addLayer("T", {
         if(hasUpgrade('li',12)) a=a.times(upgradeEffect('li',12))
         if(hasMilestone('li',0)) a=a.times(tmp.li.mil0eff)
 
+        a=a.times(buyableEffect('R',21)[1])
+
         if(inChallenge('E',32)) a=a.times(tmp.E.challenges[32].inChaleffect)
         if(!inChallenge('E',32)&&hasChallenge('E',32)) a=a.times(challengeEffect('E',32))
 
@@ -810,6 +818,8 @@ addLayer("T", {
         if(inChallenge('E',13)) a=a.times(0.5)
         if(getClickableState('I',11)==1) a=a.times(clickableEffect('I',11))
         if(getClickableState('I',13)==1) a=a.times(clickableEffect('I',13))
+
+        a=a.times(buyableEffect('R',21)[0])
 
         if(tmp.li.dilationLevel.gt(0))a=a.times(gridEffect('li',103))
 
@@ -922,7 +932,10 @@ addLayer("Q", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent() {return 2}, // Prestige currency exponent
+    exponent() {a=2
+        a=a - buyableEffect('R',21)[3]
+        return a
+    }, // Prestige currency exponent
     base() {a=n(1)
         if(hasUpgrade('MT',54)) a=a.div(upgradeEffect('MT',54))
         if(hasChallenge('I',15)) a=a.div(challengeEffect('I',15))
@@ -1012,6 +1025,10 @@ addLayer("Q", {
        if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('E',2)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -1431,6 +1448,8 @@ addLayer("ST", {
             if(hasUpgrade('I',31)) d=d.times(upgradeEffect('I',31))
             if(hasUpgrade('I',163)) d=d.times(upgradeEffect('I',141))
             if(hasUpgrade('I',82)) d=d.times(tmp.I.IGtost)
+
+            d=d.times(buyableEffect('R',21)[1])
             
             if(hasChallenge('MT',12)&&hasMilestone('Q',8)) d=d.times(milestoneEffect('Q',8))
 
@@ -1480,6 +1499,10 @@ addLayer("ST", {
        if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('E',2)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -1998,7 +2021,11 @@ addLayer("Qi", {
     let kept = []
     kept.push('QqQeInf')
     if(hasMilestone('E',2)) kept.push('milestones')
-    if(hasMilestone('E',9)) kept.push('clickables','buyables')
+    if(hasMilestone('E',10)) kept.push('clickables','buyables')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -2264,6 +2291,8 @@ addLayer("Qi", {
 
         if(hasUpgrade('cf',51)) a=a.times(tmp.Qi.QqQeInfeff[1])
 
+        a=a.times(buyableEffect('R',21)[2])
+
         if(getClickableState('I',32)==1) a=a.pow(clickableEffect('I',32))
 
         a=a.times(tmp.E.TSeffect)
@@ -2298,6 +2327,8 @@ addLayer("Qi", {
 
         if(hasUpgrade('cf',51)) a=a.times(tmp.Qi.QqQeInfeff[1])
 
+        a=a.times(buyableEffect('R',21)[2])
+
         if(getClickableState('I',32)==1) a=a.pow(clickableEffect('I',32))
 
         a=a.times(tmp.E.TSeffect)
@@ -2327,6 +2358,8 @@ addLayer("Qi", {
 
         if(hasUpgrade('cf',51)) a=a.times(tmp.Qi.QqQeInfeff[1])
 
+        a=a.times(buyableEffect('R',21)[2])
+
         if(getClickableState('I',42)==1) a=a.pow(clickableEffect('I',42))
 
         a=a.times(tmp.E.TSeffect)
@@ -2344,6 +2377,8 @@ addLayer("Qi", {
         a=a.times(tmp.Qi.effect)
         if(hasUpgrade('li',14)) a=a.times(upgradeEffect('li',14))
         if(hasUpgrade('E',242)) a=a.times(upgradeEffect('E',242))
+
+        a=a.times(buyableEffect('R',21)[2])
         return a
     },
     QqQeInfeff(){a=tmp.Qi.effQqQeInf.add(1).log(10).add(1).log(2).add(1)
@@ -2405,6 +2440,8 @@ addLayer("MT", {
             if(hasUpgrade('I',41)) d=d.times(upgradeEffect('I',41))
             if(hasUpgrade('I',163)) d=d.times(upgradeEffect('I',141))
             if(hasUpgrade('I',83)) d=d.times(tmp.I.IGtomt)
+
+            d=d.times(buyableEffect('R',21)[1])
 
             if(getClickableState('I',41)==1) d=d.pow(clickableEffect('I',41))
 
@@ -2473,6 +2510,10 @@ addLayer("MT", {
        if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('E',2)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -3059,6 +3100,10 @@ addLayer("co", {
        if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('E',2)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },

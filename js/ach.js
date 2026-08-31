@@ -56,7 +56,7 @@ addLayer("A", {
         "milestones",["display-text", () => tmp.A.offTimetext],["text-input", "Speedmult"],'clickables',
     ],},
     },
-    effectDescription(){return ' and there are 120 in total.'},
+    effectDescription(){return ' and there are 121 in total.'},
     achievements: {
         11: {
      name() {return "Stage 1 - First Point"},
@@ -1330,6 +1330,17 @@ addLayer("A", {
      }, 
      textStyle: {'color': '#ffe125'},
       },
+   251: {
+     name(){a="Stage 13 - New Life"
+      if(options.Chinese) a='阶段13 - 新生'
+        return a
+     },
+     done() {return player.R.reb.gte(1)}, 
+     unlocked(){return player.A.points.gte((Math.floor(this.id/10)-2)*5)},
+     onComplete() {player.A.points = player.A.points.add(1)},
+     tooltip() {return "Rebirth."}, 
+     textStyle: {'color': '#65fffc'},
+        },
     },
     milestones:{
         0: {
@@ -1385,7 +1396,7 @@ addLayer("A", {
         //if(a.gte(50)) a=a.div(50).pow(0.5).times(50)
         return a
     },
-    ProgressTo3(){a=player.points.max(1).log(10).div('e7').times(100).min(100)
+    ProgressTo3(){a=player.points.max(1).log(10).div('e7').times(100)//.min(100)
         //if(a.gte(50)) a=a.div(50).pow(0.5).times(50)
         return a
     },
@@ -1434,13 +1445,14 @@ addLayer("SA", {
        doReset(resettingLayer) {
     },
     update(diff){
+      if(options.NewsTicker){
         player.SA.newsTime = player.SA.newsTime.add(diff)
         if(player.SA.newsTime.gte(10)) {
             player.SA.newsTime = n(0)
             player.SA.newsIndex = n(tmp.SA.news.length).times(Math.random()).floor()
             player.SA.newsShowInTop = tmp.SA.news[player.SA.newsIndex]
             if(options.NewsTicker) player.SA.newshasSeen = player.SA.newshasSeen.add(1)
-        }
+        }}
     },
     row: 'side', // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
@@ -1737,7 +1749,7 @@ addLayer("SA", {
     'Not on Steam!',
     'Click this news message to get nothing.',
     'You have played this game for '+formatTime(player.timePlayed)+'.',
-    'Currently, the version of The Timewall Tree Remake is v2.5.',
+    'Currently, the version of The Timewall Tree Remake is v2.5. I do not want to edit it.',
     'Do you know that the duration of per news message is 10 seconds? and '+format(n(10).sub(player.SA.newsTime))+' seconds left for this message.',
     'This is a unique news message, and the chance of seeing it is 1/'+format(n(tmp.SA.news.length),0)+'.',
     "If you want to play The Timewall Tree 'Unremake', you can click this button: <a href='https://xiao7sanlian.github.io/The-Timewall-Tree/' target='_blank'>https://xiao7sanlian.github.io/The-Timewall-Tree/</a>. However, the 'Unremake' version is not updated anymore, and it may contain some bugs and unbalanced content. Moreover, it has only Chinese language.",
@@ -1755,14 +1767,14 @@ addLayer("SA", {
     'pigeonhole principle: given that there are some cylinders (5.1in in length, 4.5in in girth) and some m&m tubes filled with butter and microwaved mashed bananas, if there are more cylinders than m&m tubes, then there must be at least one tube with more than one cylinder. for more details regarding rules of cylinders, please check the relevant news message.',//v2.2
     "Nobody knows what a QqQe308 is. People made myths like they give you unlimited power, or are a paradox and Whoever knows what they are, get erased from existence. We don't think so and we will bust that myth. We are the myth busters. In this room before us, we have a singular QqQe308. Jeremy, point the camera to the door. We will open it in DESTRUCTION 3,2,1...",//v2.2
     '',//v2.3
-    'Liuliu66686 is too dilated',//v2.3
-    'Liuliu too ated',//v2.3
     'How dare Revolution Idle copy our idea of Time Flux',//v2.3
     'Also try <a href="https://galaxy.click/play/580" target="_blank">Discouragement-Tree</a>!',//v2.5
     'x x xxx o o ooo xx x xxx oo o ooo x x x xxxx o o o oooo xx xx xxx x x oo oo ooo o o',//v2.5
     'RNGdle 625511 UNCOMMON • Top 31%; Contiguous Two Pair; Two Pair; Dunes; +9 more 8,038 EP <a href="https://rngdle.com" target="_blank">https://rngdle.com</a>',//v2.5
    "Only feels like nothing could be better when I'm with you when I'm with you~",//v2.5
-   //'The Time Wall Tree Remake has at least half of its content plagiarized from the Antimatter Dimension, with the remaining parts copied from Revolution Idle, supported by evidence in the form of images:<a href="jt.png" target="_blank">jt.png</a>'//v2.5
+   "Currently, the version of The Timewall Tree Remake is "+VERSION.withoutName+'.',//v3.0 b1
+   "CCBC 17 all answers, bye-bye",//v3.0 b1
+   "On September 1, 2026, DeFe308 will be sent to a horrible place, where computer is disabled, so the next update will be in 50,000 hours. The place is called school."//v3.0 b1
     ]
     if(hasAchievement('A',23)) a.push("Do you know why the first side layer is called 'QqQe308'? Well, I don't know as well.")
     if(hasAchievement('A',51)) a.push("Here we have 3 kinds of Timewall. Will there be more Timewall in the future?")
@@ -1778,6 +1790,8 @@ addLayer("SA", {
         "The spoiler for next layer: Unity, Attack, Mineral, Tarot, and so on.",
         "The spoiler for next layer: Reality, Glyphs, Perk, Celestials, and so on.",
     )
+    if(hasAchievement('A',205)) a.push('Liuliu66686 is too dilated','Liuliu too ated',)//v2.3
+    if(hasAchievement('A',225)) a.push('Also try <a href="https://galaxy.click/play/866" target="_blank">The Muting Tree</a>!')//v3.0 b1
     if(player.SA.points.gte(2)) a.push('"I Just Got 2 Secret Achievements" - Felipe')//v2.2
     if(options.CNNewsTicker) {for (let i = 0; i < tmp.SA.CNnews.length; i++) {
       a.push(tmp.SA.CNnews[i])
@@ -1790,6 +1804,9 @@ addLayer("SA", {
       '很多人说我们时间墙树重置版的墙太少了，对此我们在v2.5版本的神权部分加入了5h, 3h, 3h, 2h, 2h, 10h, 6h, 3h, 13h, 3h, 2h, 1h等40+个大墙',
       '滚木滚木滚木滚木滚木滚木滚木滚木滚木',
       '脑子有问题 —— 溜溜溜达嘿',
+      "一场这道了残骸。这字本应该排一个方阵但题中所有生了想要解开这谜题，你能需要暴力穷举复原道题的题面。每都自身和周围四个子。了得答案，你应该先定位每在置，然后，让盘继到只剩两字，它们向一个与关的十字母词。",//v3.0 b1
+      "作者开学了。更新速度-99.99%",//v3.0 b1
+      "假如你是李华，你的好友QqQe308在某QQ群里被群主神权禁言了29天23小时59分钟，请你用英语给他写一封信件，对他进行安慰。不少于80词。",//v3.0 b1
     ]
    return a},
     newsShowed(){a=''

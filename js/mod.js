@@ -3,7 +3,7 @@ let modInfo = {
 	author: "QqQeInfinity & DeFe308",
 	id: "timewall remake",
 	pointsName: "points",
-	modFiles: ["tree.js","layers.js","Infinity.js","Eternity.js","ach.js"],//'Rebirth.js',
+	modFiles: ["tree.js","layers.js","Infinity.js","Eternity.js",'Rebirth.js',"ach.js"],//
 
 	discordName: "",
 	discordLink: "",
@@ -15,9 +15,9 @@ document.title='The Timewall Tree Remake'
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.5.2",
-	name: "Another small update, still not v3.0",
-	beta:'',
+	num: "3.0",
+	name: "The First Rebirth",
+	beta:'1',
 	pre:'',
 }
 
@@ -192,7 +192,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Some other changes, and more news messages.<br>
 		- Added Chinese News Ticker.<br>
 		- Added 6 secret Achievements, and modified SA24.<br>
-		- Endgame: Unlock [5 hours later]. (e10,000,000 points)<br>
+		- Endgame: Unlock Rebirth. (e10,000,000 points)<br>
 		Chinese version:<br>
 		- 增加了神权树，包括13个"升级"<br>
 		- 在升级树中增加了更多的升级<br>
@@ -200,7 +200,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 一些其他更改，以及更多的新闻消息<br>
 		- 增加了中文新闻消息<br>
 		- 增加了6个隐藏成就，并修改了隐藏成就24<br>
-		- 终局: 解锁[5小时后更新]（e10,000,000点数）<br><br>
+		- 终局: 解锁重生（e10,000,000点数）<br><br>
 
 	<h3>v2.5.1 A small update, not v3.0 2026/8/11~2026/8/12</h3><br>
 		- Divided achievements into stages. (just visual effect)<br>
@@ -217,6 +217,16 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Fixed an issue about negative Q-Upgrade Booster, I-Upgrade Booster and Divinity Power.<br>
 		Chinese version:<br>
 		- 修复了负数升级增强器与神权的bug<br><br>
+		
+	<h4><text style='color: #4abd13'>v3.0 Beta 1 - The First Rebirth</text> 2026/8/17~2026/8/31</h4><br>
+		- Added a new layer and 1 new achievement.<br>
+		- Added more news messages.<br>
+		- Endgame: Unlock Rebirth again.<br>
+		- Note: I haven't tested all contents of this version, and there may have some bugs.<br>
+		Chinese version:<br>
+		- 增加了一个新层级与一个新成就<br>
+		- 更多的新闻消息<br>
+		- 终局: 再次解锁重生<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -231,7 +241,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return player.points.lt('ee7')
+	return player.points.lt('ee7')&&!hasAchievement('A',251)
 	return true
 }
 
@@ -263,7 +273,7 @@ var displayThings = [
 		if(tmp.E.ECcomp.gte(1)&&player.I.points.gte(n(2).pow(1024))) {a='Progress to Universe Filled:'+format(tmp.A.ProgressTo3)+'%<br>'}
 			//if(tmp.A.ProgressToEtr.gte(100)) a=a+"You have reached the Endgame!"
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!<br>"
-		if(tmp.A.ProgressTo3.gte(100)) a=a+quickColor("Your point is hardcapped at e10,000,000!",'#ff0000')+"<br>"
+		if(tmp.A.ProgressTo3.gte(100)&&!hasAchievement('A',251)) a=a+quickColor("Your point is hardcapped at e10,000,000!",'#ff0000')+"<br>"
 		if(inChallenge('E',34)) a=a+'EC12 progress: '+format(player.E.resetTime)+'s/'+format(tmp.E.challenges[34].goal2)+'s<br>'
 		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
 		if(options.NewsTicker) a=a+'<br>'+tmp.SA.news[player.SA.newsIndex]
@@ -278,7 +288,8 @@ function isEndgame() {
 	//return hasUpgrade('cf',34)
 	//return hasUpgrade('cf',52)
 	//return getBuyableAmount('li',21).gte(1)
-	return hasUpgrade('E',272)
+	return hasUpgrade('E',272)&&player.R.reb.gte(1)
+	return false
 	//return player.points.gte(new Decimal("e280000000"))
 }
 

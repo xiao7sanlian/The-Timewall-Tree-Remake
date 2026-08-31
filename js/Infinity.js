@@ -52,6 +52,8 @@ addLayer("I", {
         if(hasUpgrade('cf',33)) mult=mult.times(upgradeEffect('cf',33)[1])
         if(hasUpgrade('cf',41)) mult=mult.times(upgradeEffect('cf',41))
 
+        if(player.R.reb.gte(1)) mult=mult.times(tmp.R.rebEff[0])
+
         if(inChallenge('E',31)) mult=mult.pow(tmp.E.challenges[31].inChaleffect)
         if(hasChallenge('E',31)) mult=mult.pow(challengeEffect('E',31))
         return mult
@@ -223,6 +225,10 @@ addLayer("I", {
     let kept = []
     if(getClickableState('I',51)==0) kept.push('clickables')
     if(hasMilestone('E',0)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
@@ -2517,6 +2523,10 @@ addLayer("qa", {
         if (layers[resettingLayer].row == 5) {
     let kept = []
     if(hasMilestone('df',1)) kept.push('milestones')
+    layerDataReset(this.layer, kept)
+       }
+       if (layers[resettingLayer].row == 6) {
+    let kept = []
     layerDataReset(this.layer, kept)
        }
     },
