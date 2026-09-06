@@ -16,8 +16,8 @@ document.title='The Timewall Tree Remake'
 // Set your version in num and name
 let VERSION = {
 	num: "3.0",
-	name: "The First Rebirth",
-	beta:'1',
+	name: "Rebirth Upgrade 1",
+	beta:'2',
 	pre:'',
 }
 
@@ -227,6 +227,13 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了一个新层级与一个新成就<br>
 		- 更多的新闻消息<br>
 		- 终局: 再次解锁重生<br><br>
+
+	<h4><text style='color: #4abd13'>v3.0 Beta 2 - Rebirth Upgrade 1</text> 2026/9/5~2026/9/6</h4><br>
+		- Added a Rebirth Upgrade.<br>
+		- Added more news messages and some bug fixes.<br>
+		Chinese version:<br>
+		- 增加了一个重生升级<br>
+		- 更多的新闻消息和一些bug修复<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -241,7 +248,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return player.points.lt('ee7')&&!hasAchievement('A',251)
+	return player.points.lt('ee7')||!hasAchievement('A',251)
 	return true
 }
 

@@ -1774,7 +1774,8 @@ addLayer("SA", {
    "Only feels like nothing could be better when I'm with you when I'm with you~",//v2.5
    "Currently, the version of The Timewall Tree Remake is "+VERSION.withoutName+'.',//v3.0 b1
    "CCBC 17 all answers, bye-bye",//v3.0 b1
-   "On September 1, 2026, DeFe308 will be sent to a horrible place, where computer is disabled, so the next update will be in 50,000 hours. The place is called school."//v3.0 b1
+   "On September 1, 2026, DeFe308 will be sent to a horrible place, where computer is disabled, so the next update will be in 50,000 hours. The place is called school.",//v3.0 b1
+   "Risk warning: 10 fire sources detected.",//v3.0 b2
     ]
     if(hasAchievement('A',23)) a.push("Do you know why the first side layer is called 'QqQe308'? Well, I don't know as well.")
     if(hasAchievement('A',51)) a.push("Here we have 3 kinds of Timewall. Will there be more Timewall in the future?")

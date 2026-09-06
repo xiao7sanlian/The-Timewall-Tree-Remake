@@ -892,6 +892,7 @@ addLayer("T", {
     softcapexp(){a=n(0.5)
         if(hasUpgrade('I',51)) a=n(0.75)
         a=a.add(buyableEffect('I',21))
+        if(hasUpgrade('R',111)) a=a.add(upgradeEffect('R',111))
         if(inChallenge('MT',11)) a=n(0.25)
         if(inChallenge('I',24)) a=n(0.15)
         return a

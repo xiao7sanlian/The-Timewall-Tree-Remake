@@ -86,6 +86,11 @@ addLayer("R", {
     ],
     unlocked(){return true},
     },
+    "Rebirth Upgrades": {
+        content: [ "main-display","prestige-button","resource-display",["display-text", () => tmp.R.rebTip],["upgrades",[11]],"achievements",
+    ],
+    unlocked(){return true},
+    },
     "Automation Center": {
         content: [ "main-display","prestige-button","resource-display",["display-text", () => tmp.R.rebTip],["upgrades",[1]],
     ],
@@ -125,7 +130,35 @@ addLayer("R", {
             currencyLocation() {return player.R},
             currencyDisplayName: 'Rebirth Shard',
             currencyInternalName: 'shard',
-        }
+        },
+        111: {
+            title: "Welcome to Rebirth",
+            description() {a="Add 0.002 to the softcap exponent per Rebirth, up to 0.1."
+                if(options.Chinese) a='每次重生使软上限指数+0.002，最多+0.1'
+                return a
+            },
+            effect() {b=player.R.reb.times(0.002).min(0.1)
+                return b
+            },
+            effectDisplay() { return '+'+format(upgradeEffect(this.layer, this.id))},
+            tooltip() {a="Each Rebirth Upgrade can be bought only with the following achievement unlocked."
+                if(options.Chinese) a="每个重生升级只能在解锁对应成就后购买"
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford(){return hasAchievement('R',11)},
+        },
+    },
+    achievements: {
+        11: {
+     name() {return "Welcome to Rebirth"},
+     done() {return player.points.gte('e10002228')}, 
+     unlocked(){return true},
+     onComplete() {},
+     tooltip() {return "Reach e10,002,228 Point."}, 
+     textStyle: {'color': '#4bd123'},
+        },
     },
     clickables:{
     },

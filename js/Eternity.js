@@ -2714,10 +2714,10 @@ addLayer("cf", {
                 return a
             },
             effectDescription(){a='Have at least 1e18 total EP, no IP, at least 1 Point Producer, and 1e50 ~ 1e500 points after 10 seconds of any reset.'
-                if(options.Chinese){a='在任意一次重置10秒后，拥有至少1e18永恒点数，没有无限点数，至少一个点数生产器，并且保持点数大于1e50且小于1e500'}
+                if(options.Chinese){a='在任意一次重置10秒后，拥有至少1e18总计永恒点数，没有无限点数，至少一个点数生产器，并且保持点数大于1e50且小于1e500'}
                 return a
             },
-            done() { return hasMilestone('cf',1)&&player.E.points.gte(1e18)&&player.I.points.eq(0)&&getBuyableAmount('T',11).gte(1)&&player.points.gt(1e50)&&player.points.lt('1e500')&&player.T.resetTime>10 },
+            done() { return hasMilestone('cf',1)&&player.E.total.gte(1e18)&&player.I.points.eq(0)&&getBuyableAmount('T',11).gte(1)&&player.points.gt(1e50)&&player.points.lt('1e500')&&player.T.resetTime>10 },
             unlocked() {return hasMilestone('cf',1)},
         },
         12: {
