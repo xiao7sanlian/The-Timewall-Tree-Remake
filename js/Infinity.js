@@ -2980,6 +2980,7 @@ addLayer("qa", {
         if(hasUpgrade('cf',33)) a=a.times(upgradeEffect('cf',33)[0])
         if(hasUpgrade('E',251)) a=a.times(upgradeEffect('E',251))
         if(hasUpgrade('E',171)) a=a.pow(1.03)
+        a=a.max(0)
         if(isNaN(a)) a=n(0)
             return a
     },

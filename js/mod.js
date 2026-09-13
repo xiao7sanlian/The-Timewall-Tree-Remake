@@ -17,7 +17,7 @@ document.title='The Timewall Tree Remake'
 let VERSION = {
 	num: "3.0",
 	name: "Rebirth Upgrade 1",
-	beta:'2',
+	beta:'2.1',
 	pre:'',
 }
 
@@ -234,6 +234,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		Chinese version:<br>
 		- 增加了一个重生升级<br>
 		- 更多的新闻消息和一些bug修复<br><br>
+
+	<h4><text style='color: #4abd13'>v3.0 Beta 2.1 - Bug Fix 1</text> 2026/9/13</h4><br>
+		- Fixed Monika Point NaN bug.<br>
+		Chinese version:<br>
+		- 修复Monika点数导致NaN的bug<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
