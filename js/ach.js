@@ -1289,8 +1289,8 @@ addLayer("A", {
      textStyle: {'color': '#ffe125'},
         },
       243: {
-     name(){a="Close To [5 hours]"
-      if(options.Chinese) a='离[5小时]很近了'
+     name(){a="Close To Rebirth"
+      if(options.Chinese) a='离重生很近了'
         return a
      },
      done() {return getBuyableAmount('li',21).gte(8)}, 
@@ -1426,7 +1426,7 @@ addLayer("SA", {
         newsIndex:n(0),
         newsTime:n(0),
         newshasSeen:n(0),
-        newsShowInTop:'This is the first news message in the news message list.',
+        //newsShowInTop:'This is the first news message in the news message list.',
     }},
     color: "#878787",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
@@ -1450,7 +1450,7 @@ addLayer("SA", {
         if(player.SA.newsTime.gte(10)) {
             player.SA.newsTime = n(0)
             player.SA.newsIndex = n(tmp.SA.news.length).times(Math.random()).floor()
-            player.SA.newsShowInTop = tmp.SA.news[player.SA.newsIndex]
+            //player.SA.newsShowInTop = tmp.SA.news[player.SA.newsIndex]
             if(options.NewsTicker) player.SA.newshasSeen = player.SA.newshasSeen.add(1)
         }}
     },
@@ -1776,6 +1776,7 @@ addLayer("SA", {
    "CCBC 17 all answers, bye-bye",//v3.0 b1
    "On September 1, 2026, DeFe308 will be sent to a horrible place, where computer is disabled, so the next update will be in 50,000 hours. The place is called school.",//v3.0 b1
    "Risk warning: 10 fire sources detected.",//v3.0 b2
+   '<a href="https://www.bilibili.com/video/BV16vbN6REhD" target="_blank">Click this news message to watch Phigros Chapter 9 preview.</a>',//v3.0 b3
     ]
     if(hasAchievement('A',23)) a.push("Do you know why the first side layer is called 'QqQe308'? Well, I don't know as well.")
     if(hasAchievement('A',51)) a.push("Here we have 3 kinds of Timewall. Will there be more Timewall in the future?")
@@ -1793,6 +1794,7 @@ addLayer("SA", {
     )
     if(hasAchievement('A',205)) a.push('Liuliu66686 is too dilated','Liuliu too ated',)//v2.3
     if(hasAchievement('A',225)) a.push('Also try <a href="https://galaxy.click/play/866" target="_blank">The Muting Tree</a>!')//v3.0 b1
+    if(isEndgame()) a.push('Here are 10 random ordered pairs:(4,7),(4,24),(5,6),(6,17),(7,32),(8,41),(9,10),(9,25),(9,44),(11,14).')//v3.0 b3
     if(player.SA.points.gte(2)) a.push('"I Just Got 2 Secret Achievements" - Felipe')//v2.2
     if(options.CNNewsTicker) {for (let i = 0; i < tmp.SA.CNnews.length; i++) {
       a.push(tmp.SA.CNnews[i])

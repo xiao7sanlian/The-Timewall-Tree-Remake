@@ -149,7 +149,7 @@ addLayer("T", {
     update(diff){
         player.devSpeed = tmp.A.devSpeedCal
         if(!hasUpgrade('I',51)) player.points=player.points.min(n(2).pow(1024))
-        player.points=player.points.min('ee7')
+        if(player.R.reb.lt(1))player.points=player.points.min('ee7')
     if(hasMilestone('T',0)||hasMilestone('I',0)){
         if(!hasMilestone('Q',1)){
         if(player.T.PPauto==true&&layers.T.buyables[11].canAfford()) layers.T.buyables[11].buy()
@@ -164,6 +164,7 @@ addLayer("T", {
             if(!hasMilestone('Q',4)) {layers.T.buyables[14].buy()}
             else {layers.T.buyables[14].buyMax()}}
         if(hasUpgrade('T',33)||hasMilestone('I',0)) player.points = player.points.max(25)
+        if(hasUpgrade('R',12)) player.points = player.points.max(1e50)
         if(hasUpgrade('MT',11)&&!hasUpgrade('T',31)) player.T.upgrades.push(31)
         if(hasUpgrade('MT',11)&&!hasUpgrade('T',33)) player.T.upgrades.push(33)
         if(hasUpgrade('MT',12)&&!hasMilestone('Q',1)) player.Q.milestones.push(1)

@@ -53,6 +53,7 @@ addLayer("I", {
         if(hasUpgrade('cf',41)) mult=mult.times(upgradeEffect('cf',41))
 
         if(player.R.reb.gte(1)) mult=mult.times(tmp.R.rebEff[0])
+        mult=mult.times(buyableEffect('R',22)[1])
 
         if(inChallenge('E',31)) mult=mult.pow(tmp.E.challenges[31].inChaleffect)
         if(hasChallenge('E',31)) mult=mult.pow(challengeEffect('E',31))
@@ -2299,6 +2300,7 @@ addLayer("I", {
     },
     IEFmult(){a=n(1)
         if(hasUpgrade('E',261)) a=a.times(1.05)
+        a=a.times(buyableEffect('R',22)[0])
         if(inChallenge('E',13)) a=a.times(0.5)
         return a
     },
@@ -2321,6 +2323,7 @@ addLayer("I", {
         return a
     },
     IGexptopt(){a=n(7)
+        a=a.times(tmp.I.IPowerexp)
         if(inChallenge('E',23)) a=n(1)
         return a
     },
@@ -2328,6 +2331,7 @@ addLayer("I", {
         return a
     },
     IGexptotw(){a=n(5)
+        a=a.times(tmp.I.IPowerexp)
         if(inChallenge('E',23)) a=n(1)
         return a
     },
@@ -2335,6 +2339,7 @@ addLayer("I", {
         return a
     },
     IGexptost(){a=n(3)
+        a=a.times(tmp.I.IPowerexp)
         if(inChallenge('E',23)) a=n(1)
         return a
     },
@@ -2342,10 +2347,15 @@ addLayer("I", {
         return a
     },
     IGexptomt(){a=n(1)
+        a=a.times(tmp.I.IPowerexp)
         if(inChallenge('E',23)) a=n(1)
         return a
     },
     IGtomt(){a=player.I.ipower.pow(tmp.I.IGexptomt)
+        return a
+    },
+    IPowerexp(){a=n(1)
+        a=a.times(buyableEffect('R',22)[2])
         return a
     },
     actualIPowgen(){a=buyableEffect('I',31).pow(buyableEffect('I',33))
@@ -2390,6 +2400,8 @@ addLayer("I", {
         if(hasUpgrade('E',32)) a=a.times(upgradeEffect('E',32))
         if(hasChallenge('E',14)) a=a.times(challengeEffect('E',14))
         if(hasUpgrade('E',203)) a=a.times(upgradeEffect('E',203))
+
+        a=a.times(buyableEffect('R',22)[1])
         if(inChallenge('E',14)) a=n(1)
         return a
     },
@@ -2411,6 +2423,8 @@ addLayer("I", {
         if(getBuyableAmount('I',61).gte(8)) a=a.times(tmp.I.QUBFeff)
         if(hasUpgrade('E',22)) a=a.times(upgradeEffect('E',22))
         if(hasMilestone('df',0)) a=a.times(tmp.df.effect[3])
+
+        a=a.times(buyableEffect('R',22)[3])
         a=a.times(tmp.E.TSeffect)
         return a
     },
@@ -2444,6 +2458,8 @@ addLayer("I", {
         if(hasUpgrade('I',173)) a=a.times(5)
         if(hasUpgrade('I',174)) a=a.times(upgradeEffect('I',174))
         if(hasUpgrade('cf',14)) a=a.pow(upgradeEffect('cf',14))
+
+        a=a.times(buyableEffect('R',22)[3])
         a=a.times(tmp.E.TSeffect)
         return a
     },

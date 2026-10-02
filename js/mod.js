@@ -16,8 +16,8 @@ document.title='The Timewall Tree Remake'
 // Set your version in num and name
 let VERSION = {
 	num: "3.0",
-	name: "Rebirth Upgrade 1",
-	beta:'2.1',
+	name: "Gem Assignment",
+	beta:'3',
 	pre:'',
 }
 
@@ -239,6 +239,18 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Fixed Monika Point NaN bug.<br>
 		Chinese version:<br>
 		- 修复Monika点数导致NaN的bug<br><br>
+
+	<h4><text style='color: #4abd13'>v3.0 Beta 3 - Gem Assignment</text> 2026/9/30~2026/10/2</h4><br>
+		- Added 3 Rebirth Upgrades. (1 in RU tab, 2 in AC tab)<br>
+		- Added Infinity Gem and Gem Assignment.<br>
+		- Added more news messages.<br>
+		- Endgame: 2 Rebitrhs + Unlock Rebirth again.<br>
+		- Note: I haven't tested all contents of this version, and there may have some bugs.<br>
+		Chinese version:<br>
+		- 增加了3个重生升级（1个在重生升级标签页，2个在自动化中心标签页）<br>
+		- 增加了无限宝石与宝石分配<br>
+		- 更多的新闻消息<br>
+		- 终局: 2次重生 + 再次解锁重生<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -253,7 +265,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return player.points.lt('ee7')||!hasAchievement('A',251)
+	return !(player.points.lt('ee7')&&!hasAchievement('A',251))
 	return true
 }
 
@@ -287,7 +299,7 @@ var displayThings = [
 		if(tmp.A.ProgressToInf.gte(100)&&!hasUpgrade('I',51)) a=a+"You can't gain more points after 1.80e308!<br>"
 		if(tmp.A.ProgressTo3.gte(100)&&!hasAchievement('A',251)) a=a+quickColor("Your point is hardcapped at e10,000,000!",'#ff0000')+"<br>"
 		if(inChallenge('E',34)) a=a+'EC12 progress: '+format(player.E.resetTime)+'s/'+format(tmp.E.challenges[34].goal2)+'s<br>'
-		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp)+')'
+		if(tmp.T.ptGain.gte(tmp.T.softcapstart)&&getPointGen().neq(NaN)) a=a+'After '+format(tmp.T.softcapstart)+' points/s, your point gain will be softcapped!(^'+format(tmp.T.softcapexp,3)+')'
 		if(options.NewsTicker) a=a+'<br>'+tmp.SA.news[player.SA.newsIndex]
 		return a
 	}
@@ -300,7 +312,7 @@ function isEndgame() {
 	//return hasUpgrade('cf',34)
 	//return hasUpgrade('cf',52)
 	//return getBuyableAmount('li',21).gte(1)
-	return hasUpgrade('E',272)&&player.R.reb.gte(1)
+	return hasUpgrade('E',272)&&player.R.reb.gte(2)
 	return false
 	//return player.points.gte(new Decimal("e280000000"))
 }

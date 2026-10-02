@@ -21,6 +21,7 @@ addLayer("R", {
         rd6:n(0),
         rd7:n(0),
         rd8:n(0),
+        gemassign:[n(0),n(0),n(0),n(0),n(0),n(0)],//T,I,Qa,E,CF,Li
     }},
     color: "#4adb13",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
@@ -39,12 +40,12 @@ addLayer("R", {
     },
     row: 6, // Row the layer is in on the tree (0 is the first row)
     prestigeButtonText(){a='Reset for '+format(tmp.R.getResetGain)+' Rebirth Timewalls, '+format(tmp.R.getResetGP)+' Gem Points and '+format(tmp.R.getResetShard)+' Rebirth Shard'
-        if(tmp.R.getResetGain.lt(1)) a=a+'<br>You need 1.80e308 Eternity Points to reset'
+        if(tmp.R.getResetGain.lt(1)) a=a+'<br>You need 1.80e308 Eternity Points and E27-2 bought to reset'
         if(options.Chinese){a='重置以获得 '+format(tmp.R.getResetGain)+' 重生时间墙，'+format(tmp.R.getResetGP)+' 宝石点数与'+format(tmp.R.getResetShard)+' 重生碎片'
-        if(tmp.R.getResetGain.lt(1)) a=a+'<br>你需要1.80e308永恒点数以进行重置'}
+        if(tmp.R.getResetGain.lt(1)) a=a+'<br>你需要1.80e308永恒点数且购买E27-2以进行重置'}
         return a
      },
-    getResetGain(){a=n(10).pow(player.E.points.log(2).div(1024).sub(1)).times(player.cf.points.pow(0.00125).div(10))
+    getResetGain(){a=n(10).pow(player.E.points.max(1).log(2).div(32).sub(32)).times(n(10).pow(player.cf.points.max(1).log(10).div(100).sub(8)))
 
         a=a.floor()
 
@@ -65,7 +66,7 @@ addLayer("R", {
         return a
     },
     branches: ['E','cf'],
-    canReset(){return tmp.R.getResetGain.gte(1)},
+    canReset(){return tmp.R.getResetGain.gte(1)&&hasUpgrade('E',272)},
     hotkeys: [
         {key: "r",
         description: "R: Rebirth",
@@ -77,7 +78,7 @@ addLayer("R", {
    "Gem": {
         content: [ "main-display","prestige-button","resource-display",
     ["display-text", () => tmp.R.rebTip],["display-text", () => tmp.R.gemTip],
-    ["buyables",[2]],["display-text", () => tmp.R.gemTip2],
+    ["buyables",[2]],["display-text", () => tmp.R.gemTip2],'grid','clickables',
     ],
     },
     "Rebirth Dimensions": {
@@ -92,7 +93,7 @@ addLayer("R", {
     unlocked(){return true},
     },
     "Automation Center": {
-        content: [ "main-display","prestige-button","resource-display",["display-text", () => tmp.R.rebTip],["upgrades",[1]],
+        content: [ "main-display","prestige-button","resource-display",["display-text", () => tmp.R.rebTip],["upgrades",[1,2,3]],
     ],
     unlocked(){return true},
     },
@@ -100,6 +101,7 @@ addLayer("R", {
     doReset(resettingLayer) {
         if (layers[resettingLayer].row > 5) {
             player.R.rPower = n(1)
+            if(getClickableState('R',12)==1) player.R.gemassign=[n(0),n(0),n(0),n(0),n(0)]
        }
     },
     onPrestige(gain){
@@ -131,6 +133,32 @@ addLayer("R", {
             currencyDisplayName: 'Rebirth Shard',
             currencyInternalName: 'shard',
         },
+        12: {
+            title: "SPT",
+            description() {a="Start every reset with 1e50 points and your points won't be less than 1e50."
+                if(options.Chinese) a='每次重置后保留1e50点数，你的点数不会低于1e50'
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford() {return checkAroundUpg(this.layer,this.id)},
+            currencyLocation() {return player.R},
+            currencyDisplayName: 'Rebirth Shard',
+            currencyInternalName: 'shard',
+        },
+        21: {
+            title: "EU1",
+            description() {a="The first 3 Eternity Upgrades that cost EP no longer cost anything."
+                if(options.Chinese) a='前3个花费永恒点数的永恒升级不再花费任何东西'
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford() {return checkAroundUpg(this.layer,this.id)},
+            currencyLocation() {return player.R},
+            currencyDisplayName: 'Rebirth Shard',
+            currencyInternalName: 'shard',
+        },
         111: {
             title: "Welcome to Rebirth",
             description() {a="Add 0.002 to the softcap exponent per Rebirth, up to 0.1."
@@ -149,6 +177,16 @@ addLayer("R", {
             unlocked() {return true},
             canAfford(){return hasAchievement('R',11)},
         },
+        112: {
+            title: "Upgrade Discount",
+            description() {a="The point and IP cost of Upgrade Points is square rooted."
+                if(options.Chinese) a='用点数与无限点数购买升级点数时，价格变为原来的0.5次方'
+                return a
+            },
+            cost: new Decimal(5),
+            unlocked() {return true},
+            canAfford(){return hasAchievement('R',12)},
+        },
     },
     achievements: {
         11: {
@@ -156,11 +194,59 @@ addLayer("R", {
      done() {return player.points.gte('e10002228')}, 
      unlocked(){return true},
      onComplete() {},
-     tooltip() {return "Reach e10,002,228 Point."}, 
+     tooltip() {a="Reach e10,002,228 Point."
+        if(options.Chinese) a='达到e10,002,228点数'
+        return a
+     }, 
+     textStyle: {'color': '#4bd123'},
+        },
+        12: {
+     name() {return "Upgrade Discount"},
+     allup(){return getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))},
+     done() {return this.allup().gte(2500)}, 
+     unlocked(){return true},
+     onComplete() {},
+     tooltip() {a="Reach "+formatWhole(this.allup())+"/2,500 Bought Upgrade Points."
+        if(options.Chinese) a="购买"+formatWhole(this.allup())+"/2,500升级点数"
+        return a
+     }, 
      textStyle: {'color': '#4bd123'},
         },
     },
     clickables:{
+        11: {
+            title() {a="Restart this Rebirth"
+                if(options.Chinese) a='重新开始本次重生'
+                return a
+            },
+            display() {a="Tips: This is useful if you want to reset your gem assignments."
+                if(options.Chinese) a='提示：如果你想要重置你的宝石分配，这很有用。'
+                return a},
+            unlocked(){return player.R.reb.gte(1)},
+            canClick() {return true},
+            onClick() {
+            if (!confirm("Are you sure you want to restart this Rebirth?")) return
+            doReset('R',true)
+           },
+        },
+        12: {
+            title() {a="Reset Gem assignments on Rebirth"
+                if(options.Chinese) a='下次重生时重置宝石分配'
+                return a
+            },
+            display() {a="Currently: "
+                if(getClickableState(this.layer,this.id)==1) a=a+'Yes'
+                if(getClickableState(this.layer,this.id)==0) a=a+'No'
+                if(options.Chinese) {a="当前: "
+                if(getClickableState(this.layer,this.id)==1) a=a+'是'
+                if(getClickableState(this.layer,this.id)==0) a=a+'否'}
+                return a},
+            unlocked(){return player.R.reb.gte(1)},
+            canClick() {return true},
+            onClick() {
+            setClickableState(this.layer,this.id,1-getClickableState(this.layer,this.id))
+           },
+        },
     },
     buyables: {
         11: {
@@ -208,20 +294,20 @@ addLayer("R", {
                     return a
             },
             effect(x) {f=x.times(tmp.R.rpEff).times(0.01)
-                a=f.times(10).add(1).log(10).add(1).log(10).div(50).add(1)//pt exponent
-                b=n(10).pow(f.times(10).add(1).log(10).add(1).pow(2).sub(1))//pre-inf boost
-                c=f.times(10).add(1).pow(2)//super-man boost
-                d=f.times(10).add(1).log(10).add(1).log(10).pow(2).div(100).min(0.5).toNumber()//qqqe308 exp reduce
+                a=n(tmp.R.Tgembasiceff[0]).times(player.R.gemassign[0]).add(1)//pt exponent
+                b=n(tmp.R.Tgembasiceff[1]).pow(player.R.gemassign[0])//pre-inf boost
+                c=n(tmp.R.Tgembasiceff[2]).pow(player.R.gemassign[0])//super-man boost
+                d=n(tmp.R.Tgembasiceff[3]).times(player.R.gemassign[0]).min(0.5).toNumber()//qqqe308 exp reduce
                 return [a,b,c,d]
             },
-            display() {a= "Point Exponent Factory effect x"+format(this.effect()[0],4)
-                a=a+"<br>Point Producer base effect and all pre-Inf Timewall gain x"+format(this.effect()[1])
-                a=a+"<br>Pre-Rebirth Super-man speed x"+format(this.effect()[2])
-                a=a+"<br>QqQe308 requirement exponent -"+format(this.effect()[3])
-            if(options.Chinese) {a= "点数指数因子效果 x"+format(this.effect()[0],4)
-                a=a+"<br>点数生产器基础效果与无限前所有时间墙获取 x"+format(this.effect()[1])
-                a=a+"<br>重生前超人速度 x"+format(this.effect()[2])
-                a=a+"<br>QqQe308需求指数 -"+format(this.effect()[3])
+            display() {a= "Point Exponent Factory effect x (1+"+format(tmp.R.Tgembasiceff[0],4)+'x'+format(player.R.gemassign[0],0)+')='+format(this.effect()[0],4)
+                a=a+"<br>Point Producer base effect and all pre-Inf Timewall gain x "+format(tmp.R.Tgembasiceff[1])+'^'+format(player.R.gemassign[0],0)+'='+format(this.effect()[1])
+                a=a+"<br>Pre-Rebirth Super-man speed x "+format(tmp.R.Tgembasiceff[2])+'^'+format(player.R.gemassign[0],0)+'='+format(this.effect()[2])
+                a=a+"<br>QqQe308 requirement exponent - "+format(tmp.R.Tgembasiceff[3])+'x'+format(player.R.gemassign[0],0)+'='+format(this.effect()[3])
+            if(options.Chinese) {a= "点数指数因子效果 x (1+"+format(tmp.R.Tgembasiceff[0],4)+'x'+format(player.R.gemassign[0],0)+')='+format(this.effect()[0],4)
+                a=a+"<br>点数生产器基础效果与无限前所有时间墙获取 x "+format(tmp.R.Tgembasiceff[1])+'^'+format(player.R.gemassign[0],0)+'='+format(this.effect()[1])
+                a=a+"<br>重生前超人速度 x "+format(tmp.R.Tgembasiceff[2])+'^'+format(player.R.gemassign[0],0)+'='+format(this.effect()[2])
+                a=a+"<br>QqQe308需求指数 - "+format(tmp.R.Tgembasiceff[3])+'x'+format(player.R.gemassign[0],0)+'='+format(this.effect()[3])
             }
             return a },
             unlocked() {return true},
@@ -231,11 +317,78 @@ addLayer("R", {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
         },
+        22: {
+            title(){text = 'Infinity Gem'
+                    if(options.Chinese) text='无限宝石'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))+' x '
+                text=text+format(tmp.R.gemPower)+' = '+format(getBuyableAmount(this.layer, this.id).times(tmp.R.gemPower))
+                text=text+')'
+                return text
+            },
+            cost(x) { a= new Decimal(1)
+                    return a
+            },
+            effect(x) {f=x.times(tmp.R.rpEff).times(0.01)
+                a=n(tmp.R.Igembasiceff[0]).times(player.R.gemassign[1]).add(1)
+                b=n(tmp.R.Igembasiceff[1]).pow(player.R.gemassign[1])
+                c=n(tmp.R.Igembasiceff[2]).times(player.R.gemassign[1]).add(1)
+                d=n(tmp.R.Igembasiceff[3]).pow(player.R.gemassign[1])
+                return [a,b,c,d]
+            },
+            display() {a= "Infinity Exponent Factory effect x (1+"+format(tmp.R.Igembasiceff[0],4)+'x'+format(player.R.gemassign[1],0)+')='+format(this.effect()[0],4)
+                a=a+"<br>Infinity Point and Infinity gain x "+format(tmp.R.Igembasiceff[1])+'^'+format(player.R.gemassign[1],0)+'='+format(this.effect()[1])
+                a=a+"<br>Infinity Power effect ^ (1+"+format(tmp.R.Igembasiceff[2],4)+'x'+format(player.R.gemassign[1],0)+')='+format(this.effect()[2],4)
+                a=a+"<br>Timewall Power and Q-Upgrade Booster Fragment gain x "+format(tmp.R.Igembasiceff[3])+'x'+format(player.R.gemassign[1],0)+'='+format(this.effect()[3])
+            if(options.Chinese) {a= "无限之力指数因子效果 x (1+"+format(tmp.R.Igembasiceff[0],4)+'x'+format(player.R.gemassign[1],0)+')='+format(this.effect()[0],4)
+                a=a+"<br>无限点数与无限次数获取 x "+format(tmp.R.Igembasiceff[1])+'^'+format(player.R.gemassign[1],0)+'='+format(this.effect()[1])
+                a=a+"<br>无限之力效果 ^ (1+"+format(tmp.R.Igembasiceff[2],4)+'x'+format(player.R.gemassign[1],0)+')='+format(this.effect()[2],4)
+                a=a+"<br>时间墙能量与Q-升级增强器碎片获取 x "+format(tmp.R.Igembasiceff[3])+'x'+format(player.R.gemassign[1],0)+'='+format(this.effect()[3])
+            }
+            return a },
+            unlocked() {return player.R.reb.gte(1)},
+            canAfford() { return player.R.gemPoints.gte(this.cost())&&this.unlocked()&&player.R.reb.gte(2) },
+            buy() {
+                player.R.gemPoints = player.R.gemPoints.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            tooltip() {a="Unlocked at 2 Rebirths."
+                if(options.Chinese) a="在2次重生后解锁"
+                if(player.R.reb.gte(2)) a=''
+                return a
+            },
+        },
     },
     milestones:{
     },
     challenges: {
     },
+    grid: {
+    rows: 1, // If these are dynamic make sure to have a max value as well!
+    cols() {return player.R.reb.min(6).floor().toNumber()},
+    maxCols: 6,
+    getStartData(id) {
+        return 0
+    },
+    getUnlocked(id) { // Default
+        return true
+    },
+    getCanClick(data, id) {
+        for (let i = 0; i < 7; i++) {
+            if(id == i+101&&tmp.R.freeGem.gt(0)) return true
+        }
+    },
+    getEffect(data, id){return n(0)
+    },
+    onClick(data, id) { 
+        if(tmp.R.freeGem.gt(0)) player.R.gemassign[id-101]=player.R.gemassign[id-101].add(1)
+    },
+    getDisplay(data, id) {
+        let c=['T','I','Qa','E','CF','Li'];
+        for (i = 0; i < 7; i++) {
+            if(id == i+101){a='<h2>'+c[i]+':'+format(player.R.gemassign[i],0)+'</h2>'
+            return a}
+        }
+    }},
     effectDescription(){return "<h2 style='color: #4abd13; text-shadow: 0 0 3px #c2b280'>"+format(player.R.gemPoints)+"</h2> Gem Points and <h2 style='color: #4abd13; text-shadow: 0 0 3px #c2b280'>"+format(player.R.shard)+"</h2> Rebirth Shards"},
     rebTip(){a='You have gone Rebirth '+format(player.R.reb)+' times.<br/>'
         a=a+'You have spent '+formatTime(player.R.resetTime)+' in this Rebirth.<br/>'
@@ -281,11 +434,35 @@ addLayer("R", {
         a=a+'<br>Eternity gain x'+format(tmp.R.rebEff[1])
         a=a+'<br>EP gain x'+format(tmp.R.rebEff[2])
         a=a+'<br>Dilation Point gain x'+format(tmp.R.rebEff[3])
+        a=a+'<br><br>You have '+format(tmp.R.freeGem,0)+' free Gems available. (+1 for each of the first 3 Rebirths) You can assign them here:'
         if(options.Chinese){a="重生奖励"
         a=a+'<br>无限点数获取x'+format(tmp.R.rebEff[0])
         a=a+'<br>永恒次数获取x'+format(tmp.R.rebEff[1])
         a=a+'<br>永恒点数获取x'+format(tmp.R.rebEff[2])
         a=a+'<br>膨胀点数获取x'+format(tmp.R.rebEff[3])
+        a=a+'<br><br>你有'+format(tmp.R.freeGem,0)+'个未使用的宝石 (前三次重生每次+1) ，你可以在这里分配它们:'
+        }
+        return a
+    },
+    Tgembasiceff(){f=getBuyableAmount(this.layer,21).times(tmp.R.rpEff).times(0.01)
+                a=f.times(10).add(1).log(10).add(1).log(10).div(50)//pt exponent+
+                b=n(10).pow(f.times(10).add(1).log(10).add(1).pow(2).sub(1))//pre-inf boost
+                c=f.times(10).add(1).pow(2)//super-man boost
+                d=f.times(10).add(1).log(10).add(1).log(10).pow(2).div(100)//qqqe308 exp reduce
+        return [a,b,c,d]},
+    Igembasiceff(){f=getBuyableAmount(this.layer,22).times(tmp.R.rpEff).times(0.01)
+                a=f.times(10).add(1).log(10).add(1).log(10).div(25)
+                b=f.times(10).add(1)
+                c=f.times(10).add(1).log(10).add(1).log(10).div(10)
+                d=f.times(10).add(1).pow(0.5)
+        return [a,b,c,d]},
+    totalGem(){a=player.R.reb.min(3)
+        a=a.floor()
+        return a
+    },
+    freeGem(){a=tmp.R.totalGem
+        for(i=0;i<6;i++){
+            a=a.sub(player.R.gemassign[i])
         }
         return a
     },

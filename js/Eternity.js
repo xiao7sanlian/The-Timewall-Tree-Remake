@@ -117,9 +117,9 @@ addLayer("E", {
     doReset(resettingLayer) {
         if (layers[resettingLayer].row > 4) {
             player.E.timeshard=n(1)
-            if(getClickableState('E',12)==1) {if(hasUpgrade('E',34)) player.E.points = player.E.points.add(5)
-                if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
-                if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
+            if(getClickableState('E',12)==1) {if(hasUpgrade('E',34)) player.E.points = player.E.points.add(tmp.E.upgrades[34].cost)
+                if(hasUpgrade('E',62)) player.E.points = player.E.points.add(tmp.E.upgrades[62].cost)
+                if(hasUpgrade('E',112)) player.E.points = player.E.points.add(tmp.E.upgrades[112].cost)
                 if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
                 if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
                 player.E.upgrades=[]
@@ -456,6 +456,7 @@ addLayer("E", {
                 return text
             },
             cost(x) { a= new Decimal('1e20000').pow(x.add(1))
+                if(hasUpgrade('R',112)) a=a.pow(0.5)
                 return a
              },
             effect(x) {a= x
@@ -491,6 +492,7 @@ addLayer("E", {
                 return text
             },
             cost(x) { a= new Decimal('1e100').pow(x)
+                if(hasUpgrade('R',112)) a=a.pow(0.5)
                 return a
              },
             effect(x) {a= x
@@ -567,9 +569,9 @@ addLayer("E", {
             canClick() {return true},
             onClick() {
             if(player.E.upgrades.length == 0) player.E.s14 =n(1)
-            if(hasUpgrade('E',34)) player.E.points = player.E.points.add(5)
-            if(hasUpgrade('E',62)) player.E.points = player.E.points.add(100)
-            if(hasUpgrade('E',112)) player.E.points = player.E.points.add(10000)
+            if(hasUpgrade('E',34)) player.E.points = player.E.points.add(tmp.E.upgrades[34].cost)
+            if(hasUpgrade('E',62)) player.E.points = player.E.points.add(tmp.E.upgrades[62].cost)
+            if(hasUpgrade('E',112)) player.E.points = player.E.points.add(tmp.E.upgrades[112].cost)
             if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
             if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
             player.E.upgrades = []
@@ -777,7 +779,10 @@ addLayer("E", {
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
-            cost: new Decimal(5),
+            cost() {a=new Decimal(5)
+                if(hasUpgrade('R',21)) a=n(0)
+                return a
+            },
             branches:[33],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',33)},
@@ -864,7 +869,10 @@ addLayer("E", {
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
-            cost: new Decimal(100),
+            cost() {a=new Decimal(100)
+                if(hasUpgrade('R',21)) a=n(0)
+                return a
+            },
             branches:[51],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',51)},
@@ -1145,7 +1153,10 @@ addLayer("E", {
                 return a
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
-            cost: new Decimal(10000),
+            cost() {a=new Decimal(10000)
+                if(hasUpgrade('R',21)) a=n(0)
+                return a
+            },
             branches:[111],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',111)},
@@ -1873,8 +1884,8 @@ addLayer("E", {
             title() {a= "E27-2"
                 return a
             },
-            description() {a="Unlock [5 hours later]. (Require at least 1.80e308 Eternity Points and 120 Achievements)"
-                if(options.Chinese) a='解锁[5小时后更新] (至少需要1.80e308永恒点数与120成就来购买)'
+            description() {a="Unlock Rebirth. (Require at least 1.80e308 Eternity Points and 120 Achievements)"
+                if(options.Chinese) a='解锁重生 (至少需要1.80e308永恒点数与120成就来购买)'
                 return a
             },
             cost: new Decimal(1),
@@ -2064,8 +2075,8 @@ addLayer("E", {
             name() {a="Eternity Challenge 7"
             if(options.Chinese) a='永恒挑战7'
             return a},
-            challengeDescription(){a="Infinity Power and Timeshard are ineffective, but multiply free Infinity Generator by Timeshard^0.2 and multiply free Point Producer by Infinity Power^0.2.<br>Completion："+challengeCompletions(this.layer,this.id)+"/5"
-                if(options.Chinese) a='无限之力与时间碎片无效果，但是时间碎片倍增免费的无限之力生产器，无限之力倍增免费的点数生产器，效果为各资源的0.2次方<br>完成次数：'+challengeCompletions(this.layer,this.id)+"/5"
+            challengeDescription(){a="Infinity Power is nerfed and Timeshard is ineffective, but multiply free Infinity Generator by Timeshard^0.2 and multiply free Point Producer by Infinity Power^0.2.<br>Completion："+challengeCompletions(this.layer,this.id)+"/5"
+                if(options.Chinese) a='无限之力被削弱且时间碎片无效果，但是时间碎片倍增免费的无限之力生产器，无限之力倍增免费的点数生产器，效果为各资源的0.2次方<br>完成次数：'+challengeCompletions(this.layer,this.id)+"/5"
                 return a
             },
             goalDescription(){a = format(this.goal())+" Infinity Points & 50 unspent Upgrade Points"
@@ -3278,8 +3289,8 @@ addLayer("li", {
             effect(){a=n(10).pow(getBuyableAmount('li',21).div(2))
                 return a
             },
-            done() { return getBuyableAmount('li',21).gte(8)},
-            unlocked(){return hasMilestone('li',4)},
+            done() { return getBuyableAmount('li',21).gte(9)},
+            unlocked(){return hasMilestone('li',5)},
         },
     },
     upgrades: {
