@@ -272,6 +272,34 @@ function exportSave() {
 	document.execCommand("copy");
 	document.body.removeChild(el);
 }
+
+function exportSaveToFile() {
+	// 将存档序列化并编码（与原函数保持一致）
+	let str = btoa(JSON.stringify(player));
+
+	// 创建 Blob 对象，MIME 类型设为纯文本
+	const blob = new Blob([str], { type: "text/plain;charset=utf-8" });
+
+	// 生成文件名，包含 mod 名、版本和时间戳，便于区分
+	const now = new Date();
+	const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+	const fileName = `${document.title}_${VERSION.withoutName}_${timestamp}.txt`;
+
+	// 创建临时下载链接
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = fileName;
+
+	// 触发下载
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+
+	// 释放内存（延迟释放，确保下载已开始）
+	setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined)
 		imported = prompt("Paste (or imput) your save:");
@@ -297,6 +325,47 @@ function importSave(imported = undefined, forced = false) {
 		return;
 	}
 }
+
+function importSaveFromFile(file = undefined, forced = false) {
+	// 没有传入文件时，动态创建一个隐藏的 file input 让用户选择
+	if (file === undefined) {
+		const input = document.createElement("input");
+		input.type = "file";
+		input.accept = ".txt,text/plain"; // 限制为文本文件
+		input.style.display = "none";
+		document.body.appendChild(input);
+
+		input.addEventListener("change", function () {
+			if (input.files && input.files[0]) {
+				importSaveFromFile(input.files[0], forced);
+			}
+			document.body.removeChild(input);
+		});
+
+		input.click();
+		return;
+	}
+
+	// 已拿到 file 对象，用 FileReader 读取内容
+	const reader = new FileReader();
+
+	reader.onload = function (e) {
+		const imported = e.target.result.trim(); // 去掉可能的首尾空白/换行
+		if (!imported) {
+			alert("存档文件为空！");
+			return;
+		}
+		// 直接复用已有的 importSave，保证校验逻辑一致
+		importSave(imported, forced);
+	};
+
+	reader.onerror = function () {
+		alert("读取存档文件失败！");
+	};
+
+	reader.readAsText(file);
+}
+
 function versionCheck() {
 	let setVersion = true;
 

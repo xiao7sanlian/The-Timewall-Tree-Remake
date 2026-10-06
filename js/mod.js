@@ -17,7 +17,7 @@ document.title='The Timewall Tree Remake'
 let VERSION = {
 	num: "3.0",
 	name: "Gem Assignment",
-	beta:'3',
+	beta:'3.1',
 	pre:'',
 }
 
@@ -251,6 +251,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 增加了无限宝石与宝石分配<br>
 		- 更多的新闻消息<br>
 		- 终局: 2次重生 + 再次解锁重生<br><br>
+
+	<h4><text style='color: #4abd13'>v3.0 Beta 3.1 - File Support</text> 2026/10/6</h4><br>
+		- Added 'Export to file' and 'Import from file' options.<br>
+		Chinese version:<br>
+		- 增加了'导出到文件'和'从文件导入'选项<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
