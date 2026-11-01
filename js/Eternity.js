@@ -120,8 +120,8 @@ addLayer("E", {
             if(getClickableState('E',12)==1) {if(hasUpgrade('E',34)) player.E.points = player.E.points.add(tmp.E.upgrades[34].cost)
                 if(hasUpgrade('E',62)) player.E.points = player.E.points.add(tmp.E.upgrades[62].cost)
                 if(hasUpgrade('E',112)) player.E.points = player.E.points.add(tmp.E.upgrades[112].cost)
-                if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
-                if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
+                if(hasUpgrade('E',152)) player.E.points = player.E.points.add(tmp.E.upgrades[152].cost)
+                if(hasUpgrade('E',212)) player.E.points = player.E.points.add(tmp.E.upgrades[212].cost)
                 player.E.upgrades=[]
             setClickableState('E',12,0)
             }
@@ -572,8 +572,8 @@ addLayer("E", {
             if(hasUpgrade('E',34)) player.E.points = player.E.points.add(tmp.E.upgrades[34].cost)
             if(hasUpgrade('E',62)) player.E.points = player.E.points.add(tmp.E.upgrades[62].cost)
             if(hasUpgrade('E',112)) player.E.points = player.E.points.add(tmp.E.upgrades[112].cost)
-            if(hasUpgrade('E',152)) player.E.points = player.E.points.add(1e10)
-            if(hasUpgrade('E',212)) player.E.points = player.E.points.add(1e50)
+            if(hasUpgrade('E',152)) player.E.points = player.E.points.add(tmp.E.upgrades[152].cost)
+            if(hasUpgrade('E',212)) player.E.points = player.E.points.add(tmp.E.upgrades[212].cost)
             player.E.upgrades = []
             doReset('E',player.I.points.lt(n(2).pow(1024)))
            },
@@ -1377,7 +1377,10 @@ addLayer("E", {
                 if(options.Chinese) a='时间碎片加成器基础效果x2.5'
                 return a
             },
-            cost: new Decimal(1e10),
+            cost() {a=new Decimal(1e10)
+                if(hasUpgrade('R',22)) a=n(1)
+                return a
+            },
             branches:[151],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',151)},
@@ -1608,7 +1611,10 @@ addLayer("E", {
                 if(options.Chinese) a='上限公式：成就数量/10'
                 return a
             },
-            cost: new Decimal(1e50),
+            cost() {a=new Decimal(1e50)
+                if(hasUpgrade('R',22)) a=n(1e40)
+                return a
+            },
             branches:[202,203],
             unlocked() {return hasMilestone('E',1)},
             canAfford() {return hasUpgrade('E',202)||hasUpgrade('E',203)},
@@ -3134,6 +3140,9 @@ addLayer("li", {
         chosenGrid:0,
     }},
     color: "#7c7c7c",
+    tooltip(){a=format(player.li.points)+' Liuliu66686 Points, <br>'+format(player.li.dilpoint)+' Dilation Points'
+        return a
+    },
     requires(){a = new Decimal(1e36)
         return a
     }, // Can be a function that takes requirement increases into account
@@ -3300,11 +3309,14 @@ addLayer("li", {
                 if(options.Chinese) a='膨胀点数的效果翻倍'
                 return a
             },
-            cost: new Decimal(5e5),
+            cost() {a=new Decimal(5e5)
+                if(hasUpgrade('R',31)) a=n(0)
+                return a
+            },
             unlocked() {return hasUpgrade('cf',52)},
             canAfford() {return true},
             tooltip(){
-                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
                 if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
                 a='Time remaining: '
                 if(options.Chinese) a='预计所需时间：'
@@ -3321,7 +3333,10 @@ addLayer("li", {
                 if(options.Chinese) a='基于膨胀点数提升点数生产器基础效果'
                 return a
             },
-            cost: new Decimal(7.5e6),
+            cost() {a=new Decimal(7.5e6)
+                if(hasUpgrade('R',31)) a=n(0)
+                return a
+            },
             unlocked() {return hasUpgrade('cf',52)},
             effect() {a=player.li.dilpoint.add(1).pow(500)
                 if(hasMilestone('li',4)) a=a.pow(1.1)
@@ -3331,7 +3346,7 @@ addLayer("li", {
             canAfford() {return true},
             currencyLocation() {return player.li},
             tooltip(){
-                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
                 if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
                 a='Time remaining: '
                 if(options.Chinese) a='预计所需时间：'
@@ -3347,7 +3362,10 @@ addLayer("li", {
                 if(options.Chinese) a='基于膨胀点数增益免费点数生产器数量与时间碎片生产器基础效果'
                 return a
             },
-            cost: new Decimal(2.5e7),
+            cost() {a=new Decimal(2.5e7)
+                if(hasUpgrade('R',31)) a=n(0)
+                return a
+            },
             unlocked() {return hasUpgrade('cf',52)},
             effect() {a=player.li.dilpoint.add(1).pow(7)
                 if(hasMilestone('li',4)) a=a.pow(1.1)
@@ -3357,7 +3375,7 @@ addLayer("li", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
             canAfford() {return true},
             tooltip(){
-                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
                 if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
                 a='Time remaining: '
                 if(options.Chinese) a='预计所需时间：'
@@ -3374,7 +3392,10 @@ addLayer("li", {
                 if(options.Chinese) a='基于膨胀点数增益超QqQeInfinity的速度'
                 return a
             },
-            cost: new Decimal(5e8),
+            cost() {a=new Decimal(5e8)
+                if(hasUpgrade('R',31)) a=n(0)
+                return a
+            },
             unlocked() {return hasUpgrade('cf',52)},
             effect() {a=player.li.dilpoint.add(1).pow(2)
                 if(hasMilestone('li',4)) a=a.pow(1.1)
@@ -3383,7 +3404,7 @@ addLayer("li", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+'x'},
             canAfford() {return true},
             tooltip(){
-                t=this.cost.sub(player.li.dilpoint).div(tmp.li.effect)
+                t=this.cost().sub(player.li.dilpoint).div(tmp.li.effect)
                 if(tmp.li.effect.eq(0)||hasUpgrade(this.layer,this.id)||t.lte(0)) return ''
                 a='Time remaining: '
                 if(options.Chinese) a='预计所需时间：'
@@ -3741,8 +3762,23 @@ addLayer("li", {
                 return a
             },
             canClick() {return true},
-            onClick() {if (!confirm("Are you sure you want to reset your DvP upgrade?")) return
+            onClick() {if(getClickableState(this.layer,23)==0){if (!confirm("Are you sure you want to reset your DvP upgrade?")) return}
             resetDvp()
+            },
+            //style: {'height':'200px','width':'300px'},
+        },
+        23: {
+            title() {a="Comfirm when resetting DvP Upgrade"
+                if(options.Chinese) {a="在重置神权升级时确认"}
+                return a
+            },
+            display() {a="Currently:"+(getClickableState(this.layer,this.id)==0?"Yes":"No")
+                if(options.Chinese) {a="当前:"+(getClickableState(this.layer,this.id)==0?"是":"否")
+                }
+                return a
+            },
+            canClick() {return true},
+            onClick() {setClickableState(this.layer,this.id,1-getClickableState(this.layer,this.id))
             },
             //style: {'height':'200px','width':'300px'},
         },

@@ -273,31 +273,79 @@ function exportSave() {
 	document.body.removeChild(el);
 }
 
-function exportSaveToFile() {
-	// 将存档序列化并编码（与原函数保持一致）
-	let str = btoa(JSON.stringify(player));
+// 清理文件名中的非法字符（Windows 不允许 \ / : * ? " < > |）
+function sanitizeFileName(name) {
+    const cleaned = String(name)
+        .replace(/[\\/:*?"<>|]/g, '_')
+        .replace(/\s+/g, ' ')
+        .trim();
+    return cleaned || 'save';
+}
 
-	// 创建 Blob 对象，MIME 类型设为纯文本
-	const blob = new Blob([str], { type: "text/plain;charset=utf-8" });
+/**
+ * 导出存档到文件
+ * @/param {string} [customName] 预填的文件名（含或不含 .txt 均可）。不传则弹窗让用户输入。
+ */
+async function exportSaveToFile(customName) {
+    // 序列化并编码（与原函数保持一致）
+    const str = btoa(JSON.stringify(player));
+    const blob = new Blob([str], { type: "text/plain;charset=utf-8" });
 
-	// 生成文件名，包含 mod 名、版本和时间戳，便于区分
-	const now = new Date();
-	const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-	const fileName = `${document.title}_${VERSION.withoutName}_${timestamp}.txt`;
+    // 生成默认文件名：标题_版本_时间戳
+    const now = new Date();
+    const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+    const defaultName = `${document.title}_${VERSION.withoutName}_${timestamp}.txt`;
 
-	// 创建临时下载链接
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement("a");
-	a.href = url;
-	a.download = fileName;
+    // 用户预先指定了文件名 → 直接下载，不弹选择框
+    if (customName !== undefined && customName !== null) {
+        let fileName = sanitizeFileName(customName);
+        if (!/\.txt$/i.test(fileName)) fileName += '.txt';
+        triggerDownload(blob, fileName);
+        return;
+    }
 
-	// 触发下载
-	document.body.appendChild(a);
-	a.click();
-	document.body.removeChild(a);
+    // 方案 A：支持 File System Access API → 可同时选目录 + 改文件名
+    if (window.showSaveFilePicker) {
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: sanitizeFileName(defaultName),
+                types: [{
+                    description: '存档文件',
+                    accept: { 'text/plain': ['.txt'] }
+                }]
+            });
+            const writable = await handle.createWritable();
+            await writable.write(blob);
+            await writable.close();
+            return; // 保存成功
+        } catch (e) {
+            if (e.name === 'AbortError') return; // 用户点了取消
+            console.warn('保存对话框不可用，降级为普通下载：', e);
+            // 其他错误（如权限被拒）→ 继续走降级
+        }
+    }
 
-	// 释放内存（延迟释放，确保下载已开始）
-	setTimeout(() => URL.revokeObjectURL(url), 1000);
+    // 方案 B：降级 → 用 prompt 自定义文件名，保存到浏览器默认下载目录
+    const input = prompt(
+        '请输入文件名（浏览器会保存到默认下载目录，无法指定路径）：',
+        defaultName
+    );
+    if (input === null) return; // 用户取消
+    let fileName = sanitizeFileName(input);
+    if (!/\.txt$/i.test(fileName)) fileName += '.txt';
+    triggerDownload(blob, fileName);
+}
+
+// 传统下载（降级路径共用）
+function triggerDownload(blob, fileName) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function importSave(imported = undefined, forced = false) {

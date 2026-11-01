@@ -16,8 +16,8 @@ document.title='The Timewall Tree Remake'
 // Set your version in num and name
 let VERSION = {
 	num: "3.0",
-	name: "Gem Assignment",
-	beta:'3.1',
+	name: "Gem Assignment 2",
+	beta:'4',
 	pre:'',
 }
 
@@ -256,6 +256,22 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added 'Export to file' and 'Import from file' options.<br>
 		Chinese version:<br>
 		- 增加了'导出到文件'和'从文件导入'选项<br><br>
+
+	<h4><text style='color: #4abd13'>v3.0 Beta 4 - Gem Assignment 2</text> 2026/10/24~2026/11/1</h4><br>
+		- Added 4 Rebirth Upgrades. (1 in RU tab, 3 in AC tab)<br>
+		- Added qaqe308 Gem.<br>
+		- 'Export to file' now allows you to export your save to a file with a custom name and in a custom place.<br>
+		- Added more news messages, and added the icon.<br>
+		- Added 'Comfirm when resetting DvP Upgrade' option in Li layer.<br>
+		- Endgame: 3 Rebitrhs + Unlock Rebirth again.<br>
+		- Note: I haven't tested all contents of this version, and there may have some bugs.<br>
+		Chinese version:<br>
+		- 增加了4个重生升级（1个在重生升级标签页，3个在自动化中心标签页）<br>
+		- 增加了qaqe308宝石<br>
+		- '导出到文件'现在允许你自定义文件名与保存位置<br>
+		- 更多的新闻消息，并给网页添加了图标<br>
+		- 在Li层级中增加了'重置神权升级时确认'选项<br>
+		- 终局: 3次重生 + 再次解锁重生<br><br>
 	`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
@@ -317,7 +333,7 @@ function isEndgame() {
 	//return hasUpgrade('cf',34)
 	//return hasUpgrade('cf',52)
 	//return getBuyableAmount('li',21).gte(1)
-	return hasUpgrade('E',272)&&player.R.reb.gte(2)
+	return hasUpgrade('E',272)&&player.R.reb.gte(3)
 	return false
 	//return player.points.gte(new Decimal("e280000000"))
 }
@@ -451,7 +467,7 @@ function dvpuText(id,Chinese = false){
 		case 505:
 			return '<br>DvP-M-4<br>每级使升级DvP-M-x (x=1,2,3) 的有效等级+20%<br>当前: +'+format(gridEffect('li',id))+'%';
 		case 201:
-			return '<br>DvP-B-1<br>膨胀点数的效果x1.05 (每级+0.05)<br>当前: x'+format(gridEffect('li',id));
+			return '<br>DvP-B-1<br>膨胀点数的效果x1.1 (每级+0.1)<br>当前: x'+format(gridEffect('li',id));
 		case 301:
 			return '<br>DvP-B-2<br>压缩时间墙上限变为原来的1.2次方 (每级+0.2)<br>当前: ^'+format(gridEffect('li',id));
 		case 401:

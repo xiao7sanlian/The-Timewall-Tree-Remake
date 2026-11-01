@@ -53,7 +53,7 @@ addLayer("R", {
         return a
     },
     getResetGP(){b=player.E.points.pow(1/1024).div(2)
-        c=player.E.etr.pow(1/6).div(10).max(1)
+        c=player.E.etr.pow(1/5).div(10).max(1)
         d=player.li.points.div(1e6).pow(1/10).div(10).max(1)
         a=b.times(c).times(d)
         a=a.floor()
@@ -101,7 +101,7 @@ addLayer("R", {
     doReset(resettingLayer) {
         if (layers[resettingLayer].row > 5) {
             player.R.rPower = n(1)
-            if(getClickableState('R',12)==1) player.R.gemassign=[n(0),n(0),n(0),n(0),n(0)]
+            if(getClickableState('R',12)==1) player.R.gemassign=[n(0),n(0),n(0),n(0),n(0),n(0)]
        }
     },
     onPrestige(gain){
@@ -146,10 +146,49 @@ addLayer("R", {
             currencyDisplayName: 'Rebirth Shard',
             currencyInternalName: 'shard',
         },
+        13: {
+            title: "SIP",
+            description() {a="Start every reset with 1e9 Infinity Points and your Infinity Points won't be less than 1e9."
+                if(options.Chinese) a='每次重置后保留1e9无限点数，你的无限点数不会低于1e9'
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford() {return checkAroundUpg(this.layer,this.id)},
+            currencyLocation() {return player.R},
+            currencyDisplayName: 'Rebirth Shard',
+            currencyInternalName: 'shard',
+        },
         21: {
             title: "EU1",
             description() {a="The first 3 Eternity Upgrades that cost EP no longer cost anything."
                 if(options.Chinese) a='前3个花费永恒点数的永恒升级不再花费任何东西'
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford() {return checkAroundUpg(this.layer,this.id)},
+            currencyLocation() {return player.R},
+            currencyDisplayName: 'Rebirth Shard',
+            currencyInternalName: 'shard',
+        },
+        22: {
+            title: "EU2",
+            description() {a="Divide the cost of the last 2 Eternity Upgrades that cost EP by 1e10."
+                if(options.Chinese) a='最后2个花费永恒点数的永恒升级价格/1e10'
+                return a
+            },
+            cost: new Decimal(1),
+            unlocked() {return true},
+            canAfford() {return checkAroundUpg(this.layer,this.id)},
+            currencyLocation() {return player.R},
+            currencyDisplayName: 'Rebirth Shard',
+            currencyInternalName: 'shard',
+        },
+        31: {
+            title: "DU1",
+            description() {a="The first row of Dilation Upgrades no longer cost anything."
+                if(options.Chinese) a='第一行膨胀升级不再花费任何东西'
                 return a
             },
             cost: new Decimal(1),
@@ -187,6 +226,16 @@ addLayer("R", {
             unlocked() {return true},
             canAfford(){return hasAchievement('R',12)},
         },
+        113: {
+            title: "Another Slot",
+            description() {a="Gain another assignable Gem."
+                if(options.Chinese) a='获得另一个可分配的宝石'
+                return a
+            },
+            cost: new Decimal(5),
+            unlocked() {return true},
+            canAfford(){return hasAchievement('R',13)},
+        },
     },
     achievements: {
         11: {
@@ -194,8 +243,8 @@ addLayer("R", {
      done() {return player.points.gte('e10002228')}, 
      unlocked(){return true},
      onComplete() {},
-     tooltip() {a="Reach e10,002,228 Point."
-        if(options.Chinese) a='达到e10,002,228点数'
+     tooltip() {a="Reach "+format(player.points)+" / e10,002,228 Point."
+        if(options.Chinese) a='达到'+format(player.points)+' / e10,002,228点数'
         return a
      }, 
      textStyle: {'color': '#4bd123'},
@@ -203,11 +252,22 @@ addLayer("R", {
         12: {
      name() {return "Upgrade Discount"},
      allup(){return getBuyableAmount('E',21).add(getBuyableAmount('E',22)).add(getBuyableAmount('E',23))},
-     done() {return this.allup().gte(2500)}, 
+     done() {return this.allup().gte(2221)}, 
      unlocked(){return true},
      onComplete() {},
-     tooltip() {a="Reach "+formatWhole(this.allup())+"/2,500 Bought Upgrade Points."
-        if(options.Chinese) a="购买"+formatWhole(this.allup())+"/2,500升级点数"
+     tooltip() {a="Reach "+formatWhole(this.allup())+"/2,221 Bought Upgrade Points."
+        if(options.Chinese) a="购买"+formatWhole(this.allup())+"/2,221升级点数"
+        return a
+     }, 
+     textStyle: {'color': '#4bd123'},
+        },
+        13: {
+     name() {return "Another Slot"},
+     done() {return player.E.points.gte(n(2).pow(1024))&&player.R.gemassign[0].gte(3)}, 
+     unlocked(){return true},
+     onComplete() {},
+     tooltip() {a="Reach "+format(player.E.points)+"/"+format(n(2).pow(1024))+" Eternity Points with at least 3 Timewall Gems assigned."
+        if(options.Chinese) a="在至少分配3个时间墙宝石时达到"+format(player.E.points)+"/"+format(n(2).pow(1024))+"永恒点数"
         return a
      }, 
      textStyle: {'color': '#4bd123'},
@@ -357,6 +417,46 @@ addLayer("R", {
                 return a
             },
         },
+        23: {
+            title(){text = 'qaqe308 Gem'
+                    if(options.Chinese) text='qaqe308宝石'
+                text=text+'('+format(getBuyableAmount(this.layer, this.id))+' x '
+                text=text+format(tmp.R.gemPower)+' = '+format(getBuyableAmount(this.layer, this.id).times(tmp.R.gemPower))
+                text=text+')'
+                return text
+            },
+            cost(x) { a= new Decimal(1)
+                    return a
+            },
+            effect(x) {f=x.times(tmp.R.rpEff).times(0.01)
+                a=n(tmp.R.qagembasiceff[0]).pow(player.R.gemassign[2])
+                b=n(tmp.R.qagembasiceff[1]).times(player.R.gemassign[2]).add(1)
+                c=n(tmp.R.qagembasiceff[2]).times(player.R.gemassign[2]).add(1)
+                d=n(tmp.R.qagembasiceff[3]).pow(player.R.gemassign[2])
+                return [a,b,c,d]
+            },
+            display() {a= "Monika Point gain x "+format(tmp.R.qagembasiceff[0],)+'^'+format(player.R.gemassign[2],0)+'='+format(this.effect()[0])
+                a=a+"<br>Monika buyable strength x (1+"+format(tmp.R.qagembasiceff[1],4)+'x'+format(player.R.gemassign[2],0)+')='+format(this.effect()[1],4)
+                a=a+"<br>Monika Point effect ^ (1+"+format(tmp.R.qagembasiceff[2],4)+'x'+format(player.R.gemassign[2],0)+')='+format(this.effect()[2],4)
+                a=a+"<br>qaqe308 requirement / "+format(tmp.R.qagembasiceff[3])+'^'+format(player.R.gemassign[2],0)+'='+format(this.effect()[3])
+            if(options.Chinese) {a= "Monika点数获取 x "+format(tmp.R.qagembasiceff[0])+'^'+format(player.R.gemassign[2],0)+'='+format(this.effect()[0])
+                a=a+"<br>Monika可购买强度 x (1+"+format(tmp.R.qagembasiceff[1],4)+'x'+format(player.R.gemassign[2],0)+')='+format(this.effect()[1],4)
+                a=a+"<br>Monika点数效果 ^ (1+"+format(tmp.R.qagembasiceff[2],4)+'x'+format(player.R.gemassign[2],0)+')='+format(this.effect()[2],4)
+                a=a+"<br>qaqe308需求 / "+format(tmp.R.qagembasiceff[3])+'^'+format(player.R.gemassign[2],0)+'='+format(this.effect()[3])
+            }
+            return a },
+            unlocked() {return player.R.reb.gte(2)},
+            canAfford() { return player.R.gemPoints.gte(this.cost())&&this.unlocked()&&player.R.reb.gte(3) },
+            buy() {
+                player.R.gemPoints = player.R.gemPoints.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            tooltip() {a="Unlocked at 3 Rebirths."
+                if(options.Chinese) a="在3次重生后解锁"
+                if(player.R.reb.gte(3)) a=''
+                return a
+            },
+        },
     },
     milestones:{
     },
@@ -456,7 +556,14 @@ addLayer("R", {
                 c=f.times(10).add(1).log(10).add(1).log(10).div(10)
                 d=f.times(10).add(1).pow(0.5)
         return [a,b,c,d]},
+    qagembasiceff(){f=getBuyableAmount(this.layer,23).times(tmp.R.rpEff).times(0.01)
+                a=f.times(10).add(1)
+                b=f.times(10).add(1).log(10).add(1).log(10).times(0.01).add(f.min(1).div(1000))
+                c=f.times(10).add(1).log(10).add(1).log(10).div(20)
+                d=f.times(10).add(1).pow(10)
+        return [a,b,c,d]},
     totalGem(){a=player.R.reb.min(3)
+        if(hasUpgrade('R',113)) a=a.add(1)
         a=a.floor()
         return a
     },

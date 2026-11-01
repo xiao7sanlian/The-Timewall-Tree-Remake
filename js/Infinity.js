@@ -68,6 +68,7 @@ addLayer("I", {
     },
     canReset() {return player.points.gte(n(2).pow(1024))},//&&(player.I.points.lt(n(2).pow(1024)))
     update(diff){
+        if(hasUpgrade('R',13)) player.I.points=player.I.points.max(1e9)
         if(hasUpgrade('I',43)) addPoints('I', n(upgradeEffect('I',43)).times(0.1).div(player.I.bestTime).times(diff))
         if(hasUpgrade('I',91)&&!inChallenge('E',14)) player.I.inf = player.I.inf.add(upgradeEffect('I',91).times(diff))
         if(player.I.inf.gte(1)) player.I.challenges[11] = 1
@@ -2503,6 +2504,7 @@ addLayer("qa", {
     }},
     color: "#ab4308",
     requires(){a = new Decimal('1e919')
+        a=a.div(buyableEffect('R',23)[3])
         return a
     }, // Can be a function that takes requirement increases into account
     resource: "qaqe308", // Name of prestige currency
@@ -2982,6 +2984,7 @@ addLayer("qa", {
     },
     monikatoigexp(){a=n(0.5)
         a=a.add(buyableEffect('I',24))
+        a=a.times(buyableEffect('R',23)[2])
         return a
     },
     monikatoigmult() {a=player.qa.monika.max(0).pow(tmp.qa.monikatoigexp)
@@ -2996,6 +2999,7 @@ addLayer("qa", {
         if(hasUpgrade('cf',33)) a=a.times(upgradeEffect('cf',33)[0])
         if(hasUpgrade('E',251)) a=a.times(upgradeEffect('E',251))
         if(hasUpgrade('E',171)) a=a.pow(1.03)
+        a=a.times(buyableEffect('R',23)[0])
         a=a.max(0)
         if(isNaN(a)) a=n(0)
             return a
@@ -3021,6 +3025,7 @@ addLayer("qa", {
         if(hasChallenge('E',21)) a=a.add(challengeEffect('E',21))
         if(hasUpgrade('cf',43)) a=a.add(upgradeEffect('cf',43))
         a=a.add(gridEffect('li',303))
+        a=a.times(buyableEffect('R',23)[1])
         if(inChallenge('I',27)) a=a.times(0.5)
         return a
     },
